@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "name": "Chicken Rice",
+    "description": "Signature Hainanese chicken rice with fragrant rice and tender steamed chicken",
+    "price": 5.5,
+    "category": "Main Course",
+    "stallId": 2,
+    "stallName": "Tian Tian Chicken Rice",
+    "availability": "available",
+    "prepTime": 15,
+    "image": "chicken-rice.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Roasted Chicken Rice",
+    "description": "Crispy roasted chicken with aromatic rice",
+    "price": 6.0,
+    "category": "Main Course",
+    "stallId": 2,
+    "stallName": "Tian Tian Chicken Rice",
+    "availability": "available",
+    "prepTime": 20,
+    "image": "roasted-chicken.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Char Kway Teow",
+    "description": "Fried flat rice noodles with prawns, Chinese sausage, cockles, and bean sprouts",
+    "price": 5.0,
+    "category": "Main Course",
+    "stallId": 3,
+    "stallName": "Hill Street Fried Kway Teow",
+    "availability": "available",
+    "prepTime": 10,
+    "image": "char-kway-teow.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Laksa",
+    "description": "Spicy coconut noodle soup with prawns, fishcake, and tofu puffs",
+    "price": 6.0,
+    "category": "Main Course",
+    "stallId": 4,
+    "stallName": "Sungei Road Laksa",
+    "availability": "available",
+    "prepTime": 12,
+    "image": "laksa.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Roti Prata",
+    "description": "Crispy Indian flatbread served with curry",
+    "price": 2.5,
+    "category": "Main Course",
+    "stallId": 5,
+    "stallName": "Roti Prata House",
+    "availability": "available",
+    "prepTime": 5,
+    "image": "roti-prata.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Iced Teh Tarik",
+    "description": "Traditional pulled tea with ice",
+    "price": 2.5,
+    "category": "Beverage",
+    "stallId": 2,
+    "stallName": "Tian Tian Chicken Rice",
+    "availability": "available",
+    "prepTime": 3,
+    "image": "teh-tarik.jpg"
+  },
+  {
+    "id": 7,
+    "name": "Sugar Cane Juice",
+    "description": "Freshly pressed sugar cane juice",
+    "price": 3.0,
+    "category": "Beverage",
+    "stallId": 3,
+    "stallName": "Hill Street Fried Kway Teow",
+    "availability": "available",
+    "prepTime": 2,
+    "image": "sugar-cane.jpg"
+  }
+]

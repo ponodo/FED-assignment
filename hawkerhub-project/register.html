@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HawkerHub - Register</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand text-danger fw-bold" href="index.html">
+          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        </a>
+      </div>
+    </nav>
+
+    <div class="container py-5">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow">
+            <div class="card-body p-4">
+              <h2 class="text-center mb-4 text-danger">Create Account</h2>
+
+              <!-- Role Selection -->
+              <div class="mb-4">
+                <label class="form-label">Register as:</label>
+                <div class="btn-group w-100" role="group">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="role"
+                    id="customer"
+                    value="customer"
+                    checked
+                  />
+                  <label class="btn btn-outline-danger" for="customer">
+                    <i class="bi bi-person me-2"></i>Customer
+                  </label>
+
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="role"
+                    id="vendor"
+                    value="vendor"
+                  />
+                  <label class="btn btn-outline-danger" for="vendor">
+                    <i class="bi bi-shop me-2"></i>Hawker Vendor
+                  </label>
+                </div>
+              </div>
+
+              <form id="registerForm">
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">First Name *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstName"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Last Name *</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastName"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Email Address *</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Phone Number</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    placeholder="+65 9123 4567"
+                  />
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Password *</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="password"
+                      required
+                      minlength="6"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Confirm Password *</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="confirmPassword"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <!-- Vendor Fields (Hidden by default) -->
+                <div id="vendorFields" class="d-none">
+                  <h5 class="mt-4 mb-3">Vendor Information</h5>
+                  <div class="mb-3">
+                    <label class="form-label">Stall Name *</label>
+                    <input type="text" class="form-control" id="stallName" />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Hawker Center *</label>
+                    <select class="form-select" id="hawkerCenter">
+                      <option value="">Select Hawker Center</option>
+                      <option>Maxwell Food Centre</option>
+                      <option>Old Airport Road Food Centre</option>
+                      <option>Amoy Street Food Centre</option>
+                      <option>Chinatown Complex Food Centre</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="mb-3 form-check">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="terms"
+                    required
+                  />
+                  <label class="form-check-label">
+                    I agree to the
+                    <a href="#" class="text-danger">Terms & Conditions</a>
+                  </label>
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-danger btn-lg">
+                    Create Account
+                  </button>
+                </div>
+              </form>
+
+              <div class="text-center mt-4">
+                <p>
+                  Already have an account?
+                  <a href="login.html" class="text-danger fw-bold"
+                    >Login here</a
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container text-center">
+        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Toggle vendor fields
+      document.querySelectorAll('input[name="role"]').forEach((radio) => {
+        radio.addEventListener("change", function () {
+          const vendorFields = document.getElementById("vendorFields");
+          if (this.value === "vendor") {
+            vendorFields.classList.remove("d-none");
+          } else {
+            vendorFields.classList.add("d-none");
+          }
+        });
+      });
+
+      // Handle registration
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const firstName = document.getElementById("firstName").value;
+          const lastName = document.getElementById("lastName").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+          const confirmPassword =
+            document.getElementById("confirmPassword").value;
+          const role = document.querySelector(
+            'input[name="role"]:checked',
+          ).value;
+
+          // Validation
+          if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return;
+          }
+
+          if (password.length < 6) {
+            alert("Password must be at least 6 characters!");
+            return;
+          }
+
+          // Create user
+          const user = {
+            id: Date.now(),
+            firstName,
+            lastName,
+            email,
+            password,
+            role,
+            createdAt: new Date().toISOString(),
+          };
+
+          // Add vendor info
+          if (role === "vendor") {
+            const stallName = document.getElementById("stallName").value;
+            const hawkerCenter = document.getElementById("hawkerCenter").value;
+
+            if (!stallName || !hawkerCenter) {
+              alert("Please fill in vendor information!");
+              return;
+            }
+
+            user.stallName = stallName;
+            user.hawkerCenter = hawkerCenter;
+          }
+
+          // Save user (in real app, this goes to backend)
+          const users =
+            JSON.parse(localStorage.getItem("hawkerhub_users")) || [];
+          users.push(user);
+          localStorage.setItem("hawkerhub_users", JSON.stringify(users));
+
+          // Auto login
+          const userForSession = { ...user };
+          delete userForSession.password;
+          localStorage.setItem(
+            "hawkerhub_user",
+            JSON.stringify(userForSession),
+          );
+
+          alert("✅ Registration successful!");
+
+          // Redirect
+          setTimeout(() => {
+            if (role === "customer") {
+              window.location.href = "customer-dashboard.html";
+            } else {
+              window.location.href = "vendor-dashboard.html";
+            }
+          }, 1000);
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ORD1001",
+    "userId": 1,
+    "customerName": "John Customer",
+    "customerEmail": "customer@example.com",
+    "customerPhone": "+65 9123 4567",
+    "deliveryAddress": "123 Orchard Road, Singapore 238890",
+    "deliveryType": "delivery",
+    "deliveryFee": 3.0,
+    "paymentMethod": "PayNow",
+    "orderDate": "2024-01-20T10:30:00Z",
+    "status": "completed",
+    "items": [
+      {
+        "id": 1,
+        "name": "Chicken Rice",
+        "price": 5.5,
+        "quantity": 2,
+        "total": 11.0
+      },
+      {
+        "id": 6,
+        "name": "Iced Teh Tarik",
+        "price": 2.5,
+        "quantity": 1,
+        "total": 2.5
+      }
+    ],
+    "subtotal": 13.5,
+    "total": 16.5,
+    "vendorId": 2,
+    "vendorName": "Tian Tian Chicken Rice",
+    "preparationTime": 15,
+    "completedAt": "2024-01-20T11:00:00Z"
+  },
+  {
+    "id": "ORD1002",
+    "userId": 1,
+    "customerName": "John Customer",
+    "customerEmail": "customer@example.com",
+    "customerPhone": "+65 9123 4567",
+    "deliveryAddress": "123 Orchard Road, Singapore 238890",
+    "deliveryType": "pickup",
+    "deliveryFee": 0.0,
+    "paymentMethod": "Credit Card",
+    "orderDate": "2024-01-21T14:45:00Z",
+    "status": "preparing",
+    "items": [
+      {
+        "id": 3,
+        "name": "Char Kway Teow",
+        "price": 5.0,
+        "quantity": 1,
+        "total": 5.0
+      }
+    ],
+    "subtotal": 5.0,
+    "total": 5.0,
+    "vendorId": 3,
+    "vendorName": "Hill Street Fried Kway Teow",
+    "preparationTime": 10,
+    "estimatedReady": "2024-01-21T15:00:00Z"
+  },
+  {
+    "id": "ORD1003",
+    "userId": 3,
+    "customerName": "Sarah Lim",
+    "customerEmail": "sarah@example.com",
+    "customerPhone": "+65 9234 5678",
+    "deliveryAddress": "456 Marina Bay, Singapore 018956",
+    "deliveryType": "delivery",
+    "deliveryFee": 3.0,
+    "paymentMethod": "PayNow",
+    "orderDate": "2024-01-21T12:15:00Z",
+    "status": "pending",
+    "items": [
+      {
+        "id": 4,
+        "name": "Laksa",
+        "price": 6.0,
+        "quantity": 1,
+        "total": 6.0
+      },
+      {
+        "id": 5,
+        "name": "Roti Prata",
+        "price": 2.5,
+        "quantity": 2,
+        "total": 5.0
+      }
+    ],
+    "subtotal": 11.0,
+    "total": 14.0,
+    "vendorId": 4,
+    "vendorName": "Sungei Road Laksa"
+  }
+]

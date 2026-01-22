@@ -1,0 +1,70 @@
+/* css/auth.css */
+
+/* Auth Pages Specific Styles */
+.auth-page {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.auth-container {
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.auth-card {
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-header h2 {
+  color: #e63946;
+  margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+  color: #6c757d;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Role Selection */
+.role-selection .btn-group {
+  width: 100%;
+}
+
+.role-selection .btn {
+  flex: 1;
+  padding: 0.75rem;
+}
+
+/* Demo Accounts */
+.demo-accounts {
+  margin-top: 1.5rem;
+}
+
+.demo-accounts .btn {
+  margin: 0.25rem;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .auth-container {
+    padding: 0 15px;
+  }
+
+  .auth-card {
+    margin: 1rem;
+  }
+}

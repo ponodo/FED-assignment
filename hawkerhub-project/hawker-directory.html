@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HawkerHub - Hawker Directory</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand text-danger fw-bold" href="index.html">
+          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        </a>
+        <a href="order.html" class="btn btn-outline-danger">
+          <i class="bi bi-basket me-2"></i>Order Food
+        </a>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="mb-4 text-danger">Hawker Directory</h1>
+
+      <!-- Search & Filter -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search hawkers..."
+              id="searchInput"
+            />
+            <button class="btn btn-outline-danger" onclick="searchHawkers()">
+              <i class="bi bi-search"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" id="cuisineFilter">
+            <option value="">All Cuisines</option>
+            <option>Chinese</option>
+            <option>Malay</option>
+            <option>Indian</option>
+            <option>Western</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-select" id="locationFilter">
+            <option value="">All Locations</option>
+            <option>Maxwell Food Centre</option>
+            <option>Old Airport Road</option>
+            <option>Bedok Food Centre</option>
+            <option>Amoy Street</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Hawker List -->
+      <div class="row" id="hawkerList">
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <h5 class="card-title">Tian Tian Chicken Rice</h5>
+                <span class="badge bg-success">A</span>
+              </div>
+              <p class="text-muted">
+                <i class="bi bi-geo-alt me-1"></i>Maxwell Food Centre
+              </p>
+              <p class="card-text">
+                Famous Hainanese chicken rice stall, established since 1980.
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="text-warning">
+                    <i class="bi bi-star-fill"></i> 4.8
+                  </span>
+                  <span class="text-muted ms-2">(1,234 reviews)</span>
+                </div>
+                <a href="order.html" class="btn btn-sm btn-outline-danger"
+                  >Order Now</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <h5 class="card-title">Hill Street Fried Kway Teow</h5>
+                <span class="badge bg-success">A</span>
+              </div>
+              <p class="text-muted">
+                <i class="bi bi-geo-alt me-1"></i>Bedok Food Centre
+              </p>
+              <p class="card-text">
+                Traditional fried kway teow with wok hei flavor.
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="text-warning">
+                    <i class="bi bi-star-fill"></i> 4.5
+                  </span>
+                  <span class="text-muted ms-2">(987 reviews)</span>
+                </div>
+                <a href="order.html" class="btn btn-sm btn-outline-danger"
+                  >Order Now</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <h5 class="card-title">Sungei Road Laksa</h5>
+                <span class="badge bg-success">A</span>
+              </div>
+              <p class="text-muted">
+                <i class="bi bi-geo-alt me-1"></i>Jalan Besar
+              </p>
+              <p class="card-text">
+                Original Katong laksa with rich coconut broth.
+              </p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <span class="text-warning">
+                    <i class="bi bi-star-fill"></i> 4.7
+                  </span>
+                  <span class="text-muted ms-2">(1,542 reviews)</span>
+                </div>
+                <a href="order.html" class="btn btn-sm btn-outline-danger"
+                  >Order Now</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container text-center">
+        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Search and filter hawkers
+      function searchHawkers() {
+        const searchTerm = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const cuisine = document.getElementById("cuisineFilter").value;
+        const location = document.getElementById("locationFilter").value;
+
+        // In a real app, this would be an API call
+        alert(
+          `Searching for: ${searchTerm}\nCuisine: ${cuisine}\nLocation: ${location}`,
+        );
+      }
+
+      // Add event listeners
+      document
+        .getElementById("searchInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            searchHawkers();
+          }
+        });
+
+      document
+        .getElementById("cuisineFilter")
+        .addEventListener("change", searchHawkers);
+      document
+        .getElementById("locationFilter")
+        .addEventListener("change", searchHawkers);
+    </script>
+  </body>
+</html>

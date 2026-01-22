@@ -1,0 +1,148 @@
+/* css/style.css */
+
+:root {
+  --primary-red: #e63946;
+  --dark-red: #c1121f;
+  --light-red: #f8d7da;
+  --light-gray: #f8f9fa;
+  --medium-gray: #dee2e6;
+  --dark-gray: #495057;
+}
+
+/* General Styles */
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #333;
+  padding-top: 20px;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
+}
+
+/* Colors */
+.text-danger {
+  color: var(--primary-red) !important;
+}
+
+.bg-danger {
+  background-color: var(--primary-red) !important;
+}
+
+/* Buttons */
+.btn-danger {
+  background-color: var(--primary-red);
+  border-color: var(--primary-red);
+}
+
+.btn-danger:hover {
+  background-color: var(--dark-red);
+  border-color: var(--dark-red);
+}
+
+.btn-outline-danger {
+  color: var(--primary-red);
+  border-color: var(--primary-red);
+}
+
+.btn-outline-danger:hover {
+  background-color: var(--primary-red);
+  border-color: var(--primary-red);
+  color: white;
+}
+
+/* Cards */
+.card {
+  border: 1px solid var(--medium-gray);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  background-color: var(--light-gray);
+  border-bottom: 1px solid var(--medium-gray);
+  font-weight: 500;
+}
+
+/* Forms */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--primary-red);
+  box-shadow: 0 0 0 0.25rem rgba(230, 57, 70, 0.25);
+}
+
+/* Badges */
+.badge {
+  padding: 0.35em 0.65em;
+  font-weight: 500;
+}
+
+/* Navigation */
+.navbar {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+  font-weight: 700;
+}
+
+/* Footer */
+footer {
+  margin-top: 3rem;
+}
+
+/* Utility Classes */
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .btn-lg {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* Loading Spinner */
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Alert */
+.alert {
+  border-radius: 8px;
+  border: none;
+}
+
+/* Table */
+.table th {
+  background-color: var(--light-gray);
+  font-weight: 600;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(230, 57, 70, 0.05);
+}

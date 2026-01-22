@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HawkerHub - Order Food</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand text-danger fw-bold" href="index.html">
+          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        </a>
+        <div class="d-flex align-items-center">
+          <a
+            href="cart.html"
+            class="btn btn-outline-danger me-3 position-relative"
+          >
+            <i class="bi bi-cart"></i>
+            <span
+              class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
+              >0</span
+            >
+          </a>
+          <a href="login.html" class="btn btn-outline-danger">
+            <i class="bi bi-person"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="mb-4 text-danger">Order Food</h1>
+
+      <!-- Hawker Selection -->
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-header bg-danger text-white">
+              <h5 class="mb-0">Select Hawker</h5>
+            </div>
+            <div class="card-body">
+              <div class="list-group">
+                <a
+                  href="#"
+                  class="list-group-item list-group-item-action active"
+                  onclick="selectHawker(1)"
+                >
+                  <strong>Tian Tian Chicken Rice</strong>
+                  <small class="d-block text-muted">Maxwell Food Centre</small>
+                </a>
+                <a
+                  href="#"
+                  class="list-group-item list-group-item-action"
+                  onclick="selectHawker(2)"
+                >
+                  <strong>Hill Street Fried Kway Teow</strong>
+                  <small class="d-block text-muted">Bedok Food Centre</small>
+                </a>
+                <a
+                  href="#"
+                  class="list-group-item list-group-item-action"
+                  onclick="selectHawker(3)"
+                >
+                  <strong>Sungei Road Laksa</strong>
+                  <small class="d-block text-muted">Jalan Besar</small>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="col-md-8">
+          <div id="menuSection">
+            <h4>
+              Menu from
+              <span class="text-danger" id="selectedHawkerName"
+                >Tian Tian Chicken Rice</span
+              >
+            </h4>
+
+            <div class="row" id="menuItems">
+              <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">Chicken Rice</h5>
+                    <p class="card-text">
+                      Signature Hainanese chicken rice with fragrant rice
+                    </p>
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span class="fw-bold text-danger">$5.50</span>
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="addToCart('Chicken Rice', 5.5)"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">Roasted Chicken Rice</h5>
+                    <p class="card-text">
+                      Crispy roasted chicken with aromatic rice
+                    </p>
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span class="fw-bold text-danger">$6.00</span>
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="addToCart('Roasted Chicken Rice', 6.0)"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">Char Kway Teow</h5>
+                    <p class="card-text">
+                      Fried noodles with prawns and cockles
+                    </p>
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span class="fw-bold text-danger">$5.00</span>
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="addToCart('Char Kway Teow', 5.0)"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title">Laksa</h5>
+                    <p class="card-text">Spicy coconut noodle soup</p>
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span class="fw-bold text-danger">$6.00</span>
+                      <button
+                        class="btn btn-sm btn-outline-danger"
+                        onclick="addToCart('Laksa', 6.0)"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container text-center">
+        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Select hawker
+      function selectHawker(id) {
+        const hawkers = [
+          {
+            id: 1,
+            name: "Tian Tian Chicken Rice",
+            location: "Maxwell Food Centre",
+          },
+          {
+            id: 2,
+            name: "Hill Street Fried Kway Teow",
+            location: "Bedok Food Centre",
+          },
+          { id: 3, name: "Sungei Road Laksa", location: "Jalan Besar" },
+        ];
+
+        const hawker = hawkers.find((h) => h.id === id);
+        document.getElementById("selectedHawkerName").textContent = hawker.name;
+
+        // Update active class
+        document.querySelectorAll(".list-group-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+        event.target.classList.add("active");
+      }
+
+      // Add to cart
+      function addToCart(itemName, price) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push({ name: itemName, price: price, quantity: 1 });
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        // Update cart count
+        updateCartCount();
+
+        alert(`"${itemName}" added to cart!`);
+      }
+
+      // Update cart count
+      function updateCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const cartCount = document.querySelector(".badge");
+        cartCount.textContent = cart.length;
+      }
+
+      // Initialize
+      window.onload = function () {
+        updateCartCount();
+      };
+    </script>
+  </body>
+</html>

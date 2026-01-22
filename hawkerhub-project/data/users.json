@@ -1,0 +1,40 @@
+[
+  {
+    "id": 1,
+    "firstName": "John",
+    "lastName": "Customer",
+    "email": "customer@example.com",
+    "password": "password123",
+    "role": "customer",
+    "phone": "+65 9123 4567",
+    "address": "123 Orchard Road, Singapore 238890",
+    "createdAt": "2024-01-15T08:30:00Z"
+  },
+  {
+    "id": 2,
+    "firstName": "Ah",
+    "lastName": "Tan",
+    "email": "vendor@example.com",
+    "password": "password123",
+    "role": "vendor",
+    "stallName": "Tian Tian Chicken Rice",
+    "hawkerCenter": "Maxwell Food Centre",
+    "cuisine": "Chinese",
+    "phone": "+65 8123 4567",
+    "stallNumber": "#01-10",
+    "rating": 4.8,
+    "hygieneGrade": "A",
+    "createdAt": "2024-01-10T09:15:00Z"
+  },
+  {
+    "id": 3,
+    "firstName": "Sarah",
+    "lastName": "Lim",
+    "email": "sarah@example.com",
+    "password": "password123",
+    "role": "customer",
+    "phone": "+65 9234 5678",
+    "address": "456 Marina Bay, Singapore 018956",
+    "createdAt": "2024-01-20T14:20:00Z"
+  }
+]

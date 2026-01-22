@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HawkerHub - My Stall</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand text-danger fw-bold" href="index.html">
+          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        </a>
+        <div class="d-flex align-items-center">
+          <a href="vendor-dashboard.html" class="btn btn-outline-danger me-3">
+            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="mb-4 text-danger">My Stall</h1>
+
+      <!-- Stall Information -->
+      <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+          <h5 class="mb-0">Stall Information</h5>
+        </div>
+        <div class="card-body">
+          <form id="stallForm">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Stall Name *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="stallName"
+                  value="Tian Tian Chicken Rice"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Hawker Center *</label>
+                <select class="form-control" id="hawkerCenter" required>
+                  <option>Maxwell Food Centre</option>
+                  <option>Old Airport Road Food Centre</option>
+                  <option>Amoy Street Food Centre</option>
+                  <option>Chinatown Complex Food Centre</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label class="form-label">Cuisine Type *</label>
+                <select class="form-control" id="cuisineType" required>
+                  <option>Chinese</option>
+                  <option>Malay</option>
+                  <option>Indian</option>
+                  <option>Western</option>
+                  <option>Fusion</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Operating Hours *</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="operatingHours"
+                  value="10:00 AM - 8:00 PM"
+                  required
+                />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Stall Description</label>
+              <textarea class="form-control" id="stallDescription" rows="3">
+Famous Hainanese chicken rice stall in Maxwell Food Centre, established since 1980. Known for our fragrant rice and tender chicken.</textarea
+              >
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-danger">
+                Update Stall Information
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Stall Stats -->
+      <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">A</h2>
+            <p class="mb-0">Hygiene Grade</p>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">4.8</h2>
+            <p class="mb-0">Customer Rating</p>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">156</h2>
+            <p class="mb-0">Total Orders</p>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">$3,240</h2>
+            <p class="mb-0">Total Revenue</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title mb-3">Quick Links</h5>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <a
+                href="menu-management.html"
+                class="btn btn-outline-danger w-100"
+              >
+                <i class="bi bi-menu-button me-2"></i>Manage Menu
+              </a>
+            </div>
+            <div class="col-md-4 mb-3">
+              <a href="vendor-menu.html" class="btn btn-outline-danger w-100">
+                <i class="bi bi-eye me-2"></i>View Public Menu
+              </a>
+            </div>
+            <div class="col-md-4 mb-3">
+              <a
+                href="rental-agreements.html"
+                class="btn btn-outline-danger w-100"
+              >
+                <i class="bi bi-file-text me-2"></i>Rental Agreements
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container text-center">
+        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Check if user is vendor
+      window.onload = function () {
+        const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
+        if (!user || user.role !== "vendor") {
+          window.location.href = "login.html";
+        }
+
+        // Load stall info from user data
+        if (user.stallName) {
+          document.getElementById("stallName").value = user.stallName;
+        }
+        if (user.hawkerCenter) {
+          document.getElementById("hawkerCenter").value = user.hawkerCenter;
+        }
+      };
+
+      // Update stall information
+      document
+        .getElementById("stallForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // Update user data
+          const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
+          if (user) {
+            user.stallName = document.getElementById("stallName").value;
+            user.hawkerCenter = document.getElementById("hawkerCenter").value;
+            localStorage.setItem("hawkerhub_user", JSON.stringify(user));
+          }
+
+          alert("Stall information updated successfully!");
+        });
+    </script>
+  </body>
+</html>

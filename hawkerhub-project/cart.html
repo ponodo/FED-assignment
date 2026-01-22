@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HawkerHub - Shopping Cart</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand text-danger fw-bold" href="index.html">
+          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        </a>
+        <a href="order.html" class="btn btn-outline-danger">
+          <i class="bi bi-arrow-left me-2"></i>Continue Shopping
+        </a>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="mb-4 text-danger">Shopping Cart</h1>
+
+      <div class="row">
+        <!-- Cart Items -->
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-body">
+              <div id="cartItems">
+                <!-- Items will be loaded here -->
+                <div class="text-center py-5">
+                  <i class="bi bi-cart display-1 text-muted mb-3"></i>
+                  <h4>Your cart is empty</h4>
+                  <p class="text-muted">
+                    Add some delicious food from our hawkers!
+                  </p>
+                  <a href="order.html" class="btn btn-danger mt-3"
+                    >Browse Food</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-header bg-danger text-white">
+              <h5 class="mb-0">Order Summary</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span id="subtotal">$0.00</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Delivery Fee:</span>
+                <span id="delivery">$3.00</span>
+              </div>
+              <hr />
+              <div class="d-flex justify-content-between mb-4">
+                <span class="fw-bold">Total:</span>
+                <span class="fw-bold text-danger" id="total">$3.00</span>
+              </div>
+
+              <div class="d-grid gap-2">
+                <a href="checkout.html" class="btn btn-danger btn-lg"
+                  >Proceed to Checkout</a
+                >
+                <a href="order.html" class="btn btn-outline-danger"
+                  >Continue Shopping</a
+                >
+              </div>
+
+              <div class="mt-4">
+                <p class="small text-muted">
+                  <i class="bi bi-info-circle me-1"></i>
+                  Free delivery for orders above $20
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container text-center">
+        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Load cart items
+      function loadCart() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const cartItems = document.getElementById("cartItems");
+        const subtotalEl = document.getElementById("subtotal");
+        const totalEl = document.getElementById("total");
+
+        if (cart.length === 0) {
+          cartItems.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="bi bi-cart display-1 text-muted mb-3"></i>
+                        <h4>Your cart is empty</h4>
+                        <p class="text-muted">Add some delicious food from our hawkers!</p>
+                        <a href="order.html" class="btn btn-danger mt-3">Browse Food</a>
+                    </div>
+                `;
+          subtotalEl.textContent = "$0.00";
+          totalEl.textContent = "$3.00";
+          return;
+        }
+
+        let subtotal = 0;
+        let itemsHTML = "";
+
+        cart.forEach((item, index) => {
+          const itemTotal = item.price * item.quantity;
+          subtotal += itemTotal;
+
+          itemsHTML += `
+                    <div class="cart-item d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <div>
+                            <h6 class="mb-1">${item.name}</h6>
+                            <p class="mb-0 text-muted">$${item.price.toFixed(2)} each</p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="input-group input-group-sm" style="width: 100px;">
+                                <button class="btn btn-outline-secondary" onclick="updateQuantity(${index}, -1)">-</button>
+                                <input type="text" class="form-control text-center" value="${item.quantity || 1}" readonly>
+                                <button class="btn btn-outline-secondary" onclick="updateQuantity(${index}, 1)">+</button>
+                            </div>
+                            <span class="ms-3 fw-bold">$${itemTotal.toFixed(2)}</span>
+                            <button class="btn btn-link text-danger ms-3" onclick="removeItem(${index})">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+        });
+
+        cartItems.innerHTML = itemsHTML;
+        const delivery = 3.0;
+        const total = subtotal + delivery;
+
+        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+        totalEl.textContent = `$${total.toFixed(2)}`;
+      }
+
+      // Update quantity
+      function updateQuantity(index, change) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const currentQuantity = cart[index].quantity || 1;
+        const newQuantity = currentQuantity + change;
+
+        if (newQuantity < 1) {
+          cart.splice(index, 1);
+        } else {
+          cart[index].quantity = newQuantity;
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+
+      // Remove item
+      function removeItem(index) {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.splice(index, 1);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        loadCart();
+      }
+
+      // Initialize
+      window.onload = function () {
+        loadCart();
+      };
+    </script>
+  </body>
+</html>

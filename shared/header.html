@@ -1,0 +1,157 @@
+<!-- shared/header.html - COMPLETE FILE -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand text-danger fw-bold" href="../index.html">
+      <i class="bi bi-shop-window me-2"></i>HawkerHub
+    </a>
+
+    <!-- Mobile Toggle -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navigation -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Left Navigation -->
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="../index.html">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../hawker-directory.html">Hawkers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../order.html">Order</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../feedback.html">Feedback</a>
+        </li>
+      </ul>
+
+      <!-- Right Navigation -->
+      <div class="d-flex align-items-center">
+        <!-- Cart -->
+        <a
+          href="../cart.html"
+          class="btn btn-outline-danger me-3 position-relative"
+        >
+          <i class="bi bi-cart"></i>
+          <span
+            class="cart-count badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
+            style="display: none"
+            >0</span
+          >
+        </a>
+
+        <!-- Auth Dropdown -->
+        <div id="authDropdown">
+          <!-- Will be filled by JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  // Update header on page load
+  document.addEventListener("DOMContentLoaded", function () {
+    updateHeaderAuth();
+    updateCartCount();
+    highlightActiveNav();
+  });
+
+  // Update auth dropdown
+  function updateHeaderAuth() {
+    const authDropdown = document.getElementById("authDropdown");
+    const user = JSON.parse(localStorage.getItem("current_user"));
+
+    if (!authDropdown) return;
+
+    if (user) {
+      // User is logged in
+      const name = user.firstName || "User";
+      const isVendor = user.role === "vendor";
+
+      authDropdown.innerHTML = `
+                <div class="dropdown">
+                    <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person me-1"></i>${name}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        ${
+                          isVendor
+                            ? `
+                            <li><a class="dropdown-item" href="../vendor-dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Vendor Dashboard</a></li>
+                            <li><a class="dropdown-item" href="../menu-management.html"><i class="bi bi-menu-button me-2"></i>Manage Menu</a></li>
+                            <li><a class="dropdown-item" href="../stall-management.html"><i class="bi bi-shop me-2"></i>My Stall</a></li>
+                        `
+                            : `
+                            <li><a class="dropdown-item" href="../customer-dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                            <li><a class="dropdown-item" href="../profile.html"><i class="bi bi-person me-2"></i>Profile</a></li>
+                            <li><a class="dropdown-item" href="../my-orders.html"><i class="bi bi-receipt me-2"></i>My Orders</a></li>
+                        `
+                        }
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="logout()"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                    </ul>
+                </div>
+            `;
+    } else {
+      // User is not logged in
+      authDropdown.innerHTML = `
+                <div class="dropdown">
+                    <button class="btn btn-outline-danger dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person"></i> Account
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="../login.html"><i class="bi bi-box-arrow-in-right me-2"></i>Login</a></li>
+                        <li><a class="dropdown-item" href="../register.html"><i class="bi bi-person-plus me-2"></i>Register</a></li>
+                    </ul>
+                </div>
+            `;
+    }
+  }
+
+  // Update cart count
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartCount = document.querySelector(".cart-count");
+
+    if (cartCount) {
+      const totalItems = cart.reduce(
+        (sum, item) => sum + (item.quantity || 1),
+        0,
+      );
+      cartCount.textContent = totalItems;
+      cartCount.style.display = totalItems > 0 ? "block" : "none";
+    }
+  }
+
+  // Highlight active navigation
+  function highlightActiveNav() {
+    const currentPage = window.location.pathname.split("/").pop();
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    navLinks.forEach((link) => {
+      const linkHref = link.getAttribute("href");
+      if (linkHref === currentPage) {
+        link.classList.add("active");
+      } else {
+        link.classList.remove("active");
+      }
+    });
+  }
+
+  // Logout function
+  function logout() {
+    localStorage.removeItem("current_user");
+    localStorage.removeItem("cart");
+    window.location.href = "../index.html";
+  }
+</script>

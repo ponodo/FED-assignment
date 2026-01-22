@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HawkerHub - Vendor Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand text-danger fw-bold" href="index.html">
+          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        </a>
+        <div class="d-flex align-items-center">
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-danger dropdown-toggle"
+              data-bs-toggle="dropdown"
+            >
+              <i class="bi bi-person"></i> Vendor
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="menu-management.html"
+                  >Manage Menu</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="stall-management.html"
+                  >My Stall</a
+                >
+              </li>
+              <li>
+                <a class="dropdown-item" href="vendor-menu.html">Public Menu</a>
+              </li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item text-danger" href="#" onclick="logout()"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <h1 class="mb-4 text-danger">Vendor Dashboard</h1>
+
+      <!-- Stats -->
+      <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">12</h2>
+            <p class="mb-0">Today's Orders</p>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">$240</h2>
+            <p class="mb-0">Today's Revenue</p>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">3</h2>
+            <p class="mb-0">Pending</p>
+          </div>
+        </div>
+        <div class="col-md-3 mb-3">
+          <div class="card text-center p-3">
+            <h2 class="text-danger">4.8</h2>
+            <p class="mb-0">Rating</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Quick Actions</h5>
+          <div class="d-flex flex-wrap gap-2">
+            <a href="menu-management.html" class="btn btn-danger">
+              <i class="bi bi-menu-button me-2"></i>Manage Menu
+            </a>
+            <a href="stall-management.html" class="btn btn-outline-danger">
+              <i class="bi bi-shop me-2"></i>My Stall
+            </a>
+            <a href="vendor-menu.html" class="btn btn-outline-danger">
+              <i class="bi bi-eye me-2"></i>View Public Menu
+            </a>
+            <a href="feedback.html" class="btn btn-outline-danger">
+              <i class="bi bi-chat me-2"></i>Feedback
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div class="card">
+        <div class="card-header bg-danger text-white">
+          <h5 class="mb-0">Recent Orders</h5>
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Order #</th>
+                <th>Time</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#1005</td>
+                <td>10:30 AM</td>
+                <td>John Tan</td>
+                <td>Chicken Rice x1</td>
+                <td>$5.50</td>
+                <td><span class="badge bg-warning">Pending</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-danger">Accept</button>
+                </td>
+              </tr>
+              <tr>
+                <td>#1004</td>
+                <td>10:15 AM</td>
+                <td>Sarah Lim</td>
+                <td>Roasted Chicken Rice x2</td>
+                <td>$12.00</td>
+                <td><span class="badge bg-info">Preparing</span></td>
+                <td>
+                  <button class="btn btn-sm btn-danger">Ready</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+      <div class="container text-center">
+        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // Check login
+      window.onload = function () {
+        const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
+        if (!user || user.role !== "vendor") {
+          window.location.href = "login.html";
+        }
+      };
+
+      function logout() {
+        localStorage.removeItem("hawkerhub_user");
+        window.location.href = "index.html";
+      }
+    </script>
+  </body>
+</html>
