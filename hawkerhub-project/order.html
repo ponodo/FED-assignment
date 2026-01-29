@@ -1,37 +1,53 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Basic page setup -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HawkerHub - Order Food</title>
+
+    <!-- Bootstrap CSS (for layout + styling) -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+    <!-- Bootstrap Icons -->
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
     />
+
+    <!-- Your own CSS (optional: keep if you have it) -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
+
   <body>
-    <!-- Navigation -->
+    <!-- =========================
+         TOP NAVBAR
+         ========================= -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container">
+        <!-- Logo / Brand -->
         <a class="navbar-brand text-danger fw-bold" href="index.html">
           <i class="bi bi-shop-window me-2"></i>HawkerHub
         </a>
+
+        <!-- Right-side buttons -->
         <div class="d-flex align-items-center">
-          <a
-            href="cart.html"
-            class="btn btn-outline-danger me-3 position-relative"
-          >
+          <!-- Cart button -->
+          <a href="cart.html" class="btn btn-outline-danger me-3 position-relative">
             <i class="bi bi-cart"></i>
+
+            <!-- Cart count badge (we update this with JS) -->
             <span
-              class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle"
-              >0</span
+              class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle cart-count"
             >
+              0
+            </span>
           </a>
+
+          <!-- Login button -->
           <a href="login.html" class="btn btn-outline-danger">
             <i class="bi bi-person"></i>
           </a>
@@ -39,38 +55,48 @@
       </div>
     </nav>
 
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
     <div class="container mt-5">
       <h1 class="mb-4 text-danger">Order Food</h1>
 
-      <!-- Hawker Selection -->
       <div class="row">
+        <!-- =========================
+             LEFT: HAWKER LIST
+             ========================= -->
         <div class="col-md-4 mb-4">
           <div class="card">
             <div class="card-header bg-danger text-white">
               <h5 class="mb-0">Select Hawker</h5>
             </div>
+
             <div class="card-body">
-              <div class="list-group">
+              <!-- We give this list an id so JS can "listen" for clicks -->
+              <div class="list-group" id="hawkerList">
+                <!-- Each hawker item uses data-hawker-id (easy to read in JS) -->
                 <a
                   href="#"
-                  class="list-group-item list-group-item-action active"
-                  onclick="selectHawker(1)"
+                  class="list-group-item list-group-item-action hawker-item active"
+                  data-hawker-id="1"
                 >
                   <strong>Tian Tian Chicken Rice</strong>
                   <small class="d-block text-muted">Maxwell Food Centre</small>
                 </a>
+
                 <a
                   href="#"
-                  class="list-group-item list-group-item-action"
-                  onclick="selectHawker(2)"
+                  class="list-group-item list-group-item-action hawker-item"
+                  data-hawker-id="2"
                 >
                   <strong>Hill Street Fried Kway Teow</strong>
                   <small class="d-block text-muted">Bedok Food Centre</small>
                 </a>
+
                 <a
                   href="#"
-                  class="list-group-item list-group-item-action"
-                  onclick="selectHawker(3)"
+                  class="list-group-item list-group-item-action hawker-item"
+                  data-hawker-id="3"
                 >
                   <strong>Sungei Road Laksa</strong>
                   <small class="d-block text-muted">Jalan Besar</small>
@@ -80,163 +106,204 @@
           </div>
         </div>
 
-        <!-- Menu Items -->
+        <!-- =========================
+             RIGHT: MENU AREA
+             ========================= -->
         <div class="col-md-8">
           <div id="menuSection">
             <h4>
               Menu from
-              <span class="text-danger" id="selectedHawkerName"
-                >Tian Tian Chicken Rice</span
-              >
+              <!-- We update this text when user selects hawker -->
+              <span class="text-danger" id="hawkerName">Tian Tian Chicken Rice</span>
             </h4>
 
-            <div class="row" id="menuItems">
-              <div class="col-md-6 mb-3">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="card-title">Chicken Rice</h5>
-                    <p class="card-text">
-                      Signature Hainanese chicken rice with fragrant rice
-                    </p>
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
-                      <span class="fw-bold text-danger">$5.50</span>
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        onclick="addToCart('Chicken Rice', 5.5)"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="card-title">Roasted Chicken Rice</h5>
-                    <p class="card-text">
-                      Crispy roasted chicken with aromatic rice
-                    </p>
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
-                      <span class="fw-bold text-danger">$6.00</span>
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        onclick="addToCart('Roasted Chicken Rice', 6.0)"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="card-title">Char Kway Teow</h5>
-                    <p class="card-text">
-                      Fried noodles with prawns and cockles
-                    </p>
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
-                      <span class="fw-bold text-danger">$5.00</span>
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        onclick="addToCart('Char Kway Teow', 5.0)"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6 mb-3">
-                <div class="card h-100">
-                  <div class="card-body">
-                    <h5 class="card-title">Laksa</h5>
-                    <p class="card-text">Spicy coconut noodle soup</p>
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
-                      <span class="fw-bold text-danger">$6.00</span>
-                      <button
-                        class="btn btn-sm btn-outline-danger"
-                        onclick="addToCart('Laksa', 6.0)"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!-- Menu cards will be generated by JS and inserted here -->
+            <div class="row menu-items" id="menuItems"></div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- =========================
+         FOOTER
+         ========================= -->
     <footer class="bg-dark text-white py-4 mt-5">
       <div class="container text-center">
         <p>&copy; 2024 HawkerHub. All rights reserved.</p>
       </div>
     </footer>
 
+    <!-- Bootstrap JS (needed for some components like dropdown, modal, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      // Select hawker
-      function selectHawker(id) {
-        const hawkers = [
-          {
-            id: 1,
-            name: "Tian Tian Chicken Rice",
-            location: "Maxwell Food Centre",
-          },
-          {
-            id: 2,
-            name: "Hill Street Fried Kway Teow",
-            location: "Bedok Food Centre",
-          },
-          { id: 3, name: "Sungei Road Laksa", location: "Jalan Besar" },
-        ];
+      /* =========================================================
+         1) DATA SECTION (our "database" for now)
+         =========================================================
+         In a real app, this could come from an API or Firebase.
+      */
 
-        const hawker = hawkers.find((h) => h.id === id);
-        document.getElementById("selectedHawkerName").textContent = hawker.name;
+      const hawkers = [
+        { id: 1, name: "Tian Tian Chicken Rice", location: "Maxwell Food Centre" },
+        { id: 2, name: "Hill Street Fried Kway Teow", location: "Bedok Food Centre" },
+        { id: 3, name: "Sungei Road Laksa", location: "Jalan Besar" },
+      ];
 
-        // Update active class
-        document.querySelectorAll(".list-group-item").forEach((item) => {
-          item.classList.remove("active");
+      // Menu items grouped by hawker id (so each hawker has different menu)
+      const menuByHawker = {
+        1: [
+          { name: "Chicken Rice", desc: "Signature Hainanese chicken rice with fragrant rice", price: 5.5 },
+          { name: "Roasted Chicken Rice", desc: "Crispy roasted chicken with aromatic rice", price: 6.0 },
+        ],
+        2: [
+          { name: "Char Kway Teow", desc: "Fried noodles with prawns and cockles", price: 5.0 },
+          { name: "Fried Oyster Omelette", desc: "Crispy egg omelette with oysters", price: 6.5 },
+        ],
+        3: [
+          { name: "Laksa", desc: "Spicy coconut noodle soup", price: 6.0 },
+          { name: "Fishcake Laksa", desc: "Laksa with fishcake and cockles", price: 6.5 },
+        ],
+      };
+
+      /* =========================================================
+         2) DOM ELEMENTS (grab stuff from HTML once)
+         ========================================================= */
+      const hawkerListEl = document.getElementById("hawkerList");
+      const hawkerNameEl = document.getElementById("hawkerName");
+      const menuItemsEl = document.getElementById("menuItems");
+      const cartCountEl = document.querySelector(".cart-count");
+
+      /* =========================================================
+         3) MENU RENDERING
+         =========================================================
+         This function draws menu cards into the page based on hawkerId.
+      */
+      function renderMenu(hawkerId) {
+        // Get menu array for this hawker id (or empty list if not found)
+        const menuItems = menuByHawker[hawkerId] || [];
+
+        // Clear old menu HTML first
+        menuItemsEl.innerHTML = "";
+
+        // Loop through items and create cards
+        menuItems.forEach((item) => {
+          const col = document.createElement("div");
+          col.className = "col-md-6 mb-3";
+
+          col.innerHTML = `
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">${item.name}</h5>
+                <p class="card-text">${item.desc}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="fw-bold text-danger">$${item.price.toFixed(2)}</span>
+                  <button class="btn btn-sm btn-outline-danger add-btn">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+
+          // Add click listener to this specific "Add to Cart" button
+          col.querySelector(".add-btn").addEventListener("click", () => {
+            addToCart(item.name, item.price);
+          });
+
+          // Put this card into the menu container
+          menuItemsEl.appendChild(col);
         });
-        event.target.classList.add("active");
       }
 
-      // Add to cart
-      function addToCart(itemName, price) {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.push({ name: itemName, price: price, quantity: 1 });
-        localStorage.setItem("cart", JSON.stringify(cart));
+      /* =========================================================
+         4) HAWKER SELECTION LOGIC
+         =========================================================
+         We use ONE event listener on the list group (event delegation).
+      */
+      function selectHawker(hawkerId) {
+        // Find the hawker object from hawkers array
+        const hawker = hawkers.find((h) => h.id === hawkerId);
+        if (!hawker) return;
 
-        // Update cart count
+        // Update heading text
+        hawkerNameEl.textContent = hawker.name;
+
+        // Re-render menu for this hawker
+        renderMenu(hawkerId);
+      }
+
+      // Event delegation: listen for clicks on hawker list
+      hawkerListEl.addEventListener("click", (e) => {
+        e.preventDefault(); // stop page from jumping because href="#"
+
+        // Find the closest hawker item user clicked
+        const item = e.target.closest(".hawker-item");
+        if (!item) return;
+
+        // Read hawker id from data attribute
+        const hawkerId = Number(item.dataset.hawkerId);
+
+        // Update "active" highlight
+        document.querySelectorAll(".hawker-item").forEach((x) => x.classList.remove("active"));
+        item.classList.add("active");
+
+        // Switch menu
+        selectHawker(hawkerId);
+      });
+
+      /* =========================================================
+         5) CART LOGIC (Local Storage)
+         =========================================================
+         localStorage stores data as STRING.
+         We use JSON.stringify() to store arrays/objects,
+         and JSON.parse() to read them back.
+      */
+      function getCart() {
+        return JSON.parse(localStorage.getItem("cart")) || [];
+      }
+
+      function saveCart(cart) {
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+
+      function addToCart(itemName, price) {
+        const cart = getCart();
+
+        // If same item already exists, increase quantity
+        const existing = cart.find((x) => x.name === itemName);
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          cart.push({ name: itemName, price: price, quantity: 1 });
+        }
+
+        saveCart(cart);
         updateCartCount();
 
+        // Simple feedback (you can replace with toast later)
         alert(`"${itemName}" added to cart!`);
       }
 
-      // Update cart count
       function updateCartCount() {
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const cartCount = document.querySelector(".badge");
-        cartCount.textContent = cart.length;
+        const cart = getCart();
+
+        // Total quantity (more accurate than just cart.length)
+        const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+        cartCountEl.textContent = totalQty;
       }
 
-      // Initialize
-      window.onload = function () {
+      /* =========================================================
+         6) INITIAL LOAD
+         =========================================================
+         When the page first loads:
+         - update cart badge
+         - render default hawker menu (hawker 1)
+      */
+      window.addEventListener("load", () => {
         updateCartCount();
-      };
+        selectHawker(1); // default
+      });
     </script>
   </body>
 </html>
