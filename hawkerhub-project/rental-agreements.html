@@ -31,7 +31,7 @@
     <div class="container mt-5">
       <h1 class="mb-4 text-danger">Rental Agreements</h1>
 
-      <!-- Current Agreement -->
+      <!-- current agreement -->
       <div class="card mb-4">
         <div class="card-header bg-danger text-white">
           <h5 class="mb-0">Current Agreement</h5>
@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <!-- Payment History -->
+      <!-- payment history -->
       <div class="card mb-4">
         <div class="card-header bg-danger text-white">
           <h5 class="mb-0">Payment History</h5>
@@ -117,7 +117,7 @@
         </div>
       </div>
 
-      <!-- Upcoming Payment -->
+      <!-- payment -->
       <div class="card">
         <div class="card-header bg-danger text-white">
           <h5 class="mb-0">Upcoming Payment</h5>
@@ -150,7 +150,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      // Check if user is vendor
+      //check if user is vendor
       window.onload = function () {
         const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
         if (!user || user.role !== "vendor") {
@@ -158,14 +158,14 @@
         }
       };
 
-      // Pay now function
+      //paynow
       function payNow() {
         if (confirm("Proceed with payment of $2,000.00?")) {
           alert("Payment processed successfully! Thank you.");
         }
       }
 
-      // Request extension
+      //request extension
       function requestExtension() {
         const reason = prompt("Please enter reason for extension request:");
         if (reason) {
