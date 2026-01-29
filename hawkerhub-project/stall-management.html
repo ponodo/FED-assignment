@@ -31,7 +31,7 @@
     <div class="container mt-5">
       <h1 class="mb-4 text-danger">My Stall</h1>
 
-      <!-- Stall Information -->
+      <!-- stall info -->
       <div class="card mb-4">
         <div class="card-header bg-danger text-white">
           <h5 class="mb-0">Stall Information</h5>
@@ -96,7 +96,7 @@ Famous Hainanese chicken rice stall in Maxwell Food Centre, established since 19
         </div>
       </div>
 
-      <!-- Stall Stats -->
+      <!-- stall stats -->
       <div class="row mb-4">
         <div class="col-md-3 mb-3">
           <div class="card text-center p-3">
@@ -124,7 +124,7 @@ Famous Hainanese chicken rice stall in Maxwell Food Centre, established since 19
         </div>
       </div>
 
-      <!-- Quick Links -->
+      <!-- links -->
       <div class="card">
         <div class="card-body">
           <h5 class="card-title mb-3">Quick Links</h5>
@@ -164,14 +164,14 @@ Famous Hainanese chicken rice stall in Maxwell Food Centre, established since 19
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      // Check if user is vendor
+      // check if user is vendor
       window.onload = function () {
         const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
         if (!user || user.role !== "vendor") {
           window.location.href = "login.html";
         }
 
-        // Load stall info from user data
+        // load stall info
         if (user.stallName) {
           document.getElementById("stallName").value = user.stallName;
         }
@@ -180,13 +180,13 @@ Famous Hainanese chicken rice stall in Maxwell Food Centre, established since 19
         }
       };
 
-      // Update stall information
+      // update stall info
       document
         .getElementById("stallForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          // Update user data
+          // update user data
           const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
           if (user) {
             user.stallName = document.getElementById("stallName").value;
