@@ -12,22 +12,20 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <!-- Simple header with logout -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <body class="bg-light">
+    <nav class="navbar bg-white shadow-sm py-3">
       <div class="container">
         <a class="navbar-brand text-danger fw-bold" href="index.html">
           <i class="bi bi-shop-window me-2"></i>HawkerHub
         </a>
-        <div class="d-flex align-items-center">
-          <a href="order.html" class="btn btn-outline-danger me-3">
-            <i class="bi bi-basket"></i> Order
+        <div class="d-flex">
+          <a href="order.html" class="btn btn-outline-danger btn-sm me-2">
+            <i class="bi bi-basket me-1"></i>Order
           </a>
           <div class="dropdown">
             <button
-              class="btn btn-outline-danger dropdown-toggle"
+              class="btn btn-outline-danger btn-sm dropdown-toggle"
               data-bs-toggle="dropdown"
             >
               <i class="bi bi-person"></i>
@@ -49,33 +47,33 @@
       </div>
     </nav>
 
-    <div class="container mt-5">
-      <h1 class="mb-4 text-danger">Customer Dashboard</h1>
+    <main class="container py-4">
+      <h1 class="text-danger mb-4">Customer Dashboard</h1>
 
       <!-- Stats -->
-      <div class="row mb-4">
-        <div class="col-md-3 mb-3">
+      <div class="row g-3 mb-4">
+        <div class="col-md-3">
           <div class="card text-center p-3">
-            <h2 class="text-danger">5</h2>
-            <p class="mb-0">Total Orders</p>
+            <h2 class="text-danger mb-0">5</h2>
+            <p class="small mb-0">Total Orders</p>
           </div>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3">
           <div class="card text-center p-3">
-            <h2 class="text-danger">2</h2>
-            <p class="mb-0">Pending</p>
+            <h2 class="text-danger mb-0">2</h2>
+            <p class="small mb-0">Pending</p>
           </div>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3">
           <div class="card text-center p-3">
-            <h2 class="text-danger">150</h2>
-            <p class="mb-0">Points</p>
+            <h2 class="text-danger mb-0">150</h2>
+            <p class="small mb-0">Points</p>
           </div>
         </div>
-        <div class="col-md-3 mb-3">
+        <div class="col-md-3">
           <div class="card text-center p-3">
-            <h2 class="text-danger">3</h2>
-            <p class="mb-0">Favorites</p>
+            <h2 class="text-danger mb-0">3</h2>
+            <p class="small mb-0">Favorites</p>
           </div>
         </div>
       </div>
@@ -83,19 +81,22 @@
       <!-- Quick Actions -->
       <div class="card mb-4">
         <div class="card-body">
-          <h5 class="card-title">Quick Actions</h5>
+          <h5 class="mb-3">Quick Actions</h5>
           <div class="d-flex flex-wrap gap-2">
-            <a href="order.html" class="btn btn-danger">
-              <i class="bi bi-basket me-2"></i>Order Food
+            <a href="order.html" class="btn btn-danger btn-sm">
+              <i class="bi bi-basket me-1"></i>Order Food
             </a>
-            <a href="my-orders.html" class="btn btn-outline-danger">
-              <i class="bi bi-receipt me-2"></i>View Orders
+            <a href="my-orders.html" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-receipt me-1"></i>My Orders
             </a>
-            <a href="hawker-directory.html" class="btn btn-outline-danger">
-              <i class="bi bi-map me-2"></i>Browse Hawkers
+            <a
+              href="hawker-directory.html"
+              class="btn btn-outline-danger btn-sm"
+            >
+              <i class="bi bi-map me-1"></i>Browse Hawkers
             </a>
-            <a href="profile.html" class="btn btn-outline-danger">
-              <i class="bi bi-person me-2"></i>Edit Profile
+            <a href="profile.html" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-person me-1"></i>Profile
             </a>
           </div>
         </div>
@@ -106,10 +107,10 @@
         <div class="card-header bg-danger text-white">
           <h5 class="mb-0">Recent Orders</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body p-0">
           <div class="table-responsive">
-            <table class="table">
-              <thead>
+            <table class="table table-hover mb-0">
+              <thead class="table-light">
                 <tr>
                   <th>Order ID</th>
                   <th>Date</th>
@@ -143,35 +144,30 @@
               </tbody>
             </table>
           </div>
-          <a href="my-orders.html" class="btn btn-outline-danger"
-            >View All Orders</a
-          >
+          <div class="p-3">
+            <a href="my-orders.html" class="btn btn-outline-danger btn-sm"
+              >View All Orders</a
+            >
+          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="bg-dark text-white py-3 mt-4">
       <div class="container text-center">
-        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+        <p class="mb-0 small">&copy; 2024 HawkerHub</p>
       </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-      // Check if user is logged in
-      window.onload = function () {
-        const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
-        if (!user) {
-          window.location.href = "login.html";
-        } else {
-          // Update user info
-          document.getElementById("userName").textContent =
-            user.name || user.email;
-        }
-      };
+      // Check login
+      const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
+      if (!user || user.role !== "customer") {
+        window.location.href = "login.html";
+      }
 
-      // Logout function
       function logout() {
         localStorage.removeItem("hawkerhub_user");
         window.location.href = "index.html";

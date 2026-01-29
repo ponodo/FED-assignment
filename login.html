@@ -12,24 +12,18 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="css/style.css" />
-
     <style>
       body {
-        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        background: #f8f9fa;
         min-height: 100vh;
       }
       .login-card {
-        max-width: 450px;
-        margin: 0 auto;
-        border: none;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
       }
     </style>
   </head>
   <body>
-    <!-- Simple header -->
-    <nav class="navbar navbar-light bg-white shadow-sm">
+    <nav class="navbar bg-white shadow-sm py-3">
       <div class="container">
         <a class="navbar-brand text-danger fw-bold" href="index.html">
           <i class="bi bi-shop-window me-2"></i>HawkerHub
@@ -37,98 +31,101 @@
       </div>
     </nav>
 
-    <div class="container py-5">
+    <main class="container py-4">
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <div class="card login-card">
+          <div class="card login-card shadow-sm mx-auto">
             <div class="card-body p-4">
-              <h2 class="text-center mb-4 text-danger">Login to HawkerHub</h2>
+              <h2 class="text-danger text-center mb-4">Login</h2>
 
               <form id="loginForm">
                 <div class="mb-3">
-                  <label class="form-label">Email Address</label>
                   <input
                     type="email"
                     class="form-control"
+                    placeholder="Email"
                     id="email"
                     required
                   />
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Password</label>
                   <input
                     type="password"
                     class="form-control"
+                    placeholder="Password"
                     id="password"
                     required
                   />
                 </div>
-                <div class="mb-3 form-check">
+                <div class="form-check mb-3">
                   <input
-                    type="checkbox"
                     class="form-check-input"
+                    type="checkbox"
                     id="remember"
                   />
-                  <label class="form-check-label">Remember me</label>
+                  <label class="form-check-label small">Remember me</label>
                 </div>
-                <button type="submit" class="btn btn-danger w-100 btn-lg">
+                <button type="submit" class="btn btn-danger w-100 mb-3">
                   Login
                 </button>
               </form>
 
-              <div class="text-center mt-4">
-                <p class="mb-0">
-                  Don't have an account?
-                  <a href="register.html" class="text-danger fw-bold"
-                    >Sign up here</a
-                  >
-                </p>
-              </div>
+              <p class="text-center small">
+                No account?
+                <a href="register.html" class="text-danger fw-bold">Sign up</a>
+              </p>
 
-              <!-- Demo Login Section -->
-              <div class="mt-4 pt-4 border-top">
-                <p class="text-center mb-3"><strong>Demo Accounts:</strong></p>
-                <div class="row g-2">
-                  <div class="col-6">
-                    <button
-                      class="btn btn-outline-success w-100"
-                      onclick="demoLogin('customer')"
-                    >
-                      <i class="bi bi-person me-2"></i>Customer Demo
-                    </button>
-                  </div>
-                  <div class="col-6">
-                    <button
-                      class="btn btn-outline-primary w-100"
-                      onclick="demoLogin('vendor')"
-                    >
-                      <i class="bi bi-shop me-2"></i>Vendor Demo
-                    </button>
-                  </div>
+              <hr class="my-4" />
+
+              <p class="text-center mb-3 small">
+                <strong>Demo Accounts:</strong>
+              </p>
+              <div class="row g-2 mb-2">
+                <div class="col-6">
+                  <button
+                    class="btn btn-outline-success btn-sm w-100"
+                    onclick="demoLogin('customer')"
+                  >
+                    <i class="bi bi-person me-1"></i>Customer
+                  </button>
                 </div>
-                <p class="text-center mt-2 text-muted small">
-                  Password: <code>password123</code>
-                </p>
+                <div class="col-6">
+                  <button
+                    class="btn btn-outline-primary btn-sm w-100"
+                    onclick="demoLogin('vendor')"
+                  >
+                    <i class="bi bi-shop me-1"></i>Vendor
+                  </button>
+                </div>
               </div>
+              <p class="text-center text-muted small mb-0">
+                Password: <code>password123</code>
+              </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <!-- Simple footer -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <footer class="bg-dark text-white py-3 mt-4">
       <div class="container text-center">
-        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+        <p class="mb-0 small">&copy; 2024 HawkerHub</p>
       </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- SIMPLE WORKING LOGIN SCRIPT -->
     <script>
-      // Handle form submission
+      // Check if already logged in
+      const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
+      if (user) {
+        window.location.href =
+          user.role === "customer"
+            ? "customer-dashboard.html"
+            : "vendor-dashboard.html";
+      }
+
+      // Login form
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (e) {
@@ -137,12 +134,10 @@
           const email = document.getElementById("email").value;
           const password = document.getElementById("password").value;
 
-          // Simple validation
           if (
             (email === "customer@example.com" && password === "password123") ||
             (email === "vendor@example.com" && password === "password123")
           ) {
-            // Create user object
             const user = {
               email: email,
               name:
@@ -151,50 +146,27 @@
               id: email === "customer@example.com" ? 1 : 2,
             };
 
-            // Save to localStorage
             localStorage.setItem("hawkerhub_user", JSON.stringify(user));
+            alert("✅ Login successful!");
 
-            // Show success
-            alert("✅ Login successful! Redirecting...");
-
-            // Redirect
             setTimeout(() => {
-              if (user.role === "customer") {
-                window.location.href = "customer-dashboard.html";
-              } else {
-                window.location.href = "vendor-dashboard.html";
-              }
+              window.location.href =
+                user.role === "customer"
+                  ? "customer-dashboard.html"
+                  : "vendor-dashboard.html";
             }, 500);
           } else {
-            alert(
-              "❌ Invalid email or password. Try:\n\nCustomer: customer@example.com\nVendor: vendor@example.com\n\nPassword: password123",
-            );
+            alert("❌ Invalid credentials. Use demo accounts.");
           }
         });
 
-      // Demo login function
+      // Demo login
       function demoLogin(type) {
-        if (type === "customer") {
-          document.getElementById("email").value = "customer@example.com";
-          document.getElementById("password").value = "password123";
-        } else {
-          document.getElementById("email").value = "vendor@example.com";
-          document.getElementById("password").value = "password123";
-        }
+        document.getElementById("email").value =
+          type === "customer" ? "customer@example.com" : "vendor@example.com";
+        document.getElementById("password").value = "password123";
         document.getElementById("loginForm").submit();
       }
-
-      // Check if already logged in
-      window.onload = function () {
-        const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
-        if (user) {
-          if (user.role === "customer") {
-            window.location.href = "customer-dashboard.html";
-          } else {
-            window.location.href = "vendor-dashboard.html";
-          }
-        }
-      };
     </script>
   </body>
 </html>
