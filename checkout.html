@@ -1,375 +1,88 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Basic page setup -->
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HawkerHub - Checkout</title>
-
-    <!-- Bootstrap CSS (layout + components) -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hawker Hub - Checkout</title>
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
     />
-
-    <!-- Icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
-    />
-
-    <!-- Your own CSS -->
-    <link rel="stylesheet" href="css/style.css" />
+    <link ref=" stylesheet" href="css/style.css" />
   </head>
-
-  <body class="checkout-page">
-    <!-- =========================
-         NAVBAR
-         ========================= -->
-    <nav class="navbar navbar-light bg-white shadow-sm">
-      <div class="container">
-        <!-- Brand / Logo -->
-        <a class="navbar-brand text-danger fw-bold" href="index.html">
-          <i class="bi bi-shop-window me-2"></i>HawkerHub
-        </a>
+  <body>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+    <header class="nav-bar checkout">
+      <div>
+        <span class="nav"> Hawker Hub</span>
       </div>
-    </nav>
-
-    <!-- =========================
-         MAIN CONTENT
-         ========================= -->
-    <div class="container mt-5">
-      <h1 class="mb-4 text-danger">Checkout</h1>
-
-      <div class="row">
-        <!-- =========================
-             LEFT: DELIVERY DETAILS
-             ========================= -->
-        <div class="col-md-6">
-          <div class="card mb-4 details-card">
-            <div class="card-header bg-danger text-white">
-              <h5 class="mb-0">Delivery Details</h5>
-            </div>
-
-            <div class="card-body">
-              <!-- This form collects user delivery info -->
-              <form id="deliveryForm">
-                <!-- Full Name -->
-                <div class="mb-3">
-                  <label class="form-label">Full Name *</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="fullName"
-                    required
-                  />
-                </div>
-
-                <!-- Phone Number -->
-                <div class="mb-3">
-                  <label class="form-label">Phone Number *</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    id="phone"
-                    required
-                  />
-                </div>
-
-                <!-- Address (only needed if user chooses delivery) -->
-                <div class="mb-3">
-                  <label class="form-label">Delivery Address</label>
-                  <textarea
-                    class="form-control"
-                    id="address"
-                    rows="3"
-                    placeholder="For delivery orders only"
-                  ></textarea>
-                </div>
-
-                <!-- Delivery type affects delivery fee ($3 for delivery, $0 for pickup) -->
-                <div class="mb-3">
-                  <label class="form-label">Delivery Type</label>
-                  <select class="form-select" id="deliveryType">
-                    <option value="pickup">Pickup</option>
-                    <option value="delivery">Delivery (+$3.00)</option>
-                  </select>
-                </div>
-              </form>
-            </div>
-          </div>
+    </header>
+    <main>
+      <div>
+        <main class="checkout header">Checkout</main>
+      </div>
+      <section class="checkout left-section">
+        <div>
+          <p id="checkout delidetails-header">Delivery Details</p>
         </div>
-
-        <!-- =========================
-             RIGHT: ORDER SUMMARY + PAYMENT
-             ========================= -->
-        <div class="col-md-6">
-          <!-- ---------- Order Summary Card ---------- -->
-          <div class="card mb-4 summary-card">
-            <div class="card-header bg-danger text-white">
-              <h5 class="mb-0">Order Summary</h5>
-            </div>
-
-            <div class="card-body">
-              <!-- JS will inject the cart items summary here -->
-              <div id="itemsBox" class="items-box"></div>
-
-              <!-- Totals (subtotal, delivery, total) -->
-              <div class="mt-3 totals-box">
-                <div class="d-flex justify-content-between mb-2">
-                  <span>Subtotal:</span>
-                  <span id="orderSubtotal">$0.00</span>
-                </div>
-
-                <div class="d-flex justify-content-between mb-2">
-                  <span>Delivery:</span>
-                  <span id="orderDelivery">$0.00</span>
-                </div>
-
-                <hr />
-
-                <div class="d-flex justify-content-between total-row">
-                  <span class="fw-bold">Total:</span>
-                  <span class="fw-bold text-danger" id="orderTotal">$0.00</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- ---------- Payment Card ---------- -->
-          <div class="card pay-card">
-            <div class="card-header bg-danger text-white">
-              <h5 class="mb-0">Payment</h5>
-            </div>
-
-            <div class="card-body">
-              <!-- Payment method dropdown -->
-              <div class="mb-3">
-                <label class="form-label">Payment Method</label>
-                <select class="form-select" id="paymentMethod">
-                  <option>PayNow</option>
-                  <option>Credit/Debit Card</option>
-                  <option>Cash on Pickup</option>
-                </select>
-              </div>
-
-              <!-- User must agree to terms -->
-              <div class="form-check mb-3">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="terms"
-                  required
-                />
-                <label class="form-check-label">
-                  I agree to the
-                  <a href="#" class="text-danger">Terms & Conditions</a>
-                </label>
-              </div>
-
-              <!-- Place Order button -->
-              <div class="d-grid">
-                <!-- type="button" prevents unwanted form submission -->
-                <button type="button" class="btn btn-danger btn-lg" onclick="placeOrder()">
-                  Place Order
-                </button>
-              </div>
-            </div>
-          </div>
+        <div>
+          <p id="checkout full-name">Full Name *</p>
         </div>
-        <!-- end right column -->
-      </div>
-    </div>
-
-    <!-- =========================
-         FOOTER
-         ========================= -->
-    <footer class="bg-dark text-white py-4 mt-5">
-      <div class="container text-center">
-        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
-      </div>
+        <div>
+          <p id="checkout phone-number">Phone Number*</p>
+        </div>
+        <div>
+          <p id="checkout delivery-address">Delivery Address</p>
+          <p id=" checkout delivery-form">For delivery orders only</p>
+        </div>
+        <div>
+          <p id="checkout delivery-type">Delivery Type</p>
+          <p id="checkout delivery-dropdown">PickUp</p>
+        </div>
+      </section>
+      <section class="checkout topright-section">
+        <div>
+          <span class="checkout order-summary">Order summary</span>
+        </div>
+        <div>
+          <p id="checkout cart-items">No items in cart</p>
+        </div>
+        <div>
+          <span id="checkout subtotal name"> Subtotal:</span>
+          <span id="checkout subtotal">$0.00</span>
+        </div>
+        <div>
+          <span id="checkout delivery name">Delivery:</span>
+          <span id="checkout delivery-fee"> $0.00</span>
+        </div>
+      </section>
+      <section class = "checkout bottomright-section">
+        <div>
+          <span class="checkout payment">Payment </span>
+        </div>
+        <div>
+          <span id  ="checkout payment-method">Payment method</span>
+        </div>
+        <div>
+          <span id =" checkout payment-method dropdown"> Paynow</span>
+        </div>
+        <div>
+          <span id="checkout tandc">I agree to the Terms & Conditions</span>
+        </div>
+        <div>
+          <span class ="checkout placeorder">Place Order</span>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <p class =" checkout footer">2024 Hawker Hub. All rights reserved.</p>
     </footer>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
-      /* =========================================================
-         CHECKOUT PAGE FLOW (what happens when user visits this page)
-         =========================================================
-         1) When page loads:
-            - loadOrderSummary() reads cart from localStorage and displays items + totals
-            - if user info exists (hawkerhub_user), auto-fill name and phone
-
-         2) If user changes Delivery Type:
-            - delivery fee changes (pickup=$0, delivery=$3)
-            - loadOrderSummary() runs again to recalculate totals
-
-         3) When user clicks "Place Order":
-            - validate cart not empty
-            - validate terms checked
-            - validate required details (name + phone)
-            - create an order object
-            - save it into localStorage ("orders")
-            - clear cart
-            - redirect to my-orders.html
-      */
-
-      /* =========================================================
-         1) LOAD ORDER SUMMARY (items + subtotal + delivery + total)
-         ========================================================= */
-      function loadOrderSummary() {
-        // Read cart from localStorage (if nothing stored, use empty array)
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        // Grab UI elements we need to update
-        const itemsBox = document.getElementById("itemsBox");
-        const subtotalEl = document.getElementById("orderSubtotal");
-        const deliveryEl = document.getElementById("orderDelivery");
-        const totalEl = document.getElementById("orderTotal");
-
-        // If no items, show message and set all totals to $0
-        if (cart.length === 0) {
-          itemsBox.innerHTML = '<p class="text-muted">No items in cart</p>';
-          subtotalEl.textContent = "$0.00";
-          deliveryEl.textContent = "$0.00";
-          totalEl.textContent = "$0.00";
-          return;
-        }
-
-        // Build the items list and calculate subtotal
-        let subtotal = 0;
-        let html = "<h6>Items:</h6>";
-
-        cart.forEach((item) => {
-          // Quantity may not exist; default to 1
-          const qty = item.quantity || 1;
-
-          // Item total price = price * quantity
-          const itemTotal = item.price * qty;
-          subtotal += itemTotal;
-
-          // Add a row for this item
-          html += `
-            <div class="d-flex justify-content-between mb-1 item-line">
-              <span>${item.name} x${qty}</span>
-              <span>$${itemTotal.toFixed(2)}</span>
-            </div>
-          `;
-        });
-
-        // Show items in the UI
-        itemsBox.innerHTML = html;
-
-        // Delivery fee depends on selected delivery type
-        const deliveryType = document.getElementById("deliveryType").value;
-        const deliveryFee = deliveryType === "delivery" ? 3.0 : 0;
-
-        // Total = subtotal + delivery
-        const total = subtotal + deliveryFee;
-
-        // Update totals in the UI
-        subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-        deliveryEl.textContent = `$${deliveryFee.toFixed(2)}`;
-        totalEl.textContent = `$${total.toFixed(2)}`;
-      }
-
-      /* =========================================================
-         2) WHEN DELIVERY TYPE CHANGES -> RECALCULATE TOTALS
-         ========================================================= */
-      document
-        .getElementById("deliveryType")
-        .addEventListener("change", loadOrderSummary);
-
-      /* =========================================================
-         3) PLACE ORDER (validate + save + clear cart)
-         ========================================================= */
-      function placeOrder() {
-        // Get cart
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        // Validation 1: cart must have items
-        if (cart.length === 0) {
-          alert("Your cart is empty!");
-          return;
-        }
-
-        // Validation 2: user must accept terms
-        if (!document.getElementById("terms").checked) {
-          alert("Please accept the Terms & Conditions");
-          return;
-        }
-
-        // Validation 3: required fields (full name + phone)
-        const fullName = document.getElementById("fullName").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-
-        if (!fullName || !phone) {
-          alert("Please fill in required delivery details");
-          return;
-        }
-
-        // Collect delivery info
-        const deliveryType = document.getElementById("deliveryType").value;
-        const addressInput = document.getElementById("address").value.trim();
-
-        // If pickup -> address is just "Pickup"
-        // If delivery -> use the address user typed (or a default string)
-        const finalAddress = deliveryType === "pickup" ? "Pickup" : (addressInput || "No address given");
-
-        // Collect payment method
-        const paymentMethod = document.getElementById("paymentMethod").value;
-
-        // Create a new order object (this is what gets stored in localStorage)
-        const order = {
-          id: "ORD" + Date.now(),              // Unique ID using timestamp
-          date: new Date().toLocaleString(),   // Date/time of order
-          items: cart,                         // Items from cart
-          customer: fullName,                  // Customer name
-          phone: phone,                        // Customer phone
-          address: finalAddress,               // Pickup or delivery address
-          deliveryType: deliveryType,          // "pickup" or "delivery"
-          paymentMethod: paymentMethod,        // Selected payment method
-          status: "pending",                   // Default status when created
-        };
-
-        // Save the order into "orders" list in localStorage
-        const orders = JSON.parse(localStorage.getItem("orders")) || [];
-        orders.push(order);
-        localStorage.setItem("orders", JSON.stringify(orders));
-
-        // Clear cart after placing order
-        localStorage.removeItem("cart");
-
-        // Success message for user
-        alert(`✅ Order placed successfully!\nOrder ID: ${order.id}\nThank you for your order!`);
-
-        // Redirect user to My Orders page
-        setTimeout(() => {
-          window.location.href = "my-orders.html";
-        }, 1000);
-      }
-
-      /* =========================================================
-         4) INITIAL PAGE LOAD
-         ========================================================= */
-      window.addEventListener("load", () => {
-        // Show order summary immediately
-        loadOrderSummary();
-
-        // If user profile exists, auto-fill name and phone
-        const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
-
-        if (user) {
-          // Fill name
-          document.getElementById("fullName").value = `${user.firstName} ${user.lastName}`;
-
-          // Fill phone if available
-          if (user.phone) {
-            document.getElementById("phone").value = user.phone;
-          }
-        }
-      });
-    </script>
   </body>
+
 </html>
