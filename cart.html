@@ -1,64 +1,100 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Hawker Hub - cart </title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link ref=" stylesheet" href = "css/style.css">
-  </head>
-  <body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  <header class = "nav-bar cart"> 
-    <div>
-      <span class = "cart left nav" id = "cart hawker-nav"> Hawker hub</span>
-      <span class = "cart right nav" id = "cart cShopping-nav">Continue Shopping</span>
-    </div>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hawker Hub - Cart</title>
 
-  </header>
-  <main>
-    <div>
-      <h1 class = "cart main heading"> Shopping cart</h1>
-    </div>
-  
-    <section class =" cart left-section">
-      <div>
-        <p> Your cart is empty</h2>
-        <p> Add some delicious food from our hawkers!</h3>
-        <p> Browse food</p>
+    <!-- Bootstrap (optional, you said you'll add later anyway) -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+
+    <!-- Your CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <!-- Header / Nav -->
+    <header class="nav-bar cart">
+      <div class="nav-inner">
+        <span class="nav-left" id="cart-hawker-nav">HawkerHub</span>
+        <span class="nav-right" id="cart-cshopping-nav">Continue Shopping</span>
       </div>
-    </section>
-    <section class ="cart right-section">
-      <div>
-        <span id=" cart section-header"> Order summary</p>
+    </header>
+
+    <main>
+      <div class="page-title">
+        <h1 class="cart-main-heading">Shopping Cart</h1>
       </div>
-      <div>
-        <span  class = "cart subtotal name" > Subtotal:</p>
-        <p id ="cart subtotal"> $0.00</p>
+
+      <div class="cart-layout">
+        <!-- Left Section -->
+        <section class="cart-left-section">
+          <div class="cart-empty-box">
+            <p class="cart-empty-title">Your cart is empty</p>
+            <p class="cart-empty-subtitle">Add some delicious food from our hawkers!</p>
+            <button class="cart-browse-btn" type="button">Browse Food</button>
+          </div>
+        </section>
+
+        <!-- Right Section -->
+        <section class="cart-right-section">
+          <div class="order-summary">
+            <div class="order-summary-header">
+              <h2 class="order-summary-title" id="cart-section-header">Order Summary</h2>
+            </div>
+
+            <div class="order-summary-body">
+              <div class="summary-row">
+                <span class="summary-label">Subtotal:</span>
+                <span class="summary-value" id="cart-subtotal">$0.00</span>
+              </div>
+
+              <div class="summary-row">
+                <span class="summary-label">Delivery Fee:</span>
+                <span class="summary-value" id="cart-delivery-fee">$3.00</span>
+              </div>
+
+              <hr class="summary-divider" />
+
+              <div class="summary-row total-row">
+                <span class="summary-label total-label" id="cart-total">Total:</span>
+                <span class="summary-value total-value" id="cart-total-cost">$3.00</span>
+              </div>
+
+              <div class="summary-actions">
+                <button class="cart-proceed-btn" id="cart-proceed" type="button">
+                  Proceed to Checkout
+                </button>
+
+                <button class="cart-continue-btn" id="cart-continue" type="button">
+                  Continue Shopping
+                </button>
+              </div>
+
+              <p class="cart-free-deli" id="cart-free-deli">
+                Free delivery for orders above $20
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
-      <div>
-        <span class = " cart delivery name"> Delivery fee:</p>
-        <span id="cart delivery fee"> $0.00</p>
-      </div>
-      <div>
-        <span id = "cart total"> Total:</p>
-          <span id = "cart total-cost"> $0.00</span>
-      </div>
-      <div>
-        <span id =" cart proceed-co"> Proceed to Checkout</span>
-      </div>
-      <div>
-        <span id = " cart continue-s"> Continue Shopping</span>
-      </div>
-      <div> 
-        <p id =" cart free-deli" >Free delivery for orders above $20</p>
-      </div>
-    </section>
-    <footer>
-      <div> 
-        <span id = " cart footer"> 2024 HawkerHub. All right reserved.</span>
-      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="cart-footer">
+      <p id="cart-footer-text">© 2024 HawkerHub. All rights reserved.</p>
     </footer>
-  </main>
-</body>
+
+    <!-- Bootstrap JS (optional) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
