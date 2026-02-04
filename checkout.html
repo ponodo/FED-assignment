@@ -3,86 +3,179 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hawker Hub - Checkout</title>
+    <title>HawkerHub - Checkout</title>
+
+    <!-- Bootstrap CSS -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
       crossorigin="anonymous"
     />
-    <link ref=" stylesheet" href="css/style.css" />
+
+    <!-- (Optional) Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Your CSS (fix: rel, not ref) -->
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
+
+  <body class="bg-white">
+    <!-- Navbar -->
+    <nav class="navbar bg-white border-bottom">
+      <div class="container">
+        <a class="navbar-brand fw-bold text-danger" href="index.html">
+          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        </a>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <main class="container py-5">
+      <h1 class="display-5 fw-bold text-danger mb-4">Checkout</h1>
+
+      <div class="row g-4 align-items-start">
+        <!-- LEFT: Delivery Details -->
+        <div class="col-lg-7">
+          <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white fw-semibold">
+              Delivery Details
+            </div>
+
+            <div class="card-body">
+              <form>
+                <div class="mb-3">
+                  <label for="fullName" class="form-label fw-semibold"
+                    >Full Name <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="fullName"
+                    placeholder=""
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="phone" class="form-label fw-semibold"
+                    >Phone Number <span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    placeholder=""
+                    required
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="address" class="form-label fw-semibold"
+                    >Delivery Address</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="address"
+                    rows="3"
+                    placeholder="For delivery orders only"
+                  ></textarea>
+                </div>
+
+                <div class="mb-0">
+                  <label for="deliveryType" class="form-label fw-semibold"
+                    >Delivery Type</label
+                  >
+                  <select class="form-select" id="deliveryType">
+                    <option selected>Pickup</option>
+                    <option>Delivery</option>
+                  </select>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Order Summary + Payment -->
+        <div class="col-lg-5">
+          <!-- Order Summary -->
+          <div class="card shadow-sm mb-4">
+            <div class="card-header bg-danger text-white fw-semibold">
+              Order Summary
+            </div>
+
+            <div class="card-body">
+              <p class="text-muted mb-4">No items in cart</p>
+
+              <div class="d-flex justify-content-between mb-2">
+                <span>Subtotal:</span>
+                <span>$0.00</span>
+              </div>
+
+              <div class="d-flex justify-content-between mb-3">
+                <span>Delivery:</span>
+                <span>$0.00</span>
+              </div>
+
+              <hr />
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="fw-bold">Total:</span>
+                <span class="fw-bold text-danger">$0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Payment -->
+          <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white fw-semibold">
+              Payment
+            </div>
+
+            <div class="card-body">
+              <div class="mb-3">
+                <label for="paymentMethod" class="form-label fw-semibold"
+                  >Payment Method</label
+                >
+                <select class="form-select" id="paymentMethod">
+                  <option selected>PayNow</option>
+                  <option>NETS</option>
+                  <option>Cash</option>
+                </select>
+              </div>
+
+              <div class="form-check mb-4">
+                <input class="form-check-input" type="checkbox" id="tac" />
+                <label class="form-check-label" for="tac">
+                  I agree to the
+                  <a href="#" class="text-danger text-decoration-none"
+                    ><u>Terms &amp; Conditions</u></a
+                  >
+                </label>
+              </div>
+
+              <button class="btn btn-danger w-100 py-2 fw-semibold" type="button">
+                Place Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+      <small>© 2024 HawkerHub. All rights reserved.</small>
+    </footer>q
+
+    <!-- Bootstrap JS -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
-    <header class="nav-bar checkout">
-      <div>
-        <span class="nav"> Hawker Hub</span>
-      </div>
-    </header>
-    <main>
-      <div>
-        <main class="checkout header">Checkout</main>
-      </div>
-      <section class="checkout left-section">
-        <div>
-          <p id="checkout delidetails-header">Delivery Details</p>
-        </div>
-        <div>
-          <p id="checkout full-name">Full Name *</p>
-        </div>
-        <div>
-          <p id="checkout phone-number">Phone Number*</p>
-        </div>
-        <div>
-          <p id="checkout delivery-address">Delivery Address</p>
-          <p id=" checkout delivery-form">For delivery orders only</p>
-        </div>
-        <div>
-          <p id="checkout delivery-type">Delivery Type</p>
-          <p id="checkout delivery-dropdown">PickUp</p>
-        </div>
-      </section>
-      <section class="checkout topright-section">
-        <div>
-          <span class="checkout order-summary">Order summary</span>
-        </div>
-        <div>
-          <p id="checkout cart-items">No items in cart</p>
-        </div>
-        <div>
-          <span id="checkout subtotal name"> Subtotal:</span>
-          <span id="checkout subtotal">$0.00</span>
-        </div>
-        <div>
-          <span id="checkout delivery name">Delivery:</span>
-          <span id="checkout delivery-fee"> $0.00</span>
-        </div>
-      </section>
-      <section class = "checkout bottomright-section">
-        <div>
-          <span class="checkout payment">Payment </span>
-        </div>
-        <div>
-          <span id  ="checkout payment-method">Payment method</span>
-        </div>
-        <div>
-          <span id =" checkout payment-method dropdown"> Paynow</span>
-        </div>
-        <div>
-          <span id="checkout tandc">I agree to the Terms & Conditions</span>
-        </div>
-        <div>
-          <span class ="checkout placeorder">Place Order</span>
-        </div>
-      </section>
-    </main>
-    <footer>
-      <p class =" checkout footer">2024 Hawker Hub. All rights reserved.</p>
-    </footer>
   </body>
-
 </html>
