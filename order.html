@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HawkerHub - Order Food</title>
+  <title>HawkerHub - Order</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 
@@ -13,57 +13,53 @@
   <!-- Navbar -->
   <nav class="navbar bg-white border-bottom">
     <div class="container">
-      <a class="navbar-brand fw-bold text-danger" href="index.html">🏪 HawkerHub</a>
-      <a href="cart.html" class="btn btn-outline-danger">🛒 Cart</a>
+      <a class="navbar-brand fw-bold text-danger" href="index.html">
+        <span class="me-2">🏪</span>HawkerHub
+      </a>
+
+      <div class="d-flex align-items-center gap-2">
+        <a href="cart.html" class="btn btn-outline-danger position-relative">
+          🛒
+          <span id="cart-count"
+            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+        </a>
+        <a href="profile.html" class="btn btn-outline-danger">👤</a>
+      </div>
     </div>
   </nav>
 
   <main class="container py-4">
-    <h1 class="text-danger fw-bold mb-4">Order Food</h1>
+    <h1 class="display-5 text-danger fw-semibold mb-4">Order Food</h1>
 
-    <div class="row g-3">
-      <div class="col-md-6">
+    <div class="row g-4">
+      <!-- LEFT: Select Hawker -->
+      <div class="col-12 col-lg-4">
         <div class="card shadow-sm">
-          <div class="card-body">
-            <h5 class="fw-bold">Chicken Rice</h5>
-            <p class="text-muted">Signature Hainanese chicken rice</p>
-            <div class="d-flex justify-content-between">
-              <span class="text-danger fw-bold">$5.50</span>
-              <button class="btn btn-outline-danger btn-sm"
-                onclick="addToCart(1,'Chicken Rice',5.5)">
-                Add to Cart
-              </button>
-            </div>
+          <div class="card-header bg-danger text-white fw-semibold">
+            Select Hawker
           </div>
+
+          <!-- JS fills this list, but UI stays same -->
+          <div class="list-group list-group-flush" id="stall-list"></div>
         </div>
+      </div>
+
+      <!-- RIGHT: Menu -->
+      <div class="col-12 col-lg-8">
+        <h3 class="mb-3" id="menu-title">
+          Menu from <span class="text-danger fw-bold">Loading…</span>
+        </h3>
+
+        <div class="row g-3" id="menu-grid"></div>
       </div>
     </div>
   </main>
 
-  <script>
-    const CART_KEY = "hawkerhub_cart";
+  <footer class="bg-dark text-white text-center py-4 mt-4">
+    © 2024 HawkerHub. All rights reserved.
+  </footer>
 
-    function addToCart(id, name, price) {
-      const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-
-      const existing = cart.find(i => i.menuItemId === id);
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push({
-          menuItemId: id,
-          name,
-          unitPrice: price,
-          qty: 1,
-          stallName: "Tian Tian Chicken Rice"
-        });
-      }
-
-      localStorage.setItem(CART_KEY, JSON.stringify(cart));
-      alert("Added to cart!");
-    }
-  </script>
-
+  <script type="module" src="js/orderPage.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
