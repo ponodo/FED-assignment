@@ -1,125 +1,47 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hawker Hub - Cart</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HawkerHub - Cart</title>
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-      crossorigin="anonymous"
-    />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/cart.js" defer></script>
+</head>
 
-    <link rel="stylesheet" href="css/style.css" />
-  </head>
+<body class="bg-light">
+  <nav class="navbar bg-white border-bottom">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-danger" href="index.html">HawkerHub</a>
+      <a class="btn btn-outline-danger" href="order.html">← Continue Shopping</a>
+    </div>
+  </nav>
 
-  <body>
-    <!-- Header / Nav -->
-    <!-- border bottom adds a thin bottom line below-->
-    <nav class="navbar bg-white border-bottom">
-      <div class="container">
-        <a class="navbar-brand fw-bold text-danger" href="index.html"
-          >HawkerHub</a
-        >
-        <span class="btn btn-outline-danger" href="order.html"
-          >Continue Shopping</span
-        >
-      </div>
-    </nav>
+  <main class="container py-4">
+    <h1 class="text-danger fw-bold mb-4">Shopping Cart</h1>
 
-    <main>
-      <div class="container py-4">
-        <!-- add some space below this element , to push the next thing down -->
-        <h1 class="text-danger fw-bold mb-4">Shopping Cart</h1>
-      </div>
-      <div class="row g-4">
-        <div class="col-12 col-lg-8">
-          <div class="card shadow-sm">
-          
-            <!-- Left Section -->
-            <section class="cart section">
-              <div class="h5 fw-bold mb-2">
-                <p class="text-secondary mb-4">Your cart is empty</p>
-                <p class="cart-empty-subtitle">
-                  Add some delicious food from our hawkers!
-                </p>
-                <button class="btn btn-danger px-4" type="button">
-                  Browse Food
-                </button>
-              </div>
-            </section>
-          </div>
+    <div id="cart-empty" class="text-center py-5">
+      <p class="text-muted">Your cart is empty</p>
+      <a href="order.html" class="btn btn-danger">Browse Food</a>
+    </div>
+
+    <div id="cart-items" class="d-none">
+      <ul class="list-group mb-3" id="items"></ul>
+
+      <div class="card">
+        <div class="card-body">
+          <p>Subtotal: <span id="subtotal">$0.00</span></p>
+          <p>Delivery: $3.00</p>
+          <h5>Total: <span id="total">$3.00</span></h5>
+          <a href="checkout.html" class="btn btn-danger w-100">Proceed to Checkout</a>
         </div>
-
-        <!-- Right Section -->
-        <section class="cart-right-section">
-          <div class="card shadow-sm">
-            <div class="card-header bg-danger text-white fw-bold">
-              <h2 class="order-summary-title" id="cart-section-header">
-                Order Summary
-              </h2>
-            </div>
-
-            <div class="card-body">
-              <div class="d-flex justify-content-between mb-2">
-                <span class="text-secondary">Subtotal:</span>
-                <span class="fw-semibold" id="cart-subtotal">$0.00</span>
-              </div>
-
-              <div class="summary-row">
-                <span class="text-secondary">Delivery Fee:</span>
-                <span class="fw-semibold" id="cart-delivery-fee">$3.00</span>
-              </div>
-
-              <hr class="my-3" />
-
-              <div
-                class="d-flex justify-content-between align-items-center mb-3"
-              >
-                <span class="text-secondary" id="cart-total">Total:</span>
-                <span class="fw-semibold" id="cart-total-cost">$3.00</span>
-              </div>
-
-              <div class="summary-actions">
-                <button
-                  class="btn btn-danger w-100 mb-2"
-                  id="cart-proceed"
-                  type="button"
-                >
-                  Proceed to Checkout
-                </button>
-
-                <button
-                  class="btn btn-outline-danger w-100"
-                  id="cart-continue"
-                  type="button"
-                >
-                  Continue Shopping
-                </button>
-              </div>
-
-              <p class="text-secondary small mt-3 mb-0" id="cart-free-deli">
-                Free delivery for orders above $20
-              </p>
-            </div>
-          </div>
-        </section>
       </div>
-    </main>
+    </div>
+  </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3 mt-4">
-      <div class="container">
-        <p id="cart-footer-text">© 2024 HawkerHub. All rights reserved.</p>
-      </div>
-    </footer>
-
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+  <footer class="bg-dark text-white text-center py-3">
+    © 2024 HawkerHub. All rights reserved.
+  </footer>
+</body>
 </html>
