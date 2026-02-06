@@ -105,66 +105,7 @@
                 </tr>
               </thead>
               <tbody id="menuItemsTable">
-                <tr>
-                  <td>Chicken Rice</td>
-                  <td>Main Course</td>
-                  <td>$5.50</td>
-                  <td><span class="badge bg-success">Available</span></td>
-                  <td>
-                    <button
-                      class="btn btn-sm btn-outline-danger me-1"
-                      onclick="editItem(this)"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      class="btn btn-sm btn-danger"
-                      onclick="deleteItem(this)"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Roasted Chicken Rice</td>
-                  <td>Main Course</td>
-                  <td>$6.00</td>
-                  <td><span class="badge bg-success">Available</span></td>
-                  <td>
-                    <button
-                      class="btn btn-sm btn-outline-danger me-1"
-                      onclick="editItem(this)"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      class="btn btn-sm btn-danger"
-                      onclick="deleteItem(this)"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Iced Teh Tarik</td>
-                  <td>Beverage</td>
-                  <td>$2.50</td>
-                  <td><span class="badge bg-warning">Sold Out</span></td>
-                  <td>
-                    <button
-                      class="btn btn-sm btn-outline-danger me-1"
-                      onclick="editItem(this)"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      class="btn btn-sm btn-danger"
-                      onclick="deleteItem(this)"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                <!-- Items will load here from JSON -->
               </tbody>
             </table>
           </div>
@@ -187,40 +128,137 @@
         window.location.href = "login.html";
       }
 
-      // Add item
+      // Get vendor's stall ID (assuming it's stored in user data)
+      // For testing, you can set this in your login page or here
+      const vendorStallId = 2; // Default to stallId 2 (Tian Tian Chicken Rice)
+
+      // Storage for items vendor adds
+      const STORAGE_KEY = "hawkerhub_added_items";
+
+      // Load menu items on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        loadMenuItems();
+      });
+
+      // Load items from JSON file
+      async function loadMenuItems() {
+        try {
+          // Load from your JSON file
+          const response = await fetch("data/menu.json");
+          const jsonItems = await response.json();
+
+          // Filter items for this vendor's stall
+          const jsonItemsForVendor = jsonItems.filter(
+            (item) => item.stallId === vendorStallId,
+          );
+
+          // Load items vendor added (saved in localStorage)
+          const addedItems = JSON.parse(
+            localStorage.getItem(STORAGE_KEY) || "[]",
+          );
+
+          // Combine JSON items and added items
+          const allItems = [...jsonItemsForVendor, ...addedItems];
+
+          // Display all items in table
+          displayItemsInTable(allItems);
+        } catch (error) {
+          console.error("Error loading menu items:", error);
+          alert("Could not load menu items. Please check your JSON file.");
+        }
+      }
+
+      // Display items in the table
+      function displayItemsInTable(items) {
+        const table = document.getElementById("menuItemsTable");
+        table.innerHTML = "";
+
+        items.forEach((item) => {
+          let badgeClass = "bg-secondary";
+          if (item.availability === "available") badgeClass = "bg-success";
+          else if (item.availability === "unavailable")
+            badgeClass = "bg-danger";
+          else if (item.availability === "soldout") badgeClass = "bg-warning";
+
+          const row = table.insertRow();
+          row.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.category}</td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td><span class="badge ${badgeClass}">${item.availability}</span></td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger me-1" onclick="editItem(this)">
+                Edit
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="deleteItem(this)">
+                Delete
+              </button>
+            </td>
+          `;
+        });
+      }
+
+      // Add new item
       document
         .getElementById("addItemForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          const itemName = document.getElementById("itemName").value;
-          const category = document.getElementById("itemCategory").value;
-          const price = parseFloat(document.getElementById("itemPrice").value);
-          const availability =
-            document.getElementById("itemAvailability").value;
+          const newItem = {
+            id: Date.now(), // Simple ID
+            name: document.getElementById("itemName").value,
+            category: document.getElementById("itemCategory").value,
+            price: parseFloat(document.getElementById("itemPrice").value),
+            availability: document.getElementById("itemAvailability").value,
+            description: document.getElementById("itemDescription").value,
+            stallId: vendorStallId,
+            stallName: "My Stall", // You can customize this
+          };
 
-          let badgeClass = "bg-secondary";
-          if (availability === "available") badgeClass = "bg-success";
-          else if (availability === "unavailable") badgeClass = "bg-danger";
-          else if (availability === "soldout") badgeClass = "bg-warning";
+          // Get current added items
+          const addedItems = JSON.parse(
+            localStorage.getItem(STORAGE_KEY) || "[]",
+          );
+          addedItems.push(newItem);
 
-          const table = document.getElementById("menuItemsTable");
-          const row = table.insertRow();
-          row.innerHTML = `
-                <td>${itemName}</td>
-                <td>${category}</td>
-                <td>$${price.toFixed(2)}</td>
-                <td><span class="badge ${badgeClass}">${availability}</span></td>
-                <td>
-                    <button class="btn btn-sm btn-outline-danger me-1" onclick="editItem(this)">Edit</button>
-                    <button class="btn btn-sm btn-danger" onclick="deleteItem(this)">Delete</button>
-                </td>
-            `;
+          // Save to localStorage
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(addedItems));
 
+          // Add to table
+          addRowToTable(newItem);
+
+          // Reset form
           document.getElementById("addItemForm").reset();
           alert("Item added!");
         });
 
+      // Helper to add a single row
+      function addRowToTable(item) {
+        const table = document.getElementById("menuItemsTable");
+
+        let badgeClass = "bg-secondary";
+        if (item.availability === "available") badgeClass = "bg-success";
+        else if (item.availability === "unavailable") badgeClass = "bg-danger";
+        else if (item.availability === "soldout") badgeClass = "bg-warning";
+
+        const row = table.insertRow();
+        row.innerHTML = `
+          <td>${item.name}</td>
+          <td>${item.category}</td>
+          <td>$${item.price.toFixed(2)}</td>
+          <td><span class="badge ${badgeClass}">${item.availability}</span></td>
+          <td>
+            <button class="btn btn-sm btn-outline-danger me-1" onclick="editItem(this)">
+              Edit
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteItem(this)">
+              Delete
+            </button>
+          </td>
+        `;
+      }
+
+      // Edit item (simple version)
       function editItem(button) {
         const row = button.closest("tr");
         const cells = row.querySelectorAll("td");
@@ -229,9 +267,11 @@
         document.getElementById("itemCategory").value = cells[1].textContent;
         document.getElementById("itemPrice").value =
           cells[2].textContent.replace("$", "");
-        document.getElementById("itemAvailability").value = cells[3]
+
+        const statusText = cells[3]
           .querySelector(".badge")
           .textContent.toLowerCase();
+        document.getElementById("itemAvailability").value = statusText;
 
         const form = document.getElementById("addItemForm");
         const btn = form.querySelector('button[type="submit"]');
@@ -240,6 +280,7 @@
         form.onsubmit = function (e) {
           e.preventDefault();
 
+          // Update the table row
           cells[0].textContent = document.getElementById("itemName").value;
           cells[1].textContent = document.getElementById("itemCategory").value;
           cells[2].textContent =
@@ -253,6 +294,16 @@
 
           cells[3].innerHTML = `<span class="badge ${badgeClass}">${avail}</span>`;
 
+          // Save changes to localStorage
+          saveEditedItemToStorage(row, {
+            name: cells[0].textContent,
+            category: cells[1].textContent,
+            price: parseFloat(document.getElementById("itemPrice").value),
+            availability: avail,
+            description: document.getElementById("itemDescription").value,
+          });
+
+          // Reset form
           form.reset();
           btn.textContent = "Add Item";
           form.onsubmit = null;
@@ -260,9 +311,45 @@
         };
       }
 
+      // Save edited item to localStorage
+      function saveEditedItemToStorage(row, updatedItem) {
+        const addedItems = JSON.parse(
+          localStorage.getItem(STORAGE_KEY) || "[]",
+        );
+
+        // Find and update the item (you'd need to track IDs better for a real app)
+        // This is a simplified version
+        const itemName = row.cells[0].textContent;
+        const itemIndex = addedItems.findIndex(
+          (item) => item.name === itemName,
+        );
+
+        if (itemIndex !== -1) {
+          addedItems[itemIndex] = {
+            ...addedItems[itemIndex],
+            ...updatedItem,
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(addedItems));
+        }
+      }
+
+      // Delete item
       function deleteItem(button) {
         if (confirm("Delete this item?")) {
-          button.closest("tr").remove();
+          const row = button.closest("tr");
+          const itemName = row.cells[0].textContent;
+
+          // Remove from localStorage
+          const addedItems = JSON.parse(
+            localStorage.getItem(STORAGE_KEY) || "[]",
+          );
+          const filteredItems = addedItems.filter(
+            (item) => item.name !== itemName,
+          );
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredItems));
+
+          // Remove from table
+          row.remove();
           alert("Item deleted!");
         }
       }
