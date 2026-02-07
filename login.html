@@ -20,6 +20,13 @@
       .login-card {
         max-width: 400px;
       }
+      .credentials-hint {
+        font-size: 0.85rem;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 15px;
+      }
     </style>
   </head>
   <body>
@@ -70,36 +77,18 @@
                 </button>
               </form>
 
-              <p class="text-center small">
+              <!-- Add this line to show credentials -->
+              <div class="credentials-hint text-center">
+                <small class="text-muted">
+                  Use: <strong>customer@example.com</strong> or
+                  <strong>vendor@example.com</strong><br />
+                  Password: <strong>password123</strong>
+                </small>
+              </div>
+
+              <p class="text-center small mt-3">
                 No account?
                 <a href="register.html" class="text-danger fw-bold">Sign up</a>
-              </p>
-
-              <hr class="my-4" />
-
-              <p class="text-center mb-3 small">
-                <strong>Demo Accounts:</strong>
-              </p>
-              <div class="row g-2 mb-2">
-                <div class="col-6">
-                  <button
-                    class="btn btn-outline-success btn-sm w-100"
-                    onclick="demoLogin('customer')"
-                  >
-                    <i class="bi bi-person me-1"></i>Customer
-                  </button>
-                </div>
-                <div class="col-6">
-                  <button
-                    class="btn btn-outline-primary btn-sm w-100"
-                    onclick="demoLogin('vendor')"
-                  >
-                    <i class="bi bi-shop me-1"></i>Vendor
-                  </button>
-                </div>
-              </div>
-              <p class="text-center text-muted small mb-0">
-                Password: <code>password123</code>
               </p>
             </div>
           </div>
@@ -156,17 +145,9 @@
                   : "vendor-dashboard.html";
             }, 500);
           } else {
-            alert("❌ Invalid credentials. Use demo accounts.");
+            alert("❌ Invalid credentials. Try the credentials shown above.");
           }
         });
-
-      // Demo login
-      function demoLogin(type) {
-        document.getElementById("email").value =
-          type === "customer" ? "customer@example.com" : "vendor@example.com";
-        document.getElementById("password").value = "password123";
-        document.getElementById("loginForm").submit();
-      }
     </script>
   </body>
 </html>
