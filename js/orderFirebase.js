@@ -1,4 +1,3 @@
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import {
   getFirestore,
@@ -8,6 +7,7 @@ import {
   where
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDSjzqzTAXTqQ2lXbjtUItAlgrhxgDwkwI",
   authDomain: "hawkerhub-ee884.firebaseapp.com",
@@ -21,46 +21,37 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ IMPORTANT: must match your Firestore collection names EXACTLY
+// Must match Firestore collection names exactly
 const HAWKER_COLLECTION = "Hawker";
 const MENU_COLLECTION = "Menu";
 
-function renderHawkers(hawkers) {
-  const sel = document.getElementById("hawkerSelect");
-  sel.innerHTML =
-    `<option value="">Select Hawker</option>` +
-    hawkers.map(h => `<option value="${h.stallId}">${h.name}</option>`).join("");
-}
+// -------------------- CART --------------------
+const CART_KEY = "hawkerhub_cart";
 
-function renderMenu(items) {
-  const c = document.getElementById("menuContainer");
-
-  if (!items.length) {
-    c.innerHTML = `<div class="text-muted">No menu items found.</div>`;
-    return;
+function getCart() {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+  } catch {
+    return [];
   }
-
-  c.innerHTML = items.map(item => `
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card h-100">
-        <img src="images/${item.image}" class="card-img-top" alt="${item.name}">
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">${item.name}</h5>
-          <p class="card-text text-muted">${item.description}</p>
-          <div class="mt-auto d-flex justify-content-between align-items-center">
-            <span class="fw-bold">$${Number(item.price).toFixed(2)}</span>
-            <button class="btn btn-danger btn-sm">Add</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `).join("");
 }
 
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function updateCartBadge() {
+  const cart = getCart();
+  const qty = cart.reduce((sum, x) => sum + (x.qty || 0), 0);
+  const badge = document.getElementById("cart-count");
+  if (badge) badge.textContent = qty;
+}
+
+// -------------------- LOAD DATA --------------------
 async function loadHawkers() {
   const snap = await getDocs(collection(db, HAWKER_COLLECTION));
-  const hawkers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  hawkers.sort((a, b) => a.name.localeCompare(b.name));
+  const hawkers = snap.docs.map((d) => ({ docId: d.id, ...d.data() }));
+  hawkers.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
   return hawkers;
 }
 
@@ -70,30 +61,141 @@ async function loadMenuByStallId(stallId) {
     where("stallId", "==", Number(stallId))
   );
   const snap = await getDocs(q);
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  return snap.docs.map((d) => ({ docId: d.id, ...d.data() }));
 }
 
+// -------------------- RENDER --------------------
+function setMenuTitle(text) {
+  const title = document.getElementById("menu-title");
+  title.innerHTML = `Menu from <span class="text-danger fw-bold">${text}</span>`;
+}
+
+function renderStallList(hawkers) {
+  const list = document.getElementById("stall-list");
+
+  list.innerHTML = hawkers
+    .map(
+      (h) => `
+      <button type="button"
+        class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+        data-stallid="${h.stallId}"
+        data-name="${h.name}">
+        <div>
+          <div class="fw-semibold">${h.name}</div>
+          <small class="text-muted">${h.hawkerCentre || ""}</small>
+        </div>
+        <span class="badge bg-danger rounded-pill">${h.rating ?? ""}</span>
+      </button>
+    `
+    )
+    .join("");
+}
+
+function renderMenu(items) {
+  const grid = document.getElementById("menu-grid");
+
+  if (!items.length) {
+    grid.innerHTML = `<div class="text-muted">No items found for this hawker.</div>`;
+    return;
+  }
+
+  grid.innerHTML = items
+    .map((item) => {
+      const safeName = item.name ?? "(missing name)";
+      const safePrice = (Number(item.price) || 0).toFixed(2);
+
+      return `
+        <div class="col-12 col-md-6">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="fw-bold mb-2">${safeName}</h5>
+              <p class="text-muted mb-3">${item.description || ""}</p>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="text-danger fw-bold">$${safePrice}</span>
+
+                <button class="btn btn-outline-danger btn-sm"
+                  data-add
+                  data-id="${item.docId}"
+                  data-name="${safeName}"
+                  data-price="${item.price}"
+                  data-stallid="${item.stallId}">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    })
+    .join("");
+}
+
+// -------------------- MAIN --------------------
 document.addEventListener("DOMContentLoaded", async () => {
-  // Fill dropdown
+  updateCartBadge();
+  setMenuTitle("Select a hawker");
+  document.getElementById("menu-grid").innerHTML = "";
+
   const hawkers = await loadHawkers();
-  renderHawkers(hawkers);
+  renderStallList(hawkers);
 
-  // Load menu on selection
-  document.getElementById("hawkerSelect").addEventListener("change", async (e) => {
-    const stallId = e.target.value;
+  // Click hawker -> load menu
+  document.getElementById("stall-list").addEventListener("click", async (e) => {
+    const btn = e.target.closest("button[data-stallid]");
+    if (!btn) return;
 
-    const hawkerName = e.target.options[e.target.selectedIndex]?.text || "Loading...";
-    document.getElementById("hawkerName").textContent = hawkerName;
+    // active highlight
+    document
+      .querySelectorAll("#stall-list .active")
+      .forEach((x) => x.classList.remove("active"));
+    btn.classList.add("active");
 
-    if (!stallId) {
-      document.getElementById("menuContainer").innerHTML = "";
-      return;
-    }
+    const stallId = btn.dataset.stallid;
+    const name = btn.dataset.name;
 
-    document.getElementById("menuContainer").innerHTML =
+    setMenuTitle(name);
+    document.getElementById("menu-grid").innerHTML =
       `<div class="text-muted">Loading menu...</div>`;
 
     const items = await loadMenuByStallId(stallId);
+
+    // Debug: see what Firebase returns
+    console.table(
+      items.map((i) => ({
+        docId: i.docId,
+        name: i.name,
+        price: i.price,
+        priceType: typeof i.price,
+        stallId: i.stallId
+      }))
+    );
+
     renderMenu(items);
+  });
+
+  // Add-to-cart
+  document.getElementById("menu-grid").addEventListener("click", (e) => {
+    const addBtn = e.target.closest("button[data-add]");
+    if (!addBtn) return;
+
+    const cart = getCart();
+    const id = addBtn.dataset.id;
+
+    const existing = cart.find((x) => x.id === id);
+    if (existing) {
+      existing.qty += 1;
+    } else {
+      cart.push({
+        id,
+        stallId: Number(addBtn.dataset.stallid),
+        name: addBtn.dataset.name,
+        price: Number(addBtn.dataset.price) || 0,
+        qty: 1
+      });
+    }
+
+    saveCart(cart);
+    updateCartBadge();
   });
 });
