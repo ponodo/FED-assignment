@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HawkerHub - Edit Rental Agreement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+  />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand text-danger fw-bold" href="index.html">
+        <i class="bi bi-shop-window me-2"></i>HawkerHub
+      </a>
+      <a href="rental-agreements.html" class="btn btn-outline-danger">
+        <i class="bi bi-arrow-left me-2"></i>Back to Agreements
+      </a>
+    </div>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="container mt-5">
+    <h1 class="text-danger mb-4">Edit Rental Agreement</h1>
+
+    <form id="editAgreementForm">
+      <!-- Stall Info -->
+      <div class="card mb-4">
+        <div class="card-header bg-danger text-white">
+          Stall Information
+        </div>
+        <div class="card-body">
+          <p><strong>Stall ID:</strong> <span id="stallId"></span></p>
+          <p><strong>Stall Name:</strong> <span id="stallName"></span></p>
+          <p><strong>Hawker Centre:</strong> <span id="hawkerCenter"></span></p>
+          <p><strong>Stall Size:</strong> <span id="stallSize"></span> sq ft</p>
+        </div>
+      </div>
+
+      <!-- Editable Fields -->
+      <div class="mb-3">
+        <label class="form-label">Monthly Rent ($)</label>
+        <input type="number" id="monthlyRent" class="form-control" required />
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label">Start Date</label>
+          <input type="date" id="startDate" class="form-control" disabled />
+        </div>
+        <div class="col">
+          <label class="form-label">End Date</label>
+          <input type="date" id="endDate" class="form-control" required />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select id="status" class="form-select">
+          <option value="active">Active</option>
+          <option value="ended">Ended</option>
+        </select>
+      </div>
+
+      <!-- Action Buttons -->
+      <button type="submit" class="btn btn-danger">
+        <i class="bi bi-save me-2"></i>Save Changes
+      </button>
+      <a href="rental-agreements.html" class="btn btn-outline-secondary ms-2">
+        Cancel
+      </a>
+      <button type="button" id="deleteAgreementBtn" class="btn btn-outline-danger ms-2">
+        <i class="bi bi-trash me-2"></i>Delete Agreement
+      </button>
+    </form>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white py-4 mt-5">
+    <div class="container text-center">
+      <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- FIREBASE + LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      where,
+      getDocs,
+      doc,
+      getDoc,
+      updateDoc,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBazksxHfRgOJcraIVqslvCWqZT4qjTWZE",
+      authDomain: "hawkerhub-b4a7a.firebaseapp.com",
+      projectId: "hawkerhub-b4a7a",
+      storageBucket: "hawkerhub-b4a7a.appspot.com",
+      messagingSenderId: "43569063246",
+      appId: "1:43569063246:web:9d18d5107d2081784e2a1f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const params = new URLSearchParams(window.location.search);
+    const agreementId = params.get("agreementId");
+
+    if (!agreementId) {
+      alert("Invalid agreement ID.");
+      window.location.href = "rental-agreements.html";
+    }
+
+    const form = document.getElementById("editAgreementForm");
+    const deleteBtn = document.getElementById("deleteAgreementBtn");
+
+    // AUTH CHECK
+    const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
+    if (!user || user.role !== "vendor") {
+      window.location.href = "login.html";
+    }
+
+    // LOAD AGREEMENT
+    const agreementRef = doc(db, "rentalAgreements", agreementId);
+    const agreementSnap = await getDoc(agreementRef);
+
+    if (!agreementSnap.exists()) {
+      alert("Rental agreement not found.");
+      window.location.href = "rental-agreements.html";
+    }
+
+    const data = agreementSnap.data();
+
+    // Populate fields
+    document.getElementById("stallId").textContent = data.stallId;
+    document.getElementById("stallName").textContent = data.stallName;
+    document.getElementById("hawkerCenter").textContent = data.hawkerCenter;
+    document.getElementById("stallSize").textContent = data.stallSize;
+    document.getElementById("monthlyRent").value = data.monthlyRent;
+    document.getElementById("startDate").value = data.startDate;
+    document.getElementById("endDate").value = data.endDate;
+    document.getElementById("status").value = data.status;
+
+    // SAVE CHANGES
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const newRent = parseFloat(document.getElementById("monthlyRent").value);
+      const newEndDate = document.getElementById("endDate").value;
+      const newStatus = document.getElementById("status").value;
+
+      if (isNaN(newRent) || !newEndDate) {
+        alert("Invalid input.");
+        return;
+      }
+
+      try {
+        await updateDoc(agreementRef, { monthlyRent: newRent, endDate: newEndDate, status: newStatus });
+
+        // Update pending payments
+        const paymentsRef = collection(db, "payments");
+        const q = query(paymentsRef, where("agreementId", "==", agreementId), where("status", "==", "pending"));
+        const paymentSnap = await getDocs(q);
+        for (const p of paymentSnap.docs) {
+          await updateDoc(p.ref, { amount: newRent });
+        }
+
+        alert("Rental agreement updated successfully!");
+        window.location.href = "rental-agreements.html";
+      } catch (err) {
+        console.error(err);
+        alert("Failed to update agreement:\n" + err.message);
+      }
+    });
+
+    // DELETE AGREEMENT
+    deleteBtn.addEventListener("click", async () => {
+      if (!confirm("Are you sure you want to delete this rental agreement? This action cannot be undone.")) return;
+
+      try {
+        // Delete related payments
+        const paymentsRef = collection(db, "payments");
+        const q = query(paymentsRef, where("agreementId", "==", agreementId));
+        const paymentSnap = await getDocs(q);
+        for (const p of paymentSnap.docs) await deleteDoc(p.ref);
+
+        // Delete agreement
+        await deleteDoc(agreementRef);
+
+        alert("Rental agreement deleted successfully.");
+        window.location.href = "rental-agreements.html";
+      } catch (err) {
+        console.error(err);
+        alert("Failed to delete agreement:\n" + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

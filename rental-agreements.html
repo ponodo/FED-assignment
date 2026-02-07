@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-  
-
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container">
         <a class="navbar-brand text-danger fw-bold" href="index.html">
@@ -51,28 +49,23 @@
     </footer>
 
     <script type="module">
-      // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+      import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyBazksxHfRgOJcraIVqslvCWqZT4qjTWZE",
-    authDomain: "hawkerhub-b4a7a.firebaseapp.com",
-    projectId: "hawkerhub-b4a7a",
-    storageBucket: "hawkerhub-b4a7a.firebasestorage.app",
-    messagingSenderId: "43569063246",
-    appId: "1:43569063246:web:9d18d5107d2081784e2a1f"
-  };
+      const firebaseConfig = {
+        apiKey: "AIzaSyBazksxHfRgOJcraIVqslvCWqZT4qjTWZE",
+        authDomain: "hawkerhub-b4a7a.firebaseapp.com",
+        projectId: "hawkerhub-b4a7a",
+        storageBucket: "hawkerhub-b4a7a.firebasestorage.app",
+        messagingSenderId: "43569063246",
+        appId: "1:43569063246:web:9d18d5107d2081784e2a1f"
+      };
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
       window.onload = async function() {
-        // check vendor login
+        // Check vendor login
         const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
         if (!user || user.role !== "vendor") {
           window.location.href = "login.html";
@@ -81,7 +74,7 @@
         const agreementsRef = collection(db, "rentalAgreements");
         const q = query(agreementsRef, where("vendorId", "==", user.vendorId));
         const snapshot = await getDocs(q);
-        console.log(snapshot);
+
         const container = document.getElementById("agreementsList");
         if (snapshot.empty) {
           container.innerHTML = '<p>No rental agreements found.</p>';
@@ -111,9 +104,9 @@
                   <a href="stall-management.html?stallId=${data.stallId}" class="btn btn-outline-danger me-2">
                     <i class="bi bi-eye me-2"></i>View Stall
                   </a>
-                  <button class="btn btn-outline-danger" onclick="alert('Download PDF functionality not implemented')">
-                    <i class="bi bi-download me-2"></i>Download PDF
-                  </button>
+                  <a href="edit-rental-agreement.html?agreementId=${doc.id}" class="btn btn-outline-warning me-2">
+                    <i class="bi bi-pencil me-2"></i>Edit Agreement
+                  </a>
                 </div>
               </div>
             </div>
