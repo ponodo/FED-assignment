@@ -35,6 +35,9 @@
               <li>
                 <a class="dropdown-item" href="my-orders.html">My Orders</a>
               </li>
+              <li>
+                <a class="dropdown-item" href="feedback.html">Give Feedback</a>
+              </li>
               <li><hr class="dropdown-divider" /></li>
               <li>
                 <a
@@ -101,6 +104,9 @@
             >
               <i class="bi bi-map me-1"></i>Browse Hawkers
             </a>
+            <a href="feedback.html" class="btn btn-outline-danger btn-sm">
+              <i class="bi bi-chat-dots me-1"></i>Give Feedback
+            </a>
             <a href="profile.html" class="btn btn-outline-danger btn-sm">
               <i class="bi bi-person me-1"></i>Profile
             </a>
@@ -123,6 +129,7 @@
                   <th>Items</th>
                   <th>Total</th>
                   <th>Status</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,6 +139,14 @@
                   <td>Chicken Rice x2</td>
                   <td>$11.00</td>
                   <td><span class="badge bg-success">Completed</span></td>
+                  <td>
+                    <a
+                      href="feedback.html"
+                      class="btn btn-sm btn-outline-danger"
+                    >
+                      <i class="bi bi-star me-1"></i>Review
+                    </a>
+                  </td>
                 </tr>
                 <tr>
                   <td>#1002</td>
@@ -140,6 +155,9 @@
                   <td>$8.50</td>
                   <td>
                     <span class="badge bg-warning text-dark">Preparing</span>
+                  </td>
+                  <td>
+                    <span class="text-muted small">In progress</span>
                   </td>
                 </tr>
               </tbody>
