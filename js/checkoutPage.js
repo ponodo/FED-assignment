@@ -5,9 +5,11 @@ const emptyTextEl = document.getElementById("summary-empty-text");
 const subtotalEl = document.getElementById("summary-subtotal");
 const deliveryEl = document.getElementById("summary-delivery");
 const totalEl = document.getElementById("summary-total");
+const deliveryMsgEl = document.getElementById("delivery-message");
 const btnPlaceOrder = document.getElementById("btn-place-order");
 
-const DELIVERY_FEE = 3;
+const DELIVERY_FEE = 5;
+const FREE_DELIVERY_THRESHOLD = 20;
 
 function calcSubtotal(cart) {
   return cart.reduce((sum, item) => sum + item.unitPrice * item.qty, 0);
@@ -17,16 +19,29 @@ function updateSummary() {
   const cart = load(CART_KEY, []);
   const subtotal = calcSubtotal(cart);
 
-  // pickup = $0 delivery, delivery = $3 delivery fee (adjust if you want)
-  const deliveryFee = deliveryTypeEl.value === "delivery" && subtotal > 0 ? DELIVERY_FEE : 0;
+  let deliveryFee = 0;
+  let message = "";
+
+  if (deliveryTypeEl.value === "delivery" && subtotal > 0) {
+    if (subtotal >= FREE_DELIVERY_THRESHOLD) {
+      deliveryFee = 0;
+      message = "🎉 Free delivery for orders above $20";
+    } else {
+      deliveryFee = DELIVERY_FEE;
+      message = "Delivery fee $5 applies for orders below $20";
+    }
+  } else {
+    message = "Pickup selected — no delivery fee";
+  }
+
   const total = subtotal + deliveryFee;
 
   emptyTextEl.textContent = cart.length === 0 ? "No items in cart" : "";
   subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
   deliveryEl.textContent = `$${deliveryFee.toFixed(2)}`;
   totalEl.textContent = `$${total.toFixed(2)}`;
+  deliveryMsgEl.textContent = message;
 
-  // disable place order if empty
   btnPlaceOrder.disabled = cart.length === 0;
 }
 
@@ -49,7 +64,6 @@ btnPlaceOrder.addEventListener("click", () => {
     return;
   }
 
-  // Save an order record (simple version)
   const orders = load(ORDERS_KEY, []);
   orders.push({
     orderId: Date.now(),
@@ -61,11 +75,8 @@ btnPlaceOrder.addEventListener("click", () => {
   });
 
   save(ORDERS_KEY, orders);
-
-  // Clear cart
   save(CART_KEY, []);
 
-  // Go to orders page
   window.location.href = "my-orders.html";
 });
 

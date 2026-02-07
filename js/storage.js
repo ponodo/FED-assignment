@@ -1,14 +1,25 @@
+// js/storage.js
+
+// ---------- KEYS ----------
 export const CART_KEY = "hawkerhub_cart";
 export const ORDERS_KEY = "hawkerhub_orders";
 
-export function load(key, fallback) {
+// ---------- LOAD ----------
+export function load(key, fallback = []) {
   try {
-    return JSON.parse(localStorage.getItem(key)) ?? fallback;
-  } catch {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (e) {
+    console.error("Storage load error:", e);
     return fallback;
   }
 }
 
+// ---------- SAVE ----------
 export function save(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.error("Storage save error:", e);
+  }
 }
