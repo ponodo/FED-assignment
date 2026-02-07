@@ -37,6 +37,16 @@
         <div class="card-body">
           <form id="feedbackForm">
             <div class="mb-3">
+              <label class="form-label">Your Name *</label>
+              <input
+                type="text"
+                class="form-control"
+                id="userName"
+                placeholder="Enter your name"
+                required
+              />
+            </div>
+            <div class="mb-3">
               <label class="form-label">Select Hawker *</label>
               <select class="form-select" id="hawkerSelect" required>
                 <option value="">Choose a hawker...</option>
@@ -120,12 +130,8 @@
 
     <!-- Firebase SDK -->
     <script type="module">
-      // Import Firebase modules
+      // Import Firebase modules (NO AUTH NEEDED!)
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-      import {
-        getAuth,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
       import {
         getFirestore,
         collection,
@@ -148,12 +154,9 @@
         measurementId: "G-S51VRLWXDD",
       };
 
-      // Initialize Firebase
+      // Initialize Firebase (NO AUTH!)
       const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
       const db = getFirestore(app);
-
-      let currentUser = null;
 
       // Star rating system
       const stars = document.querySelectorAll(".star");
@@ -290,21 +293,22 @@
         }
       }
 
-      // Handle feedback submission
+      // Handle feedback submission (NO LOGIN REQUIRED!)
       document
         .getElementById("feedbackForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
 
-          if (!currentUser) {
-            alert("Please login to submit feedback.");
-            window.location.href = "login.html";
-            return;
-          }
-
+          const userName = document.getElementById("userName").value.trim();
           const hawker = document.getElementById("hawkerSelect").value;
           const rating = parseInt(document.getElementById("ratingValue").value);
           const feedback = document.getElementById("feedbackText").value.trim();
+
+          // Validation
+          if (!userName) {
+            alert("Please enter your name");
+            return;
+          }
 
           if (rating === 0) {
             alert("Please provide a rating by clicking the stars");
@@ -323,22 +327,19 @@
             '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
 
           try {
-            // Add feedback to Firestore
+            // Add feedback to Firestore (NO AUTH!)
             await addDoc(collection(db, "feedbacks"), {
               hawkerName: hawker,
               rating: rating,
               feedbackText: feedback,
-              userId: currentUser.uid,
-              userEmail: currentUser.email,
-              userName:
-                currentUser.displayName || currentUser.email.split("@")[0],
+              userName: userName,
               timestamp: serverTimestamp(),
               createdAt: new Date().toISOString(),
             });
 
             // Show success message
             alert(
-              `Thank you for your feedback!\n\nHawker: ${hawker}\nRating: ${rating}/5\n\nYour feedback has been submitted successfully.`,
+              `Thank you for your feedback, ${userName}!\n\nHawker: ${hawker}\nRating: ${rating}/5\n\nYour feedback has been submitted successfully.`,
             );
 
             // Reset form
@@ -360,26 +361,8 @@
           }
         });
 
-      // Check authentication state
-      onAuthStateChanged(auth, (user) => {
-        currentUser = user;
-        const submitBtn = document.getElementById("submitBtn");
-
-        if (!user) {
-          submitBtn.textContent = "Login to Submit Feedback";
-          submitBtn.onclick = function (e) {
-            e.preventDefault();
-            alert("Please login to submit feedback.");
-            window.location.href = "login.html";
-          };
-        } else {
-          submitBtn.textContent = "Submit Feedback";
-          submitBtn.onclick = null; // Remove the custom onclick
-        }
-
-        // Load feedback regardless of auth state
-        loadFeedback();
-      });
+      // Load feedback when page loads
+      loadFeedback();
     </script>
 
     <style>
