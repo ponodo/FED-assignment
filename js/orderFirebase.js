@@ -103,9 +103,23 @@ function renderMenu(items) {
     const safeName = item.name ?? "(missing name)";
     const safePrice = (Number(item.price) || 0).toFixed(2);
 
+    // IMPORTANT:
+    // Your images folder is at: /images (same level as order.html)
+    // So use: images/<filename>
+    const imgFile = item.image || "placeholder.jpg";
+    const imgSrc = `images/${imgFile}`;
+
     return `
       <div class="col-12 col-md-6">
-        <div class="card h-100 shadow-sm">
+        <div class="card h-100 shadow-sm overflow-hidden">
+          <img
+            src="${imgSrc}"
+            alt="${safeName}"
+            class="w-100"
+            style="height: 160px; object-fit: cover;"
+            onerror="this.onerror=null; this.src='images/placeholder.jpg';"
+          />
+
           <div class="card-body">
             <h5 class="fw-bold mb-2">${safeName}</h5>
             <p class="text-muted mb-3">${item.description || ""}</p>
@@ -179,9 +193,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       cart.push({
         id,
         stallId: currentStallId,
-        stallName: currentStallName, // 🔥 used for cart headings
+        stallName: currentStallName,
         name: addBtn.dataset.name,
-        unitPrice: unitPrice,
+        unitPrice,
         qty: 1
       });
     }
