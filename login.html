@@ -1,52 +1,103 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- METADATA
+         =============================== -->
     <meta charset="UTF-8" />
+    <!-- Character encoding - without this, emails with special characters like "ç" in "çhar kway teow" would break -->
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Mobile responsiveness - makes login form usable on phone screens without zooming -->
+
     <title>HawkerHub - Login</title>
+    <!-- Browser tab title - important for users who bookmark the login page -->
+
+    <!-- BOOTSTRAP FRAMEWORK (same as home page)
+         =============================== -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+    <!-- Bootstrap CSS - gives us all the pre-built components: cards, forms, buttons, navbar -->
+
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
     />
+    <!-- Bootstrap Icons - we use shop-window icon for logo, etc. -->
+
+    <!-- CUSTOM STYLES (Page-specific)
+         =============================== -->
     <style>
       body {
         background: #f8f9fa;
+        /* Light gray background - Bootstrap's default light theme color */
         min-height: 100vh;
+        /* Ensures background fills entire viewport height, even with little content */
       }
+
       .login-card {
         max-width: 400px;
+        /* Limits card width on large screens - prevents it from stretching too wide */
       }
+
       .credentials-hint {
-        font-size: 0.85rem;
-        background-color: #f8f9fa;
-        border-radius: 5px;
-        padding: 10px;
-        margin-top: 15px;
+        font-size: 0.85rem; /* Smaller than normal text (14px) */
+        background-color: #f8f9fa; /* Light gray background to stand out */
+        border-radius: 5px; /* Slightly rounded corners */
+        padding: 10px; /* Space inside the box */
+        margin-top: 15px; /* Space above the box */
       }
     </style>
   </head>
   <body>
+    <!-- NAVIGATION BAR
+         =============================== -->
     <nav class="navbar bg-white shadow-sm py-3">
+      <!-- 'navbar' = Bootstrap navigation component, 'bg-white' = white background -->
+      <!-- 'shadow-sm' = subtle shadow for depth, 'py-3' = padding top+bottom 16px -->
       <div class="container">
+        <!-- Bootstrap container for consistent width and centering -->
         <a class="navbar-brand text-danger fw-bold" href="index.html">
+          <!-- 'navbar-brand' = special styling for logo/brand text -->
+          <!-- 'text-danger' = HawkerHub signature red color -->
+          <!-- 'fw-bold' = bold font weight -->
           <i class="bi bi-shop-window me-2"></i>HawkerHub
+          <!-- Shop window icon - represents a hawker stall -->
+          <!-- 'me-2' = margin end (right) spacing between icon and text -->
         </a>
       </div>
     </nav>
 
+    <!-- MAIN CONTENT - LOGIN FORM
+         =============================== -->
     <main class="container py-4">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card login-card shadow-sm mx-auto">
-            <div class="card-body p-4">
-              <h2 class="text-danger text-center mb-4">Login</h2>
+      <!-- 'main' = semantic HTML5 tag for primary content (good for SEO and accessibility) -->
 
+      <div class="row justify-content-center">
+        <!-- 'row' creates grid, 'justify-content-center' centers the column horizontally -->
+
+        <div class="col-md-6">
+          <!-- On medium screens+, takes 6 columns (half width). On mobile, full width -->
+
+          <div class="card login-card shadow-sm mx-auto">
+            <!-- 'card' = Bootstrap card component, 'login-card' = our custom width limit -->
+            <!-- 'shadow-sm' = subtle shadow, 'mx-auto' = horizontal margin auto (centers the card) -->
+
+            <div class="card-body p-4">
+              <!-- 'card-body' = standard card padding container -->
+              <!-- 'p-4' = extra padding (24px) inside the card -->
+
+              <h2 class="text-danger text-center mb-4">Login</h2>
+              <!-- 'text-center' = centered text, 'mb-4' = margin bottom 24px -->
+
+              <!-- LOGIN FORM
+                   =============================== -->
               <form id="loginForm">
+                <!-- 'id="loginForm"' = uniquely identifies this form for JavaScript -->
+
                 <div class="mb-3">
+                  <!-- 'mb-3' = margin bottom 16px - creates consistent spacing between form fields -->
                   <input
                     type="email"
                     class="form-control"
@@ -54,7 +105,11 @@
                     id="email"
                     required
                   />
+                  <!-- 'form-control' = Bootstrap's styled input field with padding, border, rounded corners -->
+                  <!-- 'type="email"' = mobile keyboards show @ symbol, browser validates email format -->
+                  <!-- 'required' = browser won't submit without this field - basic validation -->
                 </div>
+
                 <div class="mb-3">
                   <input
                     type="password"
@@ -63,32 +118,46 @@
                     id="password"
                     required
                   />
+                  <!-- 'type="password"' = dots hide the text as user types -->
                 </div>
+
                 <div class="form-check mb-3">
+                  <!-- 'form-check' = Bootstrap styling for checkboxes -->
                   <input
                     class="form-check-input"
                     type="checkbox"
                     id="remember"
                   />
+                  <!-- 'form-check-input' = styled checkbox (not the ugly default one) -->
                   <label class="form-check-label small">Remember me</label>
+                  <!-- 'small' = smaller text size, associated with the checkbox -->
                 </div>
+
                 <button type="submit" class="btn btn-danger w-100 mb-3">
+                  <!-- 'btn btn-danger' = red Bootstrap button, 'w-100' = full width button -->
+                  <!-- 'mb-3' = margin bottom 16px -->
                   Login
                 </button>
               </form>
 
-              <!-- Add this line to show credentials -->
+              <!-- DEMO CREDENTIALS HINT
+                   =============================== -->
               <div class="credentials-hint text-center">
+                <!-- This box shows users what credentials to use for testing -->
                 <small class="text-muted">
+                  <!-- 'text-muted' = grayed out secondary text -->
                   Use: <strong>customer@example.com</strong> or
                   <strong>vendor@example.com</strong><br />
                   Password: <strong>password123</strong>
                 </small>
               </div>
 
+              <!-- SIGN UP LINK
+                   =============================== -->
               <p class="text-center small mt-3">
                 No account?
                 <a href="register.html" class="text-danger fw-bold">Sign up</a>
+                <!-- Link to registration page - pre-fills?type=customer probably -->
               </p>
             </div>
           </div>
@@ -96,56 +165,125 @@
       </div>
     </main>
 
+    <!-- FOOTER
+         =============================== -->
     <footer class="bg-dark text-white py-3 mt-4">
+      <!-- 'bg-dark' = dark gray background, 'text-white' = white text -->
+      <!-- 'py-3' = padding top+bottom, 'mt-4' = margin top 24px - separates from content above -->
       <div class="container text-center">
         <p class="mb-0 small">&copy; 2024 HawkerHub</p>
+        <!-- '&copy;' = copyright symbol ©, 'mb-0' = no margin bottom -->
+        <!-- 'small' = smaller text size -->
       </div>
     </footer>
 
+    <!-- BOOTSTRAP JAVASCRIPT
+         =============================== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Needed for interactive components like dropdowns, modals, tooltips -->
+    <!-- bundle includes Popper.js for positioning popups -->
 
+    <!-- CUSTOM JAVASCRIPT - LOGIN LOGIC
+         =============================== -->
     <script>
-      // Check if already logged in
+      // =========================================
+      // SESSION CHECK - Auto-redirect if already logged in
+      // =========================================
+
+      // localStorage = browser's permanent storage - survives page refresh and browser close
+      // JSON.parse = converts stored string back into JavaScript object
       const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
+
+      // Check if user exists in localStorage (meaning they're already logged in)
       if (user) {
-        window.location.href =
+        // If logged in, redirect to appropriate dashboard based on role
+        window.location.href = // window.location.href = change current page URL
           user.role === "customer"
-            ? "customer-dashboard.html"
-            : "vendor-dashboard.html";
+            ? "customer-dashboard.html" // Customers see order page
+            : "vendor-dashboard.html"; // Vendors see their stall management
       }
 
-      // Login form
+      // =========================================
+      // LOGIN FORM HANDLER
+      // =========================================
+
+      // 1. Find the login form element by its ID
+      // 2. Add an event listener for 'submit' event (when user clicks Login or presses Enter)
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (e) {
+          // CRITICAL LINE: prevents page refresh
           e.preventDefault();
+          // Normally, form submission refreshes the page
+          // We want to handle login with JavaScript instead
 
-          const email = document.getElementById("email").value;
+          // =========================================
+          // GET USER INPUT
+          // =========================================
+
+          // Get values from input fields
+          const email = document.getElementById("email").value; // .value gets what user typed
           const password = document.getElementById("password").value;
 
+          // =========================================
+          // DEMO AUTHENTICATION
+          // =========================================
+
+          // Check if credentials match our hardcoded demo accounts
+          // This is ONLY for the prototype - real app would verify against server
           if (
             (email === "customer@example.com" && password === "password123") ||
             (email === "vendor@example.com" && password === "password123")
           ) {
+            // =========================================
+            // CREATE USER SESSION
+            // =========================================
+
+            // Build user object with profile data
             const user = {
-              email: email,
+              email: email, // Store the email user logged in with
               name:
                 email === "customer@example.com" ? "John Customer" : "Ah Tan",
+              // Ternary operator: condition ? value_if_true : value_if_false
               role: email === "customer@example.com" ? "customer" : "vendor",
+              // Role determines which dashboard they see and what features they access
               id: email === "customer@example.com" ? 1 : 2,
+              // Simple user ID for demo purposes
             };
 
+            // =========================================
+            // PERSIST LOGIN STATE
+            // =========================================
+
+            // Save user object to localStorage
+            // JSON.stringify converts object to string for storage
             localStorage.setItem("hawkerhub_user", JSON.stringify(user));
+            // Now user stays logged in even after page refresh
+
+            // User feedback
             alert("✅ Login successful!");
 
+            // =========================================
+            // REDIRECT TO DASHBOARD
+            // =========================================
+
+            // Short delay (500ms) so user sees success message
             setTimeout(() => {
+              // Redirect based on user role
               window.location.href =
                 user.role === "customer"
-                  ? "customer-dashboard.html"
-                  : "vendor-dashboard.html";
-            }, 500);
+                  ? "customer-dashboard.html" // Customers go to order page
+                  : "vendor-dashboard.html"; // Vendors go to manage stall page
+            }, 500); // 500 milliseconds = 0.5 seconds
           } else {
+            // =========================================
+            // FAILED LOGIN
+            // =========================================
+
+            // Wrong email or password
             alert("❌ Invalid credentials. Try the credentials shown above.");
+            // Note: In production, never specify whether email or password was wrong
+            // (security best practice - don't help hackers)
           }
         });
     </script>

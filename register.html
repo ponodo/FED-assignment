@@ -1,9 +1,14 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- METADATA
+         =============================== -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>HawkerHub - Register</title>
+    
+    <!-- BOOTSTRAP FRAMEWORK
+         =============================== -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -15,6 +20,8 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <!-- NAVIGATION BAR
+         =============================== -->
     <nav class="navbar navbar-light bg-white shadow-sm">
       <div class="container">
         <a class="navbar-brand text-danger fw-bold" href="index.html">
@@ -23,29 +30,40 @@
       </div>
     </nav>
 
+    <!-- MAIN REGISTRATION FORM
+         =============================== -->
     <div class="container py-5">
       <div class="row justify-content-center">
         <div class="col-md-8">
+          <!-- CARD CONTAINER - Bootstrap component -->
           <div class="card shadow">
             <div class="card-body p-4">
               <h2 class="text-center mb-4 text-danger">Create Account</h2>
 
-              <!-- Role Selection -->
+              <!-- =========================================
+                   ROLE SELECTION - Customer vs Vendor
+                   ========================================= -->
               <div class="mb-4">
                 <label class="form-label">Register as:</label>
+                <!-- btn-group = Bootstrap component that groups buttons together -->
                 <div class="btn-group w-100" role="group">
+                  
+                  <!-- CUSTOMER RADIO BUTTON 
+                       btn-check = Bootstrap's styled radio button (hides default radio) -->
                   <input
                     type="radio"
                     class="btn-check"
-                    name="role"
+                    name="role"        /* Same name = only ONE can be selected */
                     id="customer"
                     value="customer"
-                    checked
+                    checked            /* Default selection */
                   />
+                  <!-- btn-outline-danger = red outline button, becomes solid red when checked -->
                   <label class="btn btn-outline-danger" for="customer">
                     <i class="bi bi-person me-2"></i>Customer
                   </label>
 
+                  <!-- VENDOR RADIO BUTTON -->
                   <input
                     type="radio"
                     class="btn-check"
@@ -59,7 +77,11 @@
                 </div>
               </div>
 
+              <!-- =========================================
+                   REGISTRATION FORM
+                   ========================================= -->
               <form id="registerForm">
+                <!-- NAME FIELDS - 2 columns on desktop, stack on mobile -->
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label class="form-label">First Name *</label>
@@ -81,6 +103,7 @@
                   </div>
                 </div>
 
+                <!-- EMAIL FIELD -->
                 <div class="mb-3">
                   <label class="form-label">Email Address *</label>
                   <input
@@ -91,16 +114,18 @@
                   />
                 </div>
 
+                <!-- PHONE FIELD (optional) -->
                 <div class="mb-3">
                   <label class="form-label">Phone Number</label>
                   <input
                     type="tel"
                     class="form-control"
                     id="phone"
-                    placeholder="+65 9123 4567"
+                    placeholder="+65 9123 4567"  /* Singapore format example */
                   />
                 </div>
 
+                <!-- PASSWORD FIELDS - side by side -->
                 <div class="row mb-3">
                   <div class="col-md-6">
                     <label class="form-label">Password *</label>
@@ -109,7 +134,7 @@
                       class="form-control"
                       id="password"
                       required
-                      minlength="6"
+                      minlength="6"      /* HTML5 validation - minimum 6 chars */
                     />
                   </div>
                   <div class="col-md-6">
@@ -123,7 +148,10 @@
                   </div>
                 </div>
 
-                <!-- Vendor Fields (Hidden by default) -->
+                <!-- =========================================
+                     VENDOR FIELDS - Hidden by default
+                     d-none = Bootstrap's "display: none" class
+                     ========================================= -->
                 <div id="vendorFields" class="d-none">
                   <h5 class="mt-4 mb-3">Vendor Information</h5>
                   <div class="mb-3">
@@ -132,6 +160,7 @@
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Hawker Center *</label>
+                    <!-- form-select = Bootstrap's styled dropdown -->
                     <select class="form-select" id="hawkerCenter">
                       <option value="">Select Hawker Center</option>
                       <option>Maxwell Food Centre</option>
@@ -142,6 +171,7 @@
                   </div>
                 </div>
 
+                <!-- TERMS & CONDITIONS CHECKBOX -->
                 <div class="mb-3 form-check">
                   <input
                     type="checkbox"
@@ -155,6 +185,7 @@
                   </label>
                 </div>
 
+                <!-- SUBMIT BUTTON -->
                 <div class="d-grid">
                   <button type="submit" class="btn btn-danger btn-lg">
                     Create Account
@@ -162,6 +193,7 @@
                 </div>
               </form>
 
+              <!-- LOGIN LINK -->
               <div class="text-center mt-4">
                 <p>
                   Already have an account?
@@ -176,103 +208,156 @@
       </div>
     </div>
 
+    <!-- FOOTER -->
     <footer class="bg-dark text-white py-4 mt-5">
       <div class="container text-center">
         <p>&copy; 2024 HawkerHub. All rights reserved.</p>
       </div>
     </footer>
 
+    <!-- BOOTSTRAP JAVASCRIPT (for toggle buttons, etc.) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- =========================================
+         CUSTOM JAVASCRIPT - REGISTRATION LOGIC
+         ========================================= -->
     <script>
-      // Toggle vendor fields
+      // =========================================
+      // FEATURE 1: TOGGLE VENDOR FIELDS
+      // Shows/hides vendor-specific fields based on role selection
+      // =========================================
+      
+      // Select ALL radio buttons with name="role"
       document.querySelectorAll('input[name="role"]').forEach((radio) => {
+        // For each radio button, listen for the 'change' event (when user clicks it)
         radio.addEventListener("change", function () {
+          // Find the vendor fields container
           const vendorFields = document.getElementById("vendorFields");
+          
+          // Check which radio was clicked
           if (this.value === "vendor") {
+            // If vendor selected: REMOVE the d-none class (SHOW the fields)
             vendorFields.classList.remove("d-none");
           } else {
+            // If customer selected: ADD the d-none class (HIDE the fields)
             vendorFields.classList.add("d-none");
           }
         });
       });
 
-      // Handle registration
+      // =========================================
+      // FEATURE 2: HANDLE REGISTRATION SUBMISSION
+      // =========================================
       document
         .getElementById("registerForm")
         .addEventListener("submit", function (e) {
+          // PREVENT PAGE REFRESH - critical for JavaScript handling
           e.preventDefault();
 
+          // =========================================
+          // GET ALL FORM VALUES
+          // =========================================
           const firstName = document.getElementById("firstName").value;
           const lastName = document.getElementById("lastName").value;
           const email = document.getElementById("email").value;
           const password = document.getElementById("password").value;
-          const confirmPassword =
-            document.getElementById("confirmPassword").value;
+          const confirmPassword = document.getElementById("confirmPassword").value;
+          
+          // Find WHICH role is selected (checked)
           const role = document.querySelector(
             'input[name="role"]:checked',
           ).value;
 
-          // Validation
+          // =========================================
+          // VALIDATION - Check for errors BEFORE saving
+          // =========================================
+          
+          // 1. Password match validation
           if (password !== confirmPassword) {
-            alert("Passwords do not match!");
-            return;
+            alert("Passwords do not match!");  // User feedback
+            return;  // STOP the function here
           }
 
+          // 2. Password length validation
           if (password.length < 6) {
             alert("Password must be at least 6 characters!");
-            return;
+            return;  // STOP
           }
 
-          // Create user
+          // =========================================
+          // CREATE USER OBJECT
+          // =========================================
           const user = {
-            id: Date.now(),
-            firstName,
+            id: Date.now(),           // Unique ID using timestamp (e.g., 1770829400547)
+            firstName,                // Shorthand for firstName: firstName
             lastName,
             email,
-            password,
+            password,                // ⚠️ In production, NEVER store raw passwords!
             role,
-            createdAt: new Date().toISOString(),
+            createdAt: new Date().toISOString(),  // Timestamp for when user registered
           };
 
-          // Add vendor info
+          // =========================================
+          // ADD VENDOR-SPECIFIC FIELDS (if vendor)
+          // =========================================
           if (role === "vendor") {
             const stallName = document.getElementById("stallName").value;
             const hawkerCenter = document.getElementById("hawkerCenter").value;
 
+            // Validate vendor fields
             if (!stallName || !hawkerCenter) {
               alert("Please fill in vendor information!");
-              return;
+              return;  // STOP
             }
 
+            // Add vendor properties to user object
             user.stallName = stallName;
             user.hawkerCenter = hawkerCenter;
           }
 
-          // Save user (in real app, this goes to backend)
-          const users =
-            JSON.parse(localStorage.getItem("hawkerhub_users")) || [];
+          // =========================================
+          // SAVE TO LOCALSTORAGE ("Database")
+          // =========================================
+          
+          // 1. Get existing users array, or create empty array if none exists
+          const users = JSON.parse(localStorage.getItem("hawkerhub_users")) || [];
+          
+          // 2. Add new user to array
           users.push(user);
+          
+          // 3. Save entire array back to localStorage
           localStorage.setItem("hawkerhub_users", JSON.stringify(users));
+          
+          // ✅ Now user is permanently stored in browser!
 
-          // Auto login
-          const userForSession = { ...user };
-          delete userForSession.password;
-          localStorage.setItem(
-            "hawkerhub_user",
-            JSON.stringify(userForSession),
-          );
-
+          // =========================================
+          // AUTO-LOGIN AFTER REGISTRATION
+          // =========================================
+          
+          // Create a copy of user object for session
+          const userForSession = { ...user };  // Spread operator - copies all properties
+          
+          // IMPORTANT: Remove password from session data!
+          delete userForSession.password;  // 🔐 NEVER store password in session
+          
+          // Save session to localStorage
+          localStorage.setItem("hawkerhub_user", JSON.stringify(userForSession));
+          
+          // User feedback
           alert("✅ Registration successful!");
 
-          // Redirect
+          // =========================================
+          // REDIRECT TO APPROPRIATE DASHBOARD
+          // =========================================
+          
+          // Short delay so user sees success message
           setTimeout(() => {
             if (role === "customer") {
-              window.location.href = "customer-dashboard.html";
+              window.location.href = "customer-dashboard.html";  // Order food
             } else {
-              window.location.href = "vendor-dashboard.html";
+              window.location.href = "vendor-dashboard.html";    // Manage stall
             }
-          }, 1000);
+          }, 1000);  // 1 second delay
         });
     </script>
   </body>
