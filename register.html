@@ -1,69 +1,101 @@
+
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- METADATA
-         =============================== -->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
     <title>HawkerHub - Register</title>
-    
-    <!-- BOOTSTRAP FRAMEWORK
-         =============================== -->
+
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
+
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <!-- NAVIGATION BAR
-         =============================== -->
-    <nav class="navbar navbar-light bg-white shadow-sm">
+
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar bg-white border-bottom py-3">
       <div class="container">
-        <a class="navbar-brand text-danger fw-bold" href="index.html">
-          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        <a
+          class="navbar-brand text-danger fw-bold"
+          href="index.html"
+        >
+          <i class="bi bi-shop-window me-2"></i>
+          HawkerHub
+        </a>
+
+        <a
+          href="login.html"
+          class="btn btn-outline-danger"
+        >
+          <i class="bi bi-box-arrow-in-right me-1"></i>
+          Login
         </a>
       </div>
     </nav>
 
-    <!-- MAIN REGISTRATION FORM
-         =============================== -->
-    <div class="container py-5">
+    <!-- Main Content -->
+    <main class="container py-5 flex-grow-1">
       <div class="row justify-content-center">
-        <div class="col-md-8">
-          <!-- CARD CONTAINER - Bootstrap component -->
-          <div class="card shadow">
-            <div class="card-body p-4">
-              <h2 class="text-center mb-4 text-danger">Create Account</h2>
+        <div class="col-12 col-lg-8">
+          <div class="text-center mb-4">
+            <h1 class="fw-bold text-danger mb-2">
+              Create Your Account
+            </h1>
 
-              <!-- =========================================
-                   ROLE SELECTION - Customer vs Vendor
-                   ========================================= -->
+            <p class="text-secondary mb-0">
+              Register as a customer or hawker vendor.
+            </p>
+          </div>
+
+          <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white fw-bold">
+              <i class="bi bi-person-plus me-2"></i>
+              Registration Details
+            </div>
+
+            <div class="card-body p-4">
+              <!-- Role Selection -->
               <div class="mb-4">
-                <label class="form-label">Register as:</label>
-                <!-- btn-group = Bootstrap component that groups buttons together -->
-                <div class="btn-group w-100" role="group">
-                  
-                  <!-- CUSTOMER RADIO BUTTON 
-                       btn-check = Bootstrap's styled radio button (hides default radio) -->
+                <label class="form-label fw-semibold">
+                  Register as
+                  <span class="text-danger">*</span>
+                </label>
+
+                <div
+                  class="btn-group w-100"
+                  role="group"
+                  aria-label="Select account type"
+                >
                   <input
                     type="radio"
                     class="btn-check"
-                    name="role"        /* Same name = only ONE can be selected */
+                    name="role"
                     id="customer"
                     value="customer"
-                    checked            /* Default selection */
+                    checked
                   />
-                  <!-- btn-outline-danger = red outline button, becomes solid red when checked -->
-                  <label class="btn btn-outline-danger" for="customer">
-                    <i class="bi bi-person me-2"></i>Customer
+
+                  <label
+                    class="btn btn-outline-danger py-3"
+                    for="customer"
+                  >
+                    <i class="bi bi-person me-2"></i>
+                    Customer
                   </label>
 
-                  <!-- VENDOR RADIO BUTTON -->
                   <input
                     type="radio"
                     class="btn-check"
@@ -71,294 +103,577 @@
                     id="vendor"
                     value="vendor"
                   />
-                  <label class="btn btn-outline-danger" for="vendor">
-                    <i class="bi bi-shop me-2"></i>Hawker Vendor
+
+                  <label
+                    class="btn btn-outline-danger py-3"
+                    for="vendor"
+                  >
+                    <i class="bi bi-shop me-2"></i>
+                    Hawker Vendor
                   </label>
                 </div>
               </div>
 
-              <!-- =========================================
-                   REGISTRATION FORM
-                   ========================================= -->
               <form id="registerForm">
-                <!-- NAME FIELDS - 2 columns on desktop, stack on mobile -->
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label class="form-label">First Name *</label>
+                <div class="row g-3">
+                  <!-- First Name -->
+                  <div class="col-12 col-md-6">
+                    <label
+                      for="firstName"
+                      class="form-label fw-semibold"
+                    >
+                      First Name
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <input
                       type="text"
                       class="form-control"
                       id="firstName"
+                      placeholder="Enter your first name"
+                      maxlength="50"
                       required
                     />
                   </div>
-                  <div class="col-md-6">
-                    <label class="form-label">Last Name *</label>
+
+                  <!-- Last Name -->
+                  <div class="col-12 col-md-6">
+                    <label
+                      for="lastName"
+                      class="form-label fw-semibold"
+                    >
+                      Last Name
+                      <span class="text-danger">*</span>
+                    </label>
+
                     <input
                       type="text"
                       class="form-control"
                       id="lastName"
+                      placeholder="Enter your last name"
+                      maxlength="50"
                       required
                     />
                   </div>
-                </div>
 
-                <!-- EMAIL FIELD -->
-                <div class="mb-3">
-                  <label class="form-label">Email Address *</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    required
-                  />
-                </div>
+                  <!-- Email -->
+                  <div class="col-12">
+                    <label
+                      for="email"
+                      class="form-label fw-semibold"
+                    >
+                      Email Address
+                      <span class="text-danger">*</span>
+                    </label>
 
-                <!-- PHONE FIELD (optional) -->
-                <div class="mb-3">
-                  <label class="form-label">Phone Number</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    id="phone"
-                    placeholder="+65 9123 4567"  /* Singapore format example */
-                  />
-                </div>
-
-                <!-- PASSWORD FIELDS - side by side -->
-                <div class="row mb-3">
-                  <div class="col-md-6">
-                    <label class="form-label">Password *</label>
                     <input
-                      type="password"
+                      type="email"
                       class="form-control"
-                      id="password"
+                      id="email"
+                      placeholder="Enter your email address"
                       required
-                      minlength="6"      /* HTML5 validation - minimum 6 chars */
                     />
                   </div>
-                  <div class="col-md-6">
-                    <label class="form-label">Confirm Password *</label>
+
+                  <!-- Phone -->
+                  <div class="col-12">
+                    <label
+                      for="phone"
+                      class="form-label fw-semibold"
+                    >
+                      Phone Number
+                    </label>
+
                     <input
-                      type="password"
+                      type="tel"
                       class="form-control"
-                      id="confirmPassword"
-                      required
+                      id="phone"
+                      placeholder="e.g. 91234567"
+                      maxlength="8"
+                      pattern="[689][0-9]{7}"
                     />
+
+                    <div class="form-text">
+                      Enter an 8-digit Singapore phone number.
+                    </div>
+                  </div>
+
+                  <!-- Password -->
+                  <div class="col-12 col-md-6">
+                    <label
+                      for="password"
+                      class="form-label fw-semibold"
+                    >
+                      Password
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <div class="input-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="password"
+                        placeholder="At least 6 characters"
+                        minlength="6"
+                        required
+                      />
+
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="togglePassword"
+                        aria-label="Show or hide password"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Confirm Password -->
+                  <div class="col-12 col-md-6">
+                    <label
+                      for="confirmPassword"
+                      class="form-label fw-semibold"
+                    >
+                      Confirm Password
+                      <span class="text-danger">*</span>
+                    </label>
+
+                    <div class="input-group">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="confirmPassword"
+                        placeholder="Re-enter your password"
+                        required
+                      />
+
+                      <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="toggleConfirmPassword"
+                        aria-label="Show or hide confirmed password"
+                      >
+                        <i class="bi bi-eye"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                <!-- =========================================
-                     VENDOR FIELDS - Hidden by default
-                     d-none = Bootstrap's "display: none" class
-                     ========================================= -->
-                <div id="vendorFields" class="d-none">
-                  <h5 class="mt-4 mb-3">Vendor Information</h5>
-                  <div class="mb-3">
-                    <label class="form-label">Stall Name *</label>
-                    <input type="text" class="form-control" id="stallName" />
-                  </div>
-                  <div class="mb-3">
-                    <label class="form-label">Hawker Center *</label>
-                    <!-- form-select = Bootstrap's styled dropdown -->
-                    <select class="form-select" id="hawkerCenter">
-                      <option value="">Select Hawker Center</option>
-                      <option>Maxwell Food Centre</option>
-                      <option>Old Airport Road Food Centre</option>
-                      <option>Amoy Street Food Centre</option>
-                      <option>Chinatown Complex Food Centre</option>
-                    </select>
-                  </div>
-                </div>
+                <!-- Vendor Fields -->
+                <section
+                  id="vendorFields"
+                  class="d-none mt-4"
+                >
+                  <div class="border rounded p-3 bg-light">
+                    <h2 class="h5 fw-bold text-danger mb-3">
+                      <i class="bi bi-shop me-2"></i>
+                      Vendor Information
+                    </h2>
 
-                <!-- TERMS & CONDITIONS CHECKBOX -->
-                <div class="mb-3 form-check">
+                    <div class="mb-3">
+                      <label
+                        for="stallName"
+                        class="form-label fw-semibold"
+                      >
+                        Stall Name
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="stallName"
+                        placeholder="Enter your stall name"
+                        maxlength="100"
+                      />
+                    </div>
+
+                    <div class="mb-0">
+                      <label
+                        for="hawkerCenter"
+                        class="form-label fw-semibold"
+                      >
+                        Hawker Centre
+                        <span class="text-danger">*</span>
+                      </label>
+
+                      <select
+                        class="form-select"
+                        id="hawkerCenter"
+                      >
+                        <option value="">
+                          Select a hawker centre
+                        </option>
+
+                        <option value="Maxwell Food Centre">
+                          Maxwell Food Centre
+                        </option>
+
+                        <option value="Old Airport Road Food Centre">
+                          Old Airport Road Food Centre
+                        </option>
+
+                        <option value="Amoy Street Food Centre">
+                          Amoy Street Food Centre
+                        </option>
+
+                        <option value="Chinatown Complex Food Centre">
+                          Chinatown Complex Food Centre
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- Terms -->
+                <div class="form-check mt-4 mb-4">
                   <input
                     type="checkbox"
                     class="form-check-input"
                     id="terms"
                     required
                   />
-                  <label class="form-check-label">
+
+                  <label
+                    class="form-check-label"
+                    for="terms"
+                  >
                     I agree to the
-                    <a href="#" class="text-danger">Terms & Conditions</a>
+                    <a
+                      href="#"
+                      class="text-danger fw-semibold"
+                    >
+                      Terms &amp; Conditions
+                    </a>
                   </label>
                 </div>
 
-                <!-- SUBMIT BUTTON -->
+                <!-- Submit -->
                 <div class="d-grid">
-                  <button type="submit" class="btn btn-danger btn-lg">
+                  <button
+                    type="submit"
+                    class="btn btn-danger btn-lg"
+                    id="registerButton"
+                  >
+                    <i class="bi bi-person-check me-2"></i>
                     Create Account
                   </button>
                 </div>
               </form>
 
-              <!-- LOGIN LINK -->
               <div class="text-center mt-4">
-                <p>
+                <p class="mb-0">
                   Already have an account?
-                  <a href="login.html" class="text-danger fw-bold"
-                    >Login here</a
+
+                  <a
+                    href="login.html"
+                    class="text-danger fw-bold text-decoration-none"
                   >
+                    Login here
+                  </a>
                 </p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-dark text-white py-4 mt-5">
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
       <div class="container text-center">
-        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+        <p class="mb-0 small">
+          © 2026 HawkerHub. All rights reserved.
+        </p>
       </div>
     </footer>
 
-    <!-- BOOTSTRAP JAVASCRIPT (for toggle buttons, etc.) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- =========================================
-         CUSTOM JAVASCRIPT - REGISTRATION LOGIC
-         ========================================= -->
     <script>
-      // =========================================
-      // FEATURE 1: TOGGLE VENDOR FIELDS
-      // Shows/hides vendor-specific fields based on role selection
-      // =========================================
-      
-      // Select ALL radio buttons with name="role"
-      document.querySelectorAll('input[name="role"]').forEach((radio) => {
-        // For each radio button, listen for the 'change' event (when user clicks it)
-        radio.addEventListener("change", function () {
-          // Find the vendor fields container
-          const vendorFields = document.getElementById("vendorFields");
-          
-          // Check which radio was clicked
-          if (this.value === "vendor") {
-            // If vendor selected: REMOVE the d-none class (SHOW the fields)
-            vendorFields.classList.remove("d-none");
-          } else {
-            // If customer selected: ADD the d-none class (HIDE the fields)
-            vendorFields.classList.add("d-none");
-          }
-        });
-      });
+      const roleInputs =
+        document.querySelectorAll(
+          'input[name="role"]'
+        );
 
-      // =========================================
-      // FEATURE 2: HANDLE REGISTRATION SUBMISSION
-      // =========================================
-      document
-        .getElementById("registerForm")
-        .addEventListener("submit", function (e) {
-          // PREVENT PAGE REFRESH - critical for JavaScript handling
-          e.preventDefault();
+      const vendorFields =
+        document.getElementById(
+          "vendorFields"
+        );
 
-          // =========================================
-          // GET ALL FORM VALUES
-          // =========================================
-          const firstName = document.getElementById("firstName").value;
-          const lastName = document.getElementById("lastName").value;
-          const email = document.getElementById("email").value;
-          const password = document.getElementById("password").value;
-          const confirmPassword = document.getElementById("confirmPassword").value;
-          
-          // Find WHICH role is selected (checked)
-          const role = document.querySelector(
-            'input[name="role"]:checked',
+      const stallNameInput =
+        document.getElementById(
+          "stallName"
+        );
+
+      const hawkerCentreSelect =
+        document.getElementById(
+          "hawkerCenter"
+        );
+
+      function updateRoleFields() {
+        const selectedRole =
+          document.querySelector(
+            'input[name="role"]:checked'
           ).value;
 
-          // =========================================
-          // VALIDATION - Check for errors BEFORE saving
-          // =========================================
-          
-          // 1. Password match validation
-          if (password !== confirmPassword) {
-            alert("Passwords do not match!");  // User feedback
-            return;  // STOP the function here
+        const isVendor =
+          selectedRole === "vendor";
+
+        vendorFields.classList.toggle(
+          "d-none",
+          !isVendor
+        );
+
+        stallNameInput.required =
+          isVendor;
+
+        hawkerCentreSelect.required =
+          isVendor;
+
+        if (!isVendor) {
+          stallNameInput.value = "";
+          hawkerCentreSelect.value = "";
+        }
+      }
+
+      roleInputs.forEach((radio) => {
+        radio.addEventListener(
+          "change",
+          updateRoleFields
+        );
+      });
+
+      function togglePasswordVisibility(
+        inputId,
+        buttonId
+      ) {
+        const input =
+          document.getElementById(inputId);
+
+        const button =
+          document.getElementById(buttonId);
+
+        button.addEventListener(
+          "click",
+          function () {
+            const isPassword =
+              input.type === "password";
+
+            input.type =
+              isPassword
+                ? "text"
+                : "password";
+
+            button.innerHTML =
+              isPassword
+                ? '<i class="bi bi-eye-slash"></i>'
+                : '<i class="bi bi-eye"></i>';
           }
+        );
+      }
 
-          // 2. Password length validation
-          if (password.length < 6) {
-            alert("Password must be at least 6 characters!");
-            return;  // STOP
-          }
+      togglePasswordVisibility(
+        "password",
+        "togglePassword"
+      );
 
-          // =========================================
-          // CREATE USER OBJECT
-          // =========================================
-          const user = {
-            id: Date.now(),           // Unique ID using timestamp (e.g., 1770829400547)
-            firstName,                // Shorthand for firstName: firstName
-            lastName,
-            email,
-            password,                // ⚠️ In production, NEVER store raw passwords!
-            role,
-            createdAt: new Date().toISOString(),  // Timestamp for when user registered
-          };
+      togglePasswordVisibility(
+        "confirmPassword",
+        "toggleConfirmPassword"
+      );
 
-          // =========================================
-          // ADD VENDOR-SPECIFIC FIELDS (if vendor)
-          // =========================================
-          if (role === "vendor") {
-            const stallName = document.getElementById("stallName").value;
-            const hawkerCenter = document.getElementById("hawkerCenter").value;
+      document
+        .getElementById("registerForm")
+        .addEventListener(
+          "submit",
+          function (event) {
+            event.preventDefault();
 
-            // Validate vendor fields
-            if (!stallName || !hawkerCenter) {
-              alert("Please fill in vendor information!");
-              return;  // STOP
+            const firstName =
+              document
+                .getElementById("firstName")
+                .value
+                .trim();
+
+            const lastName =
+              document
+                .getElementById("lastName")
+                .value
+                .trim();
+
+            const email =
+              document
+                .getElementById("email")
+                .value
+                .trim()
+                .toLowerCase();
+
+            const phone =
+              document
+                .getElementById("phone")
+                .value
+                .trim();
+
+            const password =
+              document.getElementById(
+                "password"
+              ).value;
+
+            const confirmPassword =
+              document.getElementById(
+                "confirmPassword"
+              ).value;
+
+            const role =
+              document.querySelector(
+                'input[name="role"]:checked'
+              ).value;
+
+            if (
+              !firstName ||
+              !lastName ||
+              !email
+            ) {
+              alert(
+                "Please complete all required personal information."
+              );
+
+              return;
             }
 
-            // Add vendor properties to user object
-            user.stallName = stallName;
-            user.hawkerCenter = hawkerCenter;
-          }
+            if (
+              phone &&
+              !/^[689]\d{7}$/.test(phone)
+            ) {
+              alert(
+                "Please enter a valid 8-digit Singapore phone number."
+              );
 
-          // =========================================
-          // SAVE TO LOCALSTORAGE ("Database")
-          // =========================================
-          
-          // 1. Get existing users array, or create empty array if none exists
-          const users = JSON.parse(localStorage.getItem("hawkerhub_users")) || [];
-          
-          // 2. Add new user to array
-          users.push(user);
-          
-          // 3. Save entire array back to localStorage
-          localStorage.setItem("hawkerhub_users", JSON.stringify(users));
-          
-          // ✅ Now user is permanently stored in browser!
+              return;
+            }
 
-          // =========================================
-          // AUTO-LOGIN AFTER REGISTRATION
-          // =========================================
-          
-          // Create a copy of user object for session
-          const userForSession = { ...user };  // Spread operator - copies all properties
-          
-          // IMPORTANT: Remove password from session data!
-          delete userForSession.password;  // 🔐 NEVER store password in session
-          
-          // Save session to localStorage
-          localStorage.setItem("hawkerhub_user", JSON.stringify(userForSession));
-          
-          // User feedback
-          alert("✅ Registration successful!");
+            if (password.length < 6) {
+              alert(
+                "Password must contain at least 6 characters."
+              );
 
-          // =========================================
-          // REDIRECT TO APPROPRIATE DASHBOARD
-          // =========================================
-          
-          // Short delay so user sees success message
-          setTimeout(() => {
+              return;
+            }
+
+            if (
+              password !== confirmPassword
+            ) {
+              alert(
+                "Passwords do not match."
+              );
+
+              return;
+            }
+
+            const users =
+              JSON.parse(
+                localStorage.getItem(
+                  "hawkerhub_users"
+                )
+              ) || [];
+
+            const emailExists =
+              users.some(
+                (existingUser) =>
+                  existingUser.email
+                    .toLowerCase() ===
+                  email
+              );
+
+            if (emailExists) {
+              alert(
+                "An account with this email already exists."
+              );
+
+              return;
+            }
+
+            const user = {
+              id: Date.now(),
+              firstName,
+              lastName,
+              email,
+              phone,
+              password,
+              role,
+              createdAt:
+                new Date().toISOString()
+            };
+
+            if (role === "vendor") {
+              const stallName =
+                stallNameInput.value.trim();
+
+              const hawkerCenter =
+                hawkerCentreSelect.value;
+
+              if (
+                !stallName ||
+                !hawkerCenter
+              ) {
+                alert(
+                  "Please complete the vendor information."
+                );
+
+                return;
+              }
+
+              user.vendorId =
+                `V${Date.now()}`;
+
+              user.stallId =
+                Date.now();
+
+              user.stallName =
+                stallName;
+
+              user.hawkerCenter =
+                hawkerCenter;
+            }
+
+            users.push(user);
+
+            localStorage.setItem(
+              "hawkerhub_users",
+              JSON.stringify(users)
+            );
+
+            const userForSession = {
+              ...user
+            };
+
+            delete userForSession.password;
+
+            localStorage.setItem(
+              "hawkerhub_user",
+              JSON.stringify(
+                userForSession
+              )
+            );
+
+            alert(
+              "Registration successful!"
+            );
+
             if (role === "customer") {
-              window.location.href = "customer-dashboard.html";  // Order food
+              window.location.href =
+                "customer-dashboard.html";
             } else {
-              window.location.href = "vendor-dashboard.html";    // Manage stall
+              window.location.href =
+                "vendor-dashboard.html";
             }
-          }, 1000);  // 1 second delay
-        });
+          }
+        );
+
+      updateRoleFields();
     </script>
   </body>
 </html>
+```

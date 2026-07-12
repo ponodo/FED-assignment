@@ -3,11 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>HawkerHub - Cart</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
 
-  
   <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
@@ -17,89 +20,168 @@
 </head>
 
 <body class="bg-light">
+
+  <!-- Navigation bar -->
   <nav class="navbar bg-white border-bottom">
     <div class="container">
-      
+
       <a class="navbar-brand fw-bold text-danger" href="index.html">
-        <i class="bi bi-shop-window me-2"></i>HawkerHub
+        <i class="bi bi-shop-window me-2"></i>
+        HawkerHub
       </a>
 
-      <a class="btn btn-outline-danger" href="order.html">← Continue Shopping</a>
+      <a class="btn btn-outline-danger" href="order.html">
+        <i class="bi bi-arrow-left me-1"></i>
+        Continue Shopping
+      </a>
+
     </div>
   </nav>
 
+  <!-- Main content -->
   <main class="container py-4">
-    <h1 class="text-danger fw-bold mb-4">Shopping Cart</h1>
+
+    <h1 class="text-danger fw-bold mb-4">
+      Shopping Cart
+    </h1>
 
     <div class="row g-4 align-items-start">
-      <!-- LEFT -->
+
+      <!-- Left side: cart items -->
       <div class="col-12 col-lg-8">
+
         <div class="card shadow-sm">
           <div class="card-body">
-            <!-- Empty state -->
+
+            <!-- Empty cart state -->
             <section id="cart-empty" class="text-center py-5">
-              <div class="h5 fw-bold mb-2">
-                <p class="text-secondary mb-2">Your cart is empty</p>
-                <p class="text-secondary mb-4">Add some delicious food from our hawkers!</p>
-                <a class="btn btn-danger px-4" href="order.html">Browse Food</a>
-              </div>
+
+              <i class="bi bi-cart-x display-4 text-danger mb-3"></i>
+
+              <h2 class="h5 fw-bold mb-2">
+                Your cart is empty
+              </h2>
+
+              <p class="text-secondary mb-4">
+                Add some delicious food from our hawkers!
+              </p>
+
+              <a class="btn btn-danger px-4" href="order.html">
+                Browse Food
+              </a>
+
             </section>
 
-            <!-- Items state -->
+            <!-- Cart items state -->
             <section id="cart-items" class="d-none">
+
               <div class="d-flex justify-content-between align-items-center mb-3">
+
                 <div class="fw-bold" id="cart-stall-name"></div>
-                <button class="btn btn-outline-danger btn-sm" id="btn-clear-cart" type="button">Clear Cart</button>
+
+                <button
+                  class="btn btn-outline-danger btn-sm"
+                  id="btn-clear-cart"
+                  type="button"
+                >
+                  Clear Cart
+                </button>
+
               </div>
 
               <div id="cart-item-list"></div>
+
             </section>
+
           </div>
         </div>
+
       </div>
 
-      <!-- RIGHT -->
+      <!-- Right side: order summary -->
       <div class="col-12 col-lg-4">
+
         <div class="card shadow-sm">
-          <div class="card-header bg-danger text-white fw-bold">Order Summary</div>
+
+          <div class="card-header bg-danger text-white fw-bold">
+            Order Summary
+          </div>
+
           <div class="card-body">
+
             <div class="d-flex justify-content-between mb-2">
               <span class="text-secondary">Subtotal:</span>
-              <span class="fw-semibold" id="cart-subtotal">$0.00</span>
+              <span class="fw-semibold" id="cart-subtotal">
+                $0.00
+              </span>
             </div>
 
             <div class="d-flex justify-content-between mb-2">
               <span class="text-secondary">Delivery Fee:</span>
-              <span class="fw-semibold" id="cart-delivery-fee">$0.00</span>
+              <span class="fw-semibold" id="cart-delivery-fee">
+                $0.00
+              </span>
             </div>
 
-            <p class="text-secondary small mb-0" id="cart-delivery-message">
-              Delivery fee $5 applies for orders below $20
+            <p
+              class="alert alert-warning small py-2 mb-0"
+              id="cart-delivery-message"
+            >
+              Delivery fee of $5 applies for orders below $20.
             </p>
 
             <hr class="my-3" />
 
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-secondary">Total:</span>
-              <span class="fw-semibold text-danger" id="cart-total">$0.00</span>
+
+              <span class="fw-semibold">
+                Total:
+              </span>
+
+              <span
+                class="fw-bold text-danger fs-4"
+                id="cart-total"
+              >
+                $0.00
+              </span>
+
             </div>
 
-            <a class="btn btn-danger w-100 mb-2" href="checkout.html" id="btn-checkout">
+            <a
+              class="btn btn-danger w-100 mb-2"
+              href="checkout.html"
+              id="btn-checkout"
+            >
               Proceed to Checkout
             </a>
 
-            <a class="btn btn-outline-danger w-100" href="order.html">Continue Shopping</a>
+            <a
+              class="btn btn-outline-danger w-100"
+              href="order.html"
+            >
+              Continue Shopping
+            </a>
+
           </div>
         </div>
+
       </div>
+
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="bg-dark text-white text-center py-3 mt-4">
-    <div class="container">© 2024 HawkerHub. All rights reserved.</div>
+    <div class="container">
+      © 2026 HawkerHub. All rights reserved.
+    </div>
   </footer>
 
   <script type="module" src="js/cartPage.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
 </body>
 </html>

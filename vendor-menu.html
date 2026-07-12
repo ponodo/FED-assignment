@@ -2,160 +2,468 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tian Tian Chicken Rice - Menu</title>
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>HawkerHub - Public Menu</title>
+
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
+
     <link rel="stylesheet" href="css/style.css" />
+
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   </head>
-  <body>
-    <nav class="navbar navbar-light bg-white shadow-sm">
+
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar bg-white border-bottom py-3">
       <div class="container">
-        <a class="navbar-brand text-danger fw-bold" href="index.html">
-          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        <a
+          class="navbar-brand text-danger fw-bold"
+          href="index.html"
+        >
+          <i class="bi bi-shop-window me-2"></i>
+          HawkerHub
         </a>
-        <a href="order.html" class="btn btn-outline-danger">
-          <i class="bi bi-arrow-left me-2"></i>Back to Ordering
+
+        <a
+          href="vendor-dashboard.html"
+          class="btn btn-outline-danger"
+          id="backButton"
+        >
+          <i class="bi bi-arrow-left me-1"></i>
+          Back to Dashboard
         </a>
       </div>
     </nav>
 
-    <div class="container mt-5">
-      <!-- Stall Header -->
-      <div class="card mb-5 border-danger">
-        <div class="card-body text-center">
-          <h1 class="text-danger mb-3">Tian Tian Chicken Rice</h1>
-          <p class="lead mb-4">Maxwell Food Centre • Since 1980</p>
+    <!-- Main Content -->
+    <main class="container py-5 flex-grow-1">
+      <!-- Stall Information -->
+      <section class="card shadow-sm mb-5">
+        <div class="card-header bg-danger text-white fw-bold">
+          <i class="bi bi-shop me-2"></i>
+          Public Stall Menu
+        </div>
 
-          <div class="row">
-            <div class="col-md-4">
-              <div class="mb-3">
-                <i class="bi bi-clock text-danger me-2"></i>
-                <strong>Operating Hours:</strong>
-                <p class="mb-0">10:00 AM - 8:00 PM (Daily)</p>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <i class="bi bi-shield-check text-danger me-2"></i>
-                <strong>Hygiene Grade:</strong>
-                <p class="mb-0"><span class="badge bg-success fs-6">A</span></p>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="mb-3">
-                <i class="bi bi-star text-danger me-2"></i>
-                <strong>Rating:</strong>
-                <p class="mb-0">
-                  <span class="text-warning">★★★★★</span> 4.8/5.0
-                </p>
-              </div>
-            </div>
+        <div class="card-body text-center p-4 p-md-5">
+          <i
+            class="bi bi-shop-window display-3 text-danger"
+          ></i>
+
+          <h1
+            class="fw-bold text-danger mt-3 mb-2"
+            id="stallName"
+          >
+            Loading Stall...
+          </h1>
+
+          <p
+            class="lead text-secondary mb-0"
+            id="stallLocation"
+          >
+            Loading stall information...
+          </p>
+        </div>
+      </section>
+
+      <!-- Menu Header -->
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-4"
+      >
+        <div>
+          <h2 class="fw-bold text-danger mb-1">
+            Menu
+          </h2>
+
+          <p class="text-secondary mb-0">
+            View the food and drinks offered by this stall.
+          </p>
+        </div>
+
+        <span
+          class="badge bg-danger fs-6"
+          id="menuItemCount"
+        >
+          0 items
+        </span>
+      </div>
+
+      <!-- Loading State -->
+      <div
+        class="card shadow-sm"
+        id="loadingState"
+      >
+        <div class="card-body text-center py-5">
+          <div
+            class="spinner-border text-danger"
+            role="status"
+          >
+            <span class="visually-hidden">
+              Loading menu items
+            </span>
           </div>
+
+          <p class="text-secondary mt-3 mb-0">
+            Loading menu items...
+          </p>
         </div>
       </div>
 
       <!-- Menu Items -->
-      <h2 class="mb-4 text-danger">Menu</h2>
-      <div class="row" id="publicMenu">
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Chicken Rice</h5>
-              <p class="card-text">
-                Signature Hainanese chicken rice with fragrant rice and tender
-                chicken.
-              </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-danger">$5.50</span>
-                <span class="badge bg-success">Available</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Roasted Chicken Rice</h5>
-              <p class="card-text">
-                Crispy roasted chicken with aromatic rice.
-              </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-danger">$6.00</span>
-                <span class="badge bg-success">Available</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Steamed Chicken Rice</h5>
-              <p class="card-text">Healthy steamed chicken option.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-danger">$5.50</span>
-                <span class="badge bg-success">Available</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Extra Chicken</h5>
-              <p class="card-text">Additional serving of chicken.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-danger">$3.00</span>
-                <span class="badge bg-success">Available</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Iced Teh Tarik</h5>
-              <p class="card-text">Traditional pulled tea with ice.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-danger">$2.50</span>
-                <span class="badge bg-warning">Sold Out</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">Lime Juice</h5>
-              <p class="card-text">Refreshing lime juice.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold text-danger">$2.00</span>
-                <span class="badge bg-success">Available</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <section
+        class="row g-4 d-none"
+        id="publicMenu"
+      ></section>
 
-      <div class="text-center mt-5">
-        <a href="order.html" class="btn btn-danger btn-lg">
-          <i class="bi bi-basket me-2"></i>Order from This Hawker
-        </a>
-      </div>
-    </div>
+      <!-- Empty State -->
+      <section
+        class="card shadow-sm d-none"
+        id="emptyState"
+      >
+        <div class="card-body text-center py-5">
+          <i
+            class="bi bi-card-list display-4 text-danger"
+          ></i>
 
-    <footer class="bg-dark text-white py-4 mt-5">
+          <h2 class="h5 fw-bold mt-3">
+            No menu items available
+          </h2>
+
+          <p class="text-secondary mb-0">
+            This vendor has not added any menu items yet.
+          </p>
+        </div>
+      </section>
+
+      <!-- Error State -->
+      <section
+        class="alert alert-danger d-none"
+        id="errorState"
+      >
+        <i class="bi bi-exclamation-triangle me-1"></i>
+        Unable to load the menu. Please try again later.
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
       <div class="container text-center">
-        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+        <p class="mb-0 small">
+          © 2026 HawkerHub. All rights reserved.
+        </p>
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBK3Miw6Kissl4wd3RdVw6PXBhuFAL_QGQ",
+        authDomain: "hawkerhub-513e8.firebaseapp.com",
+        databaseURL:
+          "https://hawkerhub-513e8-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "hawkerhub-513e8",
+        storageBucket: "hawkerhub-513e8.firebasestorage.app",
+        messagingSenderId: "396562198613",
+        appId: "1:396562198613:web:593c1922573a27211624dc"
+      };
+
+      firebase.initializeApp(firebaseConfig);
+
+      const database = firebase.database();
+      const MENU_ITEMS_PATH = "menuItems";
+
+      const stallNameElement =
+        document.getElementById("stallName");
+
+      const stallLocationElement =
+        document.getElementById("stallLocation");
+
+      const menuItemCount =
+        document.getElementById("menuItemCount");
+
+      const loadingState =
+        document.getElementById("loadingState");
+
+      const publicMenu =
+        document.getElementById("publicMenu");
+
+      const emptyState =
+        document.getElementById("emptyState");
+
+      const errorState =
+        document.getElementById("errorState");
+
+      const backButton =
+        document.getElementById("backButton");
+
+      function getCurrentUser() {
+        const storedUser =
+          localStorage.getItem("hawkerhub_user");
+
+        if (!storedUser) {
+          return null;
+        }
+
+        try {
+          return JSON.parse(storedUser);
+        } catch (error) {
+          return null;
+        }
+      }
+
+      const currentUser = getCurrentUser();
+
+      const urlParameters =
+        new URLSearchParams(window.location.search);
+
+      const stallIdFromUrl =
+        urlParameters.get("stallId");
+
+      const stallId =
+        stallIdFromUrl ||
+        currentUser?.stallId ||
+        2;
+
+      if (
+        !currentUser ||
+        currentUser.role !== "vendor"
+      ) {
+        backButton.href = "order.html";
+        backButton.innerHTML = `
+          <i class="bi bi-arrow-left me-1"></i>
+          Back to Ordering
+        `;
+      }
+
+      function escapeHtml(value) {
+        const element =
+          document.createElement("div");
+
+        element.textContent =
+          String(value ?? "");
+
+        return element.innerHTML;
+      }
+
+      function formatAvailability(value) {
+        if (value === "soldout") {
+          return "Sold Out";
+        }
+
+        if (value === "unavailable") {
+          return "Unavailable";
+        }
+
+        return "Available";
+      }
+
+      function getAvailabilityBadge(value) {
+        if (value === "available") {
+          return "bg-success";
+        }
+
+        if (value === "soldout") {
+          return "bg-warning text-dark";
+        }
+
+        return "bg-secondary";
+      }
+
+      function showMenuItems(items) {
+        loadingState.classList.add("d-none");
+
+        menuItemCount.textContent =
+          `${items.length} item${
+            items.length === 1 ? "" : "s"
+          }`;
+
+        if (items.length === 0) {
+          emptyState.classList.remove("d-none");
+          publicMenu.classList.add("d-none");
+          return;
+        }
+
+        emptyState.classList.add("d-none");
+        publicMenu.classList.remove("d-none");
+        publicMenu.innerHTML = "";
+
+        items.sort((firstItem, secondItem) =>
+          String(firstItem.name || "")
+            .localeCompare(
+              String(secondItem.name || "")
+            )
+        );
+
+        items.forEach((item) => {
+          const safeName =
+            escapeHtml(item.name || "Unnamed Item");
+
+          const safeDescription =
+            escapeHtml(
+              item.description ||
+              "No description available."
+            );
+
+          const safeCategory =
+            escapeHtml(
+              item.category ||
+              "Other"
+            );
+
+          const price =
+            Number(item.price || 0).toFixed(2);
+
+          const availability =
+            item.availability || "available";
+
+          const isAvailable =
+            availability === "available";
+
+          const itemHtml = `
+            <div class="col-12 col-md-6 col-lg-4">
+              <article class="card h-100 shadow-sm">
+                <div class="card-body d-flex flex-column">
+                  <div
+                    class="d-flex justify-content-between align-items-start gap-2 mb-2"
+                  >
+                    <h3 class="h5 fw-bold mb-0">
+                      ${safeName}
+                    </h3>
+
+                    <span
+                      class="badge ${getAvailabilityBadge(
+                        availability
+                      )}"
+                    >
+                      ${formatAvailability(
+                        availability
+                      )}
+                    </span>
+                  </div>
+
+                  <span
+                    class="badge bg-light text-dark border align-self-start mb-3"
+                  >
+                    ${safeCategory}
+                  </span>
+
+                  <p class="text-secondary">
+                    ${safeDescription}
+                  </p>
+
+                  <div
+                    class="d-flex justify-content-between align-items-center mt-auto"
+                  >
+                    <span class="fs-5 fw-bold text-danger">
+                      $${price}
+                    </span>
+
+                    ${
+                      isAvailable
+                        ? `
+                          <a
+                            href="order.html?stallId=${encodeURIComponent(
+                              stallId
+                            )}"
+                            class="btn btn-sm btn-danger"
+                          >
+                            <i class="bi bi-cart-plus me-1"></i>
+                            Order
+                          </a>
+                        `
+                        : `
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-secondary"
+                            disabled
+                          >
+                            Unavailable
+                          </button>
+                        `
+                    }
+                  </div>
+                </div>
+              </article>
+            </div>
+          `;
+
+          publicMenu.insertAdjacentHTML(
+            "beforeend",
+            itemHtml
+          );
+        });
+      }
+
+      function loadMenu() {
+        const menuReference =
+          database.ref(MENU_ITEMS_PATH);
+
+        menuReference
+          .orderByChild("stallId")
+          .equalTo(
+            Number.isNaN(Number(stallId))
+              ? stallId
+              : Number(stallId)
+          )
+          .once("value")
+          .then((snapshot) => {
+            const items = [];
+
+            let loadedStallName =
+              currentUser?.stallName ||
+              "Hawker Stall";
+
+            snapshot.forEach((childSnapshot) => {
+              const item =
+                childSnapshot.val();
+
+              item.id =
+                childSnapshot.key;
+
+              items.push(item);
+
+              if (item.stallName) {
+                loadedStallName =
+                  item.stallName;
+              }
+            });
+
+            stallNameElement.textContent =
+              loadedStallName;
+
+            stallLocationElement.textContent =
+              currentUser?.hawkerCenter ||
+              "HawkerHub Vendor";
+
+            showMenuItems(items);
+          })
+          .catch((error) => {
+            console.error(
+              "Error loading public menu:",
+              error
+            );
+
+            loadingState.classList.add("d-none");
+            errorState.classList.remove("d-none");
+          });
+      }
+
+      loadMenu();
+    </script>
   </body>
 </html>

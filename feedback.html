@@ -1,43 +1,82 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
     <title>HawkerHub - Feedback</title>
+
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
+
     <link rel="stylesheet" href="css/style.css" />
   </head>
+
   <body>
-    <nav class="navbar navbar-light bg-white shadow-sm">
+    <!-- Navbar -->
+    <nav class="navbar bg-white border-bottom py-3">
       <div class="container">
-        <a class="navbar-brand text-danger fw-bold" href="index.html">
-          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        <a
+          class="navbar-brand text-danger fw-bold"
+          href="index.html"
+        >
+          <i class="bi bi-shop-window me-2"></i>
+          HawkerHub
         </a>
-        <a href="hawker-directory.html" class="btn btn-outline-danger">
-          <i class="bi bi-map me-2"></i>Browse Hawkers
+
+        <a
+          href="hawker-directory.html"
+          class="btn btn-outline-danger"
+        >
+          <i class="bi bi-map me-1"></i>
+          Browse Hawkers
         </a>
       </div>
     </nav>
 
-    <div class="container mt-5">
-      <h1 class="mb-4 text-danger">Customer Feedback</h1>
+    <!-- Main Content -->
+    <main class="container py-5">
+      <div class="mb-4">
+        <h1 class="fw-bold text-danger mb-2">
+          Customer Feedback
+        </h1>
+
+        <p class="text-secondary mb-0">
+          Share your experience and help other customers discover good food.
+        </p>
+      </div>
 
       <!-- Submit Feedback -->
-      <div class="card mb-5">
-        <div class="card-header bg-danger text-white">
-          <h5 class="mb-0">Submit Feedback</h5>
+      <div class="card shadow-sm mb-5">
+        <div class="card-header bg-danger text-white fw-bold">
+          <i class="bi bi-chat-square-text me-2"></i>
+          Submit Feedback
         </div>
+
         <div class="card-body">
           <form id="feedbackForm">
+            <!-- Customer Name -->
             <div class="mb-3">
-              <label class="form-label">Your Name *</label>
+              <label
+                for="userName"
+                class="form-label fw-semibold"
+              >
+                Your Name
+                <span class="text-danger">*</span>
+              </label>
+
               <input
                 type="text"
                 class="form-control"
@@ -46,47 +85,143 @@
                 required
               />
             </div>
+
+            <!-- Hawker Stall -->
             <div class="mb-3">
-              <label class="form-label">Select Hawker *</label>
-              <select class="form-select" id="hawkerSelect" required>
-                <option value="">Choose a hawker...</option>
-                <option>Tian Tian Chicken Rice</option>
-                <option>Hill Street Fried Kway Teow</option>
-                <option>Sungei Road Laksa</option>
-                <option>Roti Prata House</option>
-                <option>ABC Noodles</option>
+              <label
+                for="hawkerSelect"
+                class="form-label fw-semibold"
+              >
+                Select Hawker
+                <span class="text-danger">*</span>
+              </label>
+
+              <select
+                class="form-select"
+                id="hawkerSelect"
+                required
+              >
+                <option value="">
+                  Choose a hawker stall
+                </option>
+
+                <option value="Tian Tian Chicken Rice">
+                  Tian Tian Chicken Rice
+                </option>
+
+                <option value="Hill Street Fried Kway Teow">
+                  Hill Street Fried Kway Teow
+                </option>
+
+                <option value="Sungei Road Laksa">
+                  Sungei Road Laksa
+                </option>
+
+                <option value="Roti Prata House">
+                  Roti Prata House
+                </option>
+
+                <option value="ABC Noodles">
+                  ABC Noodles
+                </option>
               </select>
             </div>
+
+            <!-- Rating -->
             <div class="mb-3">
-              <label class="form-label">Rating *</label>
-              <div class="rating-stars mb-2">
-                <span class="star" data-value="1">☆</span>
-                <span class="star" data-value="2">☆</span>
-                <span class="star" data-value="3">☆</span>
-                <span class="star" data-value="4">☆</span>
-                <span class="star" data-value="5">☆</span>
-                <input type="hidden" id="ratingValue" value="0" required />
-              </div>
-              <small class="text-muted"
-                >Click stars to rate (1 = Poor, 5 = Excellent)</small
+              <label class="form-label fw-semibold">
+                Rating
+                <span class="text-danger">*</span>
+              </label>
+
+              <div
+                class="rating-stars mb-1"
+                role="radiogroup"
+                aria-label="Select a rating from 1 to 5 stars"
               >
+                <button
+                  type="button"
+                  class="star"
+                  data-value="1"
+                  aria-label="1 star"
+                >
+                  ☆
+                </button>
+
+                <button
+                  type="button"
+                  class="star"
+                  data-value="2"
+                  aria-label="2 stars"
+                >
+                  ☆
+                </button>
+
+                <button
+                  type="button"
+                  class="star"
+                  data-value="3"
+                  aria-label="3 stars"
+                >
+                  ☆
+                </button>
+
+                <button
+                  type="button"
+                  class="star"
+                  data-value="4"
+                  aria-label="4 stars"
+                >
+                  ☆
+                </button>
+
+                <button
+                  type="button"
+                  class="star"
+                  data-value="5"
+                  aria-label="5 stars"
+                >
+                  ☆
+                </button>
+
+                <input
+                  type="hidden"
+                  id="ratingValue"
+                  value="0"
+                />
+              </div>
+
+              <small class="text-secondary">
+                Click the stars to rate: 1 is poor and 5 is excellent.
+              </small>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Your Feedback *</label>
+
+            <!-- Feedback -->
+            <div class="mb-4">
+              <label
+                for="feedbackText"
+                class="form-label fw-semibold"
+              >
+                Your Feedback
+                <span class="text-danger">*</span>
+              </label>
+
               <textarea
                 class="form-control"
                 id="feedbackText"
                 rows="4"
-                placeholder="Share your experience with this hawker..."
+                placeholder="Share your experience with this hawker stall"
                 required
               ></textarea>
             </div>
+
             <div class="d-grid">
               <button
                 type="submit"
                 class="btn btn-danger btn-lg"
                 id="submitBtn"
               >
+                <i class="bi bi-send me-2"></i>
                 Submit Feedback
               </button>
             </div>
@@ -95,43 +230,65 @@
       </div>
 
       <!-- Recent Feedback -->
-      <div class="card">
+      <div class="card shadow-sm">
         <div
           class="card-header bg-danger text-white d-flex justify-content-between align-items-center"
         >
-          <h5 class="mb-0">Recent Feedback</h5>
+          <div class="fw-bold">
+            <i class="bi bi-clock-history me-2"></i>
+            Recent Feedback
+          </div>
+
           <div
             class="spinner-border spinner-border-sm text-white d-none"
             id="loadingSpinner"
             role="status"
           >
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">
+              Loading feedback
+            </span>
           </div>
         </div>
-        <div class="card-body" id="feedbackContainer">
-          <!-- Feedback items will be loaded here dynamically -->
-          <div class="text-center text-muted py-4">
-            <div class="spinner-border" role="status">
-              <span class="visually-hidden">Loading...</span>
+
+        <div
+          class="card-body"
+          id="feedbackContainer"
+        >
+          <div class="text-center text-secondary py-4">
+            <div
+              class="spinner-border text-danger"
+              role="status"
+            >
+              <span class="visually-hidden">
+                Loading feedback
+              </span>
             </div>
-            <p class="mt-2">Loading feedback...</p>
+
+            <p class="mt-3 mb-0">
+              Loading feedback...
+            </p>
           </div>
         </div>
       </div>
-    </div>
+    </main>
 
+    <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-5">
       <div class="container text-center">
-        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+        <p class="mb-0 small">
+          © 2026 HawkerHub. All rights reserved.
+        </p>
       </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Firebase SDK -->
     <script type="module">
-      // Import Firebase modules (NO AUTH NEEDED!)
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+      import {
+        initializeApp
+      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
       import {
         getFirestore,
         collection,
@@ -140,10 +297,9 @@
         orderBy,
         limit,
         getDocs,
-        serverTimestamp,
+        serverTimestamp
       } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-      // Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyAjnXDGgSpL5fpzyRVfRXNj04RWS-rPdw4",
         authDomain: "feedback-8b979.firebaseapp.com",
@@ -151,239 +307,402 @@
         storageBucket: "feedback-8b979.firebasestorage.app",
         messagingSenderId: "167033275651",
         appId: "1:167033275651:web:4d75cca9519fb649e15536",
-        measurementId: "G-S51VRLWXDD",
+        measurementId: "G-S51VRLWXDD"
       };
 
-      // Initialize Firebase (NO AUTH!)
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      // Star rating system
       const stars = document.querySelectorAll(".star");
-      const ratingValue = document.getElementById("ratingValue");
+      const ratingValue =
+        document.getElementById("ratingValue");
+
+      function updateStarDisplay(rating) {
+        stars.forEach((star, index) => {
+          if (index < rating) {
+            star.textContent = "★";
+            star.classList.add("selected");
+          } else {
+            star.textContent = "☆";
+            star.classList.remove("selected");
+          }
+        });
+      }
 
       stars.forEach((star) => {
         star.addEventListener("click", function () {
-          const value = parseInt(this.getAttribute("data-value"));
-          ratingValue.value = value;
+          const value = Number.parseInt(
+            this.dataset.value,
+            10
+          );
 
-          // Update star display
-          stars.forEach((s, index) => {
-            if (index < value) {
-              s.textContent = "★";
-              s.style.color = "#ffc107";
-            } else {
-              s.textContent = "☆";
-              s.style.color = "#ccc";
-            }
-          });
+          ratingValue.value = value;
+          updateStarDisplay(value);
         });
 
-        // Hover effect
         star.addEventListener("mouseover", function () {
-          const value = parseInt(this.getAttribute("data-value"));
-          stars.forEach((s, index) => {
-            if (index < value) {
-              s.style.color = "#ffc107";
-            }
+          const value = Number.parseInt(
+            this.dataset.value,
+            10
+          );
+
+          stars.forEach((currentStar, index) => {
+            currentStar.classList.toggle(
+              "hovered",
+              index < value
+            );
           });
         });
 
         star.addEventListener("mouseout", function () {
-          const currentRating = parseInt(ratingValue.value);
-          stars.forEach((s, index) => {
-            if (index >= currentRating) {
-              s.style.color = "#ccc";
-            }
+          stars.forEach((currentStar) => {
+            currentStar.classList.remove("hovered");
           });
         });
       });
 
-      // Function to render star rating
       function renderStars(rating) {
         let starsHtml = "";
-        for (let i = 1; i <= 5; i++) {
-          if (i <= rating) {
-            starsHtml += '<i class="bi bi-star-fill"></i>';
-          } else if (i - 0.5 <= rating) {
-            starsHtml += '<i class="bi bi-star-half"></i>';
+
+        for (let index = 1; index <= 5; index++) {
+          if (index <= rating) {
+            starsHtml +=
+              '<i class="bi bi-star-fill"></i>';
           } else {
-            starsHtml += '<i class="bi bi-star"></i>';
+            starsHtml +=
+              '<i class="bi bi-star"></i>';
           }
         }
+
         return starsHtml;
       }
 
-      // Function to format timestamp
       function formatTimestamp(timestamp) {
-        if (!timestamp) return "Just now";
-
-        const now = new Date();
-        const feedbackDate = timestamp.toDate();
-        const diffMs = now - feedbackDate;
-        const diffMins = Math.floor(diffMs / 60000);
-        const diffHours = Math.floor(diffMs / 3600000);
-        const diffDays = Math.floor(diffMs / 86400000);
-
-        if (diffMins < 1) return "Just now";
-        if (diffMins < 60)
-          return `${diffMins} minute${diffMins > 1 ? "s" : ""} ago`;
-        if (diffHours < 24)
-          return `${diffHours} hour${diffHours > 1 ? "s" : ""} ago`;
-        if (diffDays < 7)
-          return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`;
-        if (diffDays < 30) {
-          const weeks = Math.floor(diffDays / 7);
-          return `${weeks} week${weeks > 1 ? "s" : ""} ago`;
+        if (!timestamp) {
+          return "Just now";
         }
-        return feedbackDate.toLocaleDateString();
+
+        const currentDate = new Date();
+        const feedbackDate = timestamp.toDate();
+
+        const differenceMilliseconds =
+          currentDate - feedbackDate;
+
+        const differenceMinutes = Math.floor(
+          differenceMilliseconds / 60000
+        );
+
+        const differenceHours = Math.floor(
+          differenceMilliseconds / 3600000
+        );
+
+        const differenceDays = Math.floor(
+          differenceMilliseconds / 86400000
+        );
+
+        if (differenceMinutes < 1) {
+          return "Just now";
+        }
+
+        if (differenceMinutes < 60) {
+          return `${differenceMinutes} minute${
+            differenceMinutes === 1 ? "" : "s"
+          } ago`;
+        }
+
+        if (differenceHours < 24) {
+          return `${differenceHours} hour${
+            differenceHours === 1 ? "" : "s"
+          } ago`;
+        }
+
+        if (differenceDays < 7) {
+          return `${differenceDays} day${
+            differenceDays === 1 ? "" : "s"
+          } ago`;
+        }
+
+        return feedbackDate.toLocaleDateString(
+          "en-SG",
+          {
+            day: "numeric",
+            month: "short",
+            year: "numeric"
+          }
+        );
       }
 
-      // Function to load feedback from Firestore
-      async function loadFeedback() {
-        const feedbackContainer = document.getElementById("feedbackContainer");
+      function escapeHtml(value) {
+        const temporaryElement =
+          document.createElement("div");
 
-        try {
-          const q = query(
-            collection(db, "feedbacks"),
-            orderBy("timestamp", "desc"),
-            limit(10),
+        temporaryElement.textContent =
+          String(value ?? "");
+
+        return temporaryElement.innerHTML;
+      }
+
+      async function loadFeedback() {
+        const feedbackContainer =
+          document.getElementById(
+            "feedbackContainer"
           );
 
-          const querySnapshot = await getDocs(q);
+        try {
+          const feedbackQuery = query(
+            collection(db, "feedbacks"),
+            orderBy("timestamp", "desc"),
+            limit(10)
+          );
+
+          const querySnapshot =
+            await getDocs(feedbackQuery);
 
           if (querySnapshot.empty) {
             feedbackContainer.innerHTML = `
-              <div class="text-center text-muted py-4">
-                <i class="bi bi-chat-square-text" style="font-size: 3rem;"></i>
-                <p class="mt-2">No feedback yet. Be the first to share your experience!</p>
+              <div class="text-center text-secondary py-5">
+                <i class="bi bi-chat-square-text display-5 text-danger"></i>
+
+                <p class="mt-3 mb-0">
+                  No feedback yet. Be the first to share your experience!
+                </p>
               </div>
             `;
+
             return;
           }
 
           let feedbackHtml = "";
 
-          querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            feedbackHtml += `
-              <div class="feedback-item mb-4 p-3 border rounded">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                  <div>
-                    <h6 class="mb-1">${data.hawkerName}</h6>
-                    <small class="text-muted">By ${data.userName || "Anonymous"} • ${formatTimestamp(data.timestamp)}</small>
-                  </div>
-                  <div class="text-warning">
-                    ${renderStars(data.rating)}
-                  </div>
-                </div>
-                <p class="mb-0">"${data.feedbackText}"</p>
-              </div>
-            `;
-          });
+          querySnapshot.forEach(
+            (feedbackDocument) => {
+              const data =
+                feedbackDocument.data();
 
-          feedbackContainer.innerHTML = feedbackHtml;
+              const safeHawkerName =
+                escapeHtml(data.hawkerName);
+
+              const safeUserName =
+                escapeHtml(
+                  data.userName || "Anonymous"
+                );
+
+              const safeFeedbackText =
+                escapeHtml(data.feedbackText);
+
+              feedbackHtml += `
+                <article class="feedback-item mb-3 p-3 border rounded">
+                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2 mb-2">
+                    <div>
+                      <h2 class="h6 fw-bold mb-1">
+                        ${safeHawkerName}
+                      </h2>
+
+                      <small class="text-secondary">
+                        By ${safeUserName}
+                        · ${formatTimestamp(data.timestamp)}
+                      </small>
+                    </div>
+
+                    <div
+                      class="text-warning"
+                      aria-label="${data.rating} out of 5 stars"
+                    >
+                      ${renderStars(data.rating)}
+                    </div>
+                  </div>
+
+                  <p class="mb-0">
+                    ${safeFeedbackText}
+                  </p>
+                </article>
+              `;
+            }
+          );
+
+          feedbackContainer.innerHTML =
+            feedbackHtml;
         } catch (error) {
-          console.error("Error loading feedback:", error);
+          console.error(
+            "Error loading feedback:",
+            error
+          );
+
           feedbackContainer.innerHTML = `
-            <div class="alert alert-danger">
+            <div class="alert alert-danger mb-0">
+              <i class="bi bi-exclamation-circle me-1"></i>
               Error loading feedback. Please try again later.
             </div>
           `;
         }
       }
 
-      // Handle feedback submission (NO LOGIN REQUIRED!)
       document
         .getElementById("feedbackForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
+        .addEventListener(
+          "submit",
+          async function (event) {
+            event.preventDefault();
 
-          const userName = document.getElementById("userName").value.trim();
-          const hawker = document.getElementById("hawkerSelect").value;
-          const rating = parseInt(document.getElementById("ratingValue").value);
-          const feedback = document.getElementById("feedbackText").value.trim();
+            const userName =
+              document
+                .getElementById("userName")
+                .value
+                .trim();
 
-          // Validation
-          if (!userName) {
-            alert("Please enter your name");
-            return;
+            const hawker =
+              document.getElementById(
+                "hawkerSelect"
+              ).value;
+
+            const rating =
+              Number.parseInt(
+                ratingValue.value,
+                10
+              );
+
+            const feedback =
+              document
+                .getElementById("feedbackText")
+                .value
+                .trim();
+
+            if (!userName) {
+              alert("Please enter your name.");
+              return;
+            }
+
+            if (!hawker) {
+              alert("Please select a hawker stall.");
+              return;
+            }
+
+            if (
+              Number.isNaN(rating) ||
+              rating < 1 ||
+              rating > 5
+            ) {
+              alert(
+                "Please provide a rating by clicking the stars."
+              );
+
+              return;
+            }
+
+            if (!feedback) {
+              alert("Please write your feedback.");
+              return;
+            }
+
+            const submitButton =
+              document.getElementById(
+                "submitBtn"
+              );
+
+            const originalButtonHtml =
+              submitButton.innerHTML;
+
+            submitButton.disabled = true;
+
+            submitButton.innerHTML = `
+              <span
+                class="spinner-border spinner-border-sm me-2"
+                aria-hidden="true"
+              ></span>
+              Submitting...
+            `;
+
+            try {
+              await addDoc(
+                collection(db, "feedbacks"),
+                {
+                  hawkerName: hawker,
+                  rating,
+                  feedbackText: feedback,
+                  userName,
+                  timestamp: serverTimestamp(),
+                  createdAt:
+                    new Date().toISOString()
+                }
+              );
+
+              alert(
+                `Thank you for your feedback, ${userName}!`
+              );
+
+              document
+                .getElementById("feedbackForm")
+                .reset();
+
+              ratingValue.value = "0";
+              updateStarDisplay(0);
+
+              await loadFeedback();
+            } catch (error) {
+              console.error(
+                "Error submitting feedback:",
+                error
+              );
+
+              alert(
+                "Error submitting feedback. Please try again."
+              );
+            } finally {
+              submitButton.disabled = false;
+              submitButton.innerHTML =
+                originalButtonHtml;
+            }
           }
+        );
 
-          if (rating === 0) {
-            alert("Please provide a rating by clicking the stars");
-            return;
-          }
-
-          if (!feedback) {
-            alert("Please write your feedback");
-            return;
-          }
-
-          const submitBtn = document.getElementById("submitBtn");
-          const originalText = submitBtn.textContent;
-          submitBtn.disabled = true;
-          submitBtn.innerHTML =
-            '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
-
-          try {
-            // Add feedback to Firestore (NO AUTH!)
-            await addDoc(collection(db, "feedbacks"), {
-              hawkerName: hawker,
-              rating: rating,
-              feedbackText: feedback,
-              userName: userName,
-              timestamp: serverTimestamp(),
-              createdAt: new Date().toISOString(),
-            });
-
-            // Show success message
-            alert(
-              `Thank you for your feedback, ${userName}!\n\nHawker: ${hawker}\nRating: ${rating}/5\n\nYour feedback has been submitted successfully.`,
-            );
-
-            // Reset form
-            document.getElementById("feedbackForm").reset();
-            stars.forEach((star) => {
-              star.textContent = "☆";
-              star.style.color = "#ccc";
-            });
-            ratingValue.value = "0";
-
-            // Reload feedback list
-            await loadFeedback();
-          } catch (error) {
-            console.error("Error submitting feedback:", error);
-            alert("Error submitting feedback. Please try again.");
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-          }
-        });
-
-      // Load feedback when page loads
       loadFeedback();
     </script>
 
     <style>
       .rating-stars {
-        font-size: 2rem;
-        cursor: pointer;
+        display: flex;
+        gap: 0.25rem;
       }
+
       .star {
-        color: #ccc;
-        margin-right: 5px;
-        transition: color 0.2s;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: #adb5bd;
+        font-size: 2.25rem;
+        line-height: 1;
+        cursor: pointer;
+        transition:
+          color 0.2s ease,
+          transform 0.2s ease;
       }
-      .star:hover {
+
+      .star:hover,
+      .star.hovered,
+      .star.selected {
         color: #ffc107;
+        transform: scale(1.08);
       }
+
+      .star:focus-visible {
+        outline: 3px solid rgba(230, 57, 70, 0.3);
+        border-radius: 4px;
+      }
+
       .feedback-item {
-        transition: box-shadow 0.2s;
+        background-color: #fffdfb;
+        transition:
+          box-shadow 0.2s ease,
+          transform 0.2s ease;
       }
+
       .feedback-item:hover {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-shadow:
+          0 4px 12px rgba(0, 0, 0, 0.1);
+
+        transform: translateY(-1px);
       }
     </style>
   </body>
 </html>
+

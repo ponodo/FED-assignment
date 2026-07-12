@@ -1,423 +1,540 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HawkerHub - Menu Management</title>
 
-    <!-- BOOTSTRAP CSS FRAMEWORK -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
     />
 
-    <!-- FIREBASE SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <title>HawkerHub - Hawker Directory</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body class="bg-light">
-    <!-- NAVIGATION BAR -->
-    <nav class="navbar bg-white shadow-sm py-3">
+
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar bg-white border-bottom py-3">
       <div class="container">
-        <a class="navbar-brand text-danger fw-bold" href="index.html">
-          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        <a
+          class="navbar-brand text-danger fw-bold"
+          href="index.html"
+        >
+          <i class="bi bi-shop-window me-2"></i>
+          HawkerHub
         </a>
-        <a href="vendor-dashboard.html" class="btn btn-outline-danger btn-sm">
-          <i class="bi bi-arrow-left me-1"></i>Dashboard
+
+        <a
+          href="order.html"
+          class="btn btn-outline-danger"
+        >
+          <i class="bi bi-basket me-1"></i>
+          Order Food
         </a>
       </div>
     </nav>
 
-    <main class="container py-4">
-      <h1 class="text-danger mb-4">Menu Management</h1>
+    <!-- Main Content -->
+    <main class="container py-5">
+      <div class="mb-4">
+        <h1 class="fw-bold text-danger mb-2">
+          Hawker Directory
+        </h1>
 
-      <!-- ADD/EDIT MENU ITEM FORM -->
-      <div class="card mb-4">
-        <div class="card-header bg-danger text-white">
-          <h5 class="mb-0">Add Menu Item</h5>
+        <p class="text-secondary mb-0">
+          Browse hawker stalls by name, cuisine and location.
+        </p>
+      </div>
+
+      <!-- Search and Filters -->
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-danger text-white fw-bold">
+          <i class="bi bi-funnel me-2"></i>
+          Search and Filter
         </div>
+
         <div class="card-body">
-          <form id="addItemForm">
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
+          <div class="row g-3">
+            <div class="col-12 col-lg-6">
+              <label
+                for="searchInput"
+                class="form-label fw-semibold"
+              >
+                Search Hawkers
+              </label>
+
+              <div class="input-group">
                 <input
-                  type="text"
+                  type="search"
                   class="form-control"
-                  placeholder="Item Name *"
-                  id="itemName"
-                  required
+                  placeholder="Search by stall name"
+                  id="searchInput"
                 />
-              </div>
-              <div class="col-md-6">
-                <select class="form-select" id="itemCategory" required>
-                  <option value="">Category</option>
-                  <option>Main Course</option>
-                  <option>Side Dish</option>
-                  <option>Beverage</option>
-                  <option>Dessert</option>
-                </select>
-              </div>
-            </div>
-            <div class="row g-3 mb-3">
-              <div class="col-md-6">
-                <input
-                  type="number"
-                  class="form-control"
-                  placeholder="Price ($) *"
-                  id="itemPrice"
-                  step="0.50"
-                  required
-                />
-              </div>
-              <div class="col-md-6">
-                <select class="form-select" id="itemAvailability" required>
-                  <option value="available">Available</option>
-                  <option value="unavailable">Unavailable</option>
-                  <option value="soldout">Sold Out</option>
-                </select>
+
+                <button
+                  class="btn btn-danger"
+                  type="button"
+                  id="searchButton"
+                >
+                  <i class="bi bi-search me-1"></i>
+                  Search
+                </button>
               </div>
             </div>
-            <div class="mb-3">
-              <textarea
-                class="form-control"
-                placeholder="Description"
-                id="itemDescription"
-                rows="2"
-              ></textarea>
+
+            <div class="col-12 col-md-6 col-lg-3">
+              <label
+                for="cuisineFilter"
+                class="form-label fw-semibold"
+              >
+                Cuisine
+              </label>
+
+              <select
+                class="form-select"
+                id="cuisineFilter"
+              >
+                <option value="">
+                  All Cuisines
+                </option>
+
+                <option value="Chinese">
+                  Chinese
+                </option>
+
+                <option value="Malay">
+                  Malay
+                </option>
+
+                <option value="Indian">
+                  Indian
+                </option>
+
+                <option value="Western">
+                  Western
+                </option>
+              </select>
             </div>
-            <button type="submit" class="btn btn-danger w-100" id="submitBtn">
-              Add Item
-            </button>
-          </form>
+
+            <div class="col-12 col-md-6 col-lg-3">
+              <label
+                for="locationFilter"
+                class="form-label fw-semibold"
+              >
+                Location
+              </label>
+
+              <select
+                class="form-select"
+                id="locationFilter"
+              >
+                <option value="">
+                  All Locations
+                </option>
+
+                <option value="Maxwell Food Centre">
+                  Maxwell Food Centre
+                </option>
+
+                <option value="Old Airport Road">
+                  Old Airport Road
+                </option>
+
+                <option value="Bedok Food Centre">
+                  Bedok Food Centre
+                </option>
+
+                <option value="Amoy Street">
+                  Amoy Street
+                </option>
+
+                <option value="Jalan Besar">
+                  Jalan Besar
+                </option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- MENU ITEMS TABLE -->
-      <div class="card">
-        <div class="card-header bg-danger text-white">
-          <h5 class="mb-0">Menu Items</h5>
-        </div>
-        <div class="card-body p-0">
-          <div class="table-responsive">
-            <table class="table table-hover mb-0">
-              <thead class="table-light">
-                <tr>
-                  <th>Item Name</th>
-                  <th>Category</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="menuItemsTable">
-                <tr id="loadingRow">
-                  <td colspan="5" class="text-center py-4">
-                    <div class="spinner-border text-danger" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <p class="mt-2">Loading menu items...</p>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+      <!-- Results Information -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 fw-bold mb-0">
+          Available Hawkers
+        </h2>
+
+        <span
+          class="text-secondary small"
+          id="resultCount"
+        >
+          3 hawkers found
+        </span>
+      </div>
+
+      <!-- Hawker List -->
+      <div class="row g-4" id="hawkerList">
+        <!-- Tian Tian Chicken Rice -->
+        <div
+          class="col-12 col-md-6 col-lg-4 hawker-card"
+          data-name="Tian Tian Chicken Rice"
+          data-cuisine="Chinese"
+          data-location="Maxwell Food Centre"
+        >
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <div
+                class="d-flex justify-content-between align-items-start gap-3 mb-2"
+              >
+                <h3 class="h5 fw-bold card-title mb-0">
+                  Tian Tian Chicken Rice
+                </h3>
+
+                <span class="badge bg-success">
+                  Grade A
+                </span>
+              </div>
+
+              <p class="text-secondary mb-2">
+                <i class="bi bi-geo-alt me-1"></i>
+                Maxwell Food Centre
+              </p>
+
+              <span
+                class="badge bg-light text-dark border align-self-start mb-3"
+              >
+                Chinese
+              </span>
+
+              <p class="card-text text-secondary">
+                Famous Hainanese chicken rice stall established since 1980.
+              </p>
+
+              <div class="mt-auto">
+                <div
+                  class="d-flex justify-content-between align-items-center flex-wrap gap-2"
+                >
+                  <div>
+                    <span class="text-warning fw-semibold">
+                      <i class="bi bi-star-fill"></i>
+                      4.8
+                    </span>
+
+                    <span class="text-secondary small ms-1">
+                      (1,234 reviews)
+                    </span>
+                  </div>
+
+                  <a
+                    href="order.html"
+                    class="btn btn-sm btn-danger"
+                  >
+                    Order Now
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <!-- Hill Street Fried Kway Teow -->
+        <div
+          class="col-12 col-md-6 col-lg-4 hawker-card"
+          data-name="Hill Street Fried Kway Teow"
+          data-cuisine="Chinese"
+          data-location="Bedok Food Centre"
+        >
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <div
+                class="d-flex justify-content-between align-items-start gap-3 mb-2"
+              >
+                <h3 class="h5 fw-bold card-title mb-0">
+                  Hill Street Fried Kway Teow
+                </h3>
+
+                <span class="badge bg-success">
+                  Grade A
+                </span>
+              </div>
+
+              <p class="text-secondary mb-2">
+                <i class="bi bi-geo-alt me-1"></i>
+                Bedok Food Centre
+              </p>
+
+              <span
+                class="badge bg-light text-dark border align-self-start mb-3"
+              >
+                Chinese
+              </span>
+
+              <p class="card-text text-secondary">
+                Traditional fried kway teow prepared with a smoky wok hei flavour.
+              </p>
+
+              <div class="mt-auto">
+                <div
+                  class="d-flex justify-content-between align-items-center flex-wrap gap-2"
+                >
+                  <div>
+                    <span class="text-warning fw-semibold">
+                      <i class="bi bi-star-fill"></i>
+                      4.5
+                    </span>
+
+                    <span class="text-secondary small ms-1">
+                      (987 reviews)
+                    </span>
+                  </div>
+
+                  <a
+                    href="order.html"
+                    class="btn btn-sm btn-danger"
+                  >
+                    Order Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sungei Road Laksa -->
+        <div
+          class="col-12 col-md-6 col-lg-4 hawker-card"
+          data-name="Sungei Road Laksa"
+          data-cuisine="Chinese"
+          data-location="Jalan Besar"
+        >
+          <div class="card h-100 shadow-sm">
+            <div class="card-body d-flex flex-column">
+              <div
+                class="d-flex justify-content-between align-items-start gap-3 mb-2"
+              >
+                <h3 class="h5 fw-bold card-title mb-0">
+                  Sungei Road Laksa
+                </h3>
+
+                <span class="badge bg-success">
+                  Grade A
+                </span>
+              </div>
+
+              <p class="text-secondary mb-2">
+                <i class="bi bi-geo-alt me-1"></i>
+                Jalan Besar
+              </p>
+
+              <span
+                class="badge bg-light text-dark border align-self-start mb-3"
+              >
+                Chinese
+              </span>
+
+              <p class="card-text text-secondary">
+                Traditional laksa served with a rich and fragrant coconut broth.
+              </p>
+
+              <div class="mt-auto">
+                <div
+                  class="d-flex justify-content-between align-items-center flex-wrap gap-2"
+                >
+                  <div>
+                    <span class="text-warning fw-semibold">
+                      <i class="bi bi-star-fill"></i>
+                      4.7
+                    </span>
+
+                    <span class="text-secondary small ms-1">
+                      (1,542 reviews)
+                    </span>
+                  </div>
+
+                  <a
+                    href="order.html"
+                    class="btn btn-sm btn-danger"
+                  >
+                    Order Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Results -->
+      <div
+        class="card shadow-sm d-none"
+        id="noResults"
+      >
+        <div class="card-body text-center py-5">
+          <i
+            class="bi bi-search display-5 text-danger"
+          ></i>
+
+          <h2 class="h5 fw-bold mt-3">
+            No hawkers found
+          </h2>
+
+          <p class="text-secondary mb-3">
+            Try changing your search term or filters.
+          </p>
+
+          <button
+            type="button"
+            class="btn btn-outline-danger"
+            id="clearFiltersButton"
+          >
+            Clear Filters
+          </button>
         </div>
       </div>
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-dark text-white py-3 mt-4">
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-5">
       <div class="container text-center">
-        <p class="mb-0 small">&copy; 2024 HawkerHub</p>
+        <p class="mb-0 small">
+          © 2026 HawkerHub. All rights reserved.
+        </p>
       </div>
     </footer>
 
-    <!-- BOOTSTRAP JAVASCRIPT -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- =========================================
-         CUSTOM JAVASCRIPT - FIREBASE + JSON AUTO-IMPORT
-         ========================================= -->
     <script>
-      // =========================================
-      // FIREBASE CONFIGURATION
-      // =========================================
-      const firebaseConfig = {
-        apiKey: "AIzaSyBK3Miw6Kissl4wd3RdVw6PXBhuFAL_QGQ",
-        authDomain: "hawkerhub-513e8.firebaseapp.com",
-        databaseURL:
-          "https://hawkerhub-513e8-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "hawkerhub-513e8",
-        storageBucket: "hawkerhub-513e8.firebasestorage.app",
-        messagingSenderId: "396562198613",
-        appId: "1:396562198613:web:593c1922573a27211624dc",
-      };
+      const searchInput =
+        document.getElementById("searchInput");
 
-      // INITIALIZE FIREBASE
-      firebase.initializeApp(firebaseConfig);
-      const database = firebase.database();
-      const MENU_ITEMS_PATH = "menuItems";
+      const cuisineFilter =
+        document.getElementById("cuisineFilter");
 
-      // =========================================
-      // AUTHENTICATION CHECK
-      // =========================================
-      const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
-      if (!user || user.role !== "vendor") {
-        window.location.href = "login.html";
-      }
+      const locationFilter =
+        document.getElementById("locationFilter");
 
-      const vendorStallId = user.stallId || 2;
-      const vendorStallName = user.stallName || "My Stall";
+      const searchButton =
+        document.getElementById("searchButton");
 
-      // =========================================
-      // GLOBAL STATE
-      // =========================================
-      let editingItemId = null;
+      const clearFiltersButton =
+        document.getElementById("clearFiltersButton");
 
-      // =========================================
-      // INITIAL DATA LOAD
-      // =========================================
-      document.addEventListener("DOMContentLoaded", function () {
-        loadMenuItemsFromFirebase();
-      });
+      const resultCount =
+        document.getElementById("resultCount");
 
-      // =========================================
-      // READ OPERATION + AUTO-SEED FROM JSON
-      // =========================================
-      function loadMenuItemsFromFirebase() {
-        const menuItemsRef = database.ref(MENU_ITEMS_PATH);
+      const noResults =
+        document.getElementById("noResults");
 
-        menuItemsRef
-          .orderByChild("stallId")
-          .equalTo(vendorStallId)
-          .on(
-            "value",
-            async (snapshot) => {
-              // Remove loading spinner
-              const loadingRow = document.getElementById("loadingRow");
-              if (loadingRow) loadingRow.remove();
+      const hawkerCards =
+        document.querySelectorAll(".hawker-card");
 
-              // ===== AUTO-IMPORT IF NO DATA EXISTS =====
-              if (!snapshot.exists()) {
-                console.log("No menu items found. Importing from menu.json...");
-                await seedMenuFromJson();
-                // Reload data after import
-                loadMenuItemsFromFirebase();
-                return;
-              }
+      function filterHawkers() {
+        const searchTerm =
+          searchInput.value.trim().toLowerCase();
 
-              // Display existing items
-              const table = document.getElementById("menuItemsTable");
-              table.innerHTML = "";
+        const selectedCuisine =
+          cuisineFilter.value;
 
-              const items = [];
-              snapshot.forEach((childSnapshot) => {
-                const item = childSnapshot.val();
-                item.id = childSnapshot.key;
-                items.push(item);
-              });
+        const selectedLocation =
+          locationFilter.value;
 
-              displayItemsInTable(items);
-            },
-            (error) => {
-              console.error("Firebase Error:", error);
-              const loadingRow = document.getElementById("loadingRow");
-              if (loadingRow) {
-                loadingRow.innerHTML = `
-                <td colspan="5" class="text-center py-4 text-danger">
-                  <i class="bi bi-exclamation-triangle fs-4"></i>
-                  <p class="mt-2">Error loading menu items</p>
-                  <button class="btn btn-sm btn-outline-danger mt-2" onclick="loadMenuItemsFromFirebase()">
-                    Retry
-                  </button>
-                </td>
-              `;
-              }
-            },
+        let visibleCount = 0;
+
+        hawkerCards.forEach((card) => {
+          const hawkerName =
+            card.dataset.name.toLowerCase();
+
+          const cuisine =
+            card.dataset.cuisine;
+
+          const location =
+            card.dataset.location;
+
+          const matchesSearch =
+            !searchTerm ||
+            hawkerName.includes(searchTerm);
+
+          const matchesCuisine =
+            !selectedCuisine ||
+            cuisine === selectedCuisine;
+
+          const matchesLocation =
+            !selectedLocation ||
+            location === selectedLocation;
+
+          const shouldShow =
+            matchesSearch &&
+            matchesCuisine &&
+            matchesLocation;
+
+          card.classList.toggle(
+            "d-none",
+            !shouldShow
           );
-      }
 
-      // =========================================
-      // SEED FUNCTION — Reads menu.json and pushes to Firebase
-      // =========================================
-      async function seedMenuFromJson() {
-        try {
-          const response = await fetch("./data/menu.json");
-          if (!response.ok) {
-            console.warn("menu.json not found. Starting with empty menu.");
-            return;
-          }
-
-          const items = await response.json();
-
-          for (const item of items) {
-            // Add required vendor fields
-            item.stallId = vendorStallId;
-            item.stallName = vendorStallName;
-            item.createdAt = firebase.database.ServerValue.TIMESTAMP;
-            item.updatedAt = firebase.database.ServerValue.TIMESTAMP;
-
-            await database.ref(MENU_ITEMS_PATH).push(item);
-          }
-          console.log(`✅ Imported ${items.length} items from menu.json`);
-        } catch (error) {
-          console.error("Failed to import menu.json:", error);
-        }
-      }
-
-      // =========================================
-      // DISPLAY ITEMS IN TABLE
-      // =========================================
-      function displayItemsInTable(items) {
-        const table = document.getElementById("menuItemsTable");
-        items.sort((a, b) => a.name.localeCompare(b.name));
-
-        items.forEach((item) => {
-          let badgeClass = "bg-secondary";
-          switch (item.availability) {
-            case "available":
-              badgeClass = "bg-success";
-              break;
-            case "unavailable":
-              badgeClass = "bg-danger";
-              break;
-            case "soldout":
-              badgeClass = "bg-warning text-dark";
-              break;
-          }
-
-          const row = table.insertRow();
-          row.setAttribute("data-item-id", item.id);
-
-          row.innerHTML = `
-            <td class="align-middle">
-              <strong>${item.name}</strong>
-              ${item.description ? `<br><small class="text-muted">${item.description}</small>` : ""}
-            </td>
-            <td class="align-middle">
-              <span class="badge bg-light text-dark border">${item.category}</span>
-            </td>
-            <td class="align-middle">
-              <strong>$${parseFloat(item.price).toFixed(2)}</strong>
-            </td>
-            <td class="align-middle">
-              <span class="badge ${badgeClass}">${item.availability}</span>
-            </td>
-            <td class="align-middle">
-              <div class="btn-group btn-group-sm">
-                <button class="btn btn-outline-danger" onclick="editItem('${item.id}')">
-                  <i class="bi bi-pencil"></i> Edit
-                </button>
-                <button class="btn btn-danger" onclick="deleteItem('${item.id}')">
-                  <i class="bi bi-trash"></i> Delete
-                </button>
-              </div>
-            </td>
-          `;
-        });
-      }
-
-      // =========================================
-      // CREATE / UPDATE OPERATION
-      // =========================================
-      document
-        .getElementById("addItemForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-
-          const submitBtn = document.getElementById("submitBtn");
-          const originalText = submitBtn.innerHTML;
-
-          submitBtn.disabled = true;
-          submitBtn.innerHTML =
-            '<span class="spinner-border spinner-border-sm"></span> Saving...';
-
-          try {
-            const itemData = {
-              name: document.getElementById("itemName").value.trim(),
-              category: document.getElementById("itemCategory").value,
-              price: parseFloat(document.getElementById("itemPrice").value),
-              availability: document.getElementById("itemAvailability").value,
-              description: document
-                .getElementById("itemDescription")
-                .value.trim(),
-              stallId: vendorStallId,
-              stallName: vendorStallName,
-              updatedAt: firebase.database.ServerValue.TIMESTAMP,
-            };
-
-            if (editingItemId) {
-              await database
-                .ref(`${MENU_ITEMS_PATH}/${editingItemId}`)
-                .update(itemData);
-              alert("Item updated successfully!");
-              editingItemId = null;
-              submitBtn.textContent = "Add Item";
-            } else {
-              itemData.createdAt = firebase.database.ServerValue.TIMESTAMP;
-              await database.ref(MENU_ITEMS_PATH).push(itemData);
-              alert("Item added successfully!");
-            }
-
-            document.getElementById("addItemForm").reset();
-          } catch (error) {
-            alert("Error: " + error.message);
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
+          if (shouldShow) {
+            visibleCount += 1;
           }
         });
 
-      // =========================================
-      // EDIT ITEM
-      // =========================================
-      async function editItem(itemId) {
-        try {
-          const snapshot = await database
-            .ref(`${MENU_ITEMS_PATH}/${itemId}`)
-            .once("value");
-          const item = snapshot.val();
+        resultCount.textContent =
+          `${visibleCount} hawker${
+            visibleCount === 1 ? "" : "s"
+          } found`;
 
-          if (!item) {
-            alert("Item not found!");
-            return;
-          }
-
-          document.getElementById("itemName").value = item.name;
-          document.getElementById("itemCategory").value = item.category;
-          document.getElementById("itemPrice").value = item.price;
-          document.getElementById("itemAvailability").value = item.availability;
-          document.getElementById("itemDescription").value =
-            item.description || "";
-
-          editingItemId = itemId;
-          document.getElementById("submitBtn").textContent = "Update Item";
-
-          document
-            .getElementById("addItemForm")
-            .scrollIntoView({ behavior: "smooth" });
-        } catch (error) {
-          alert("Error loading item: " + error.message);
-        }
+        noResults.classList.toggle(
+          "d-none",
+          visibleCount !== 0
+        );
       }
 
-      // =========================================
-      // DELETE ITEM
-      // =========================================
-      async function deleteItem(itemId) {
-        if (!confirm("Are you sure you want to delete this item?")) return;
+      function clearFilters() {
+        searchInput.value = "";
+        cuisineFilter.value = "";
+        locationFilter.value = "";
 
-        try {
-          await database.ref(`${MENU_ITEMS_PATH}/${itemId}`).remove();
-          alert("Item deleted successfully!");
-        } catch (error) {
-          alert("Error deleting item: " + error.message);
-        }
+        filterHawkers();
       }
+
+      searchButton.addEventListener(
+        "click",
+        filterHawkers
+      );
+
+      searchInput.addEventListener(
+        "input",
+        filterHawkers
+      );
+
+      cuisineFilter.addEventListener(
+        "change",
+        filterHawkers
+      );
+
+      locationFilter.addEventListener(
+        "change",
+        filterHawkers
+      );
+
+      clearFiltersButton.addEventListener(
+        "click",
+        clearFilters
+      );
+
+      filterHawkers();
     </script>
   </body>
 </html>
+```

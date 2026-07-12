@@ -1,56 +1,121 @@
+
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
     <title>HawkerHub - Rental Agreements</title>
+
     <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
+
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar bg-white border-bottom py-3">
       <div class="container">
-        <a class="navbar-brand text-danger fw-bold" href="index.html">
-          <i class="bi bi-shop-window me-2"></i>HawkerHub
+        <a
+          class="navbar-brand text-danger fw-bold"
+          href="index.html"
+        >
+          <i class="bi bi-shop-window me-2"></i>
+          HawkerHub
         </a>
-        <div class="d-flex align-items-center">
-          <a href="vendor-dashboard.html" class="btn btn-outline-danger me-3">
-            <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
-          </a>
-        </div>
+
+        <a
+          href="vendor-dashboard.html"
+          class="btn btn-outline-danger"
+        >
+          <i class="bi bi-arrow-left me-1"></i>
+          Back to Dashboard
+        </a>
       </div>
     </nav>
 
-    <div class="container mt-5">
-      <h1 class="mb-4 text-danger">Rental Agreements</h1>
+    <!-- Main Content -->
+    <main class="container py-5 flex-grow-1">
+      <div
+        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4"
+      >
+        <div>
+          <h1 class="fw-bold text-danger mb-2">
+            Rental Agreements
+          </h1>
 
-      <div class="mb-4">
-        <a href="create-rental-agreement.html" class="btn btn-danger">
-          <i class="bi bi-plus-lg me-2"></i>Create New Agreement
+          <p class="text-secondary mb-0">
+            View and manage the rental agreements linked to your stalls.
+          </p>
+        </div>
+
+        <a
+          href="create-rental-agreement.html"
+          class="btn btn-danger"
+        >
+          <i class="bi bi-plus-lg me-1"></i>
+          Create New Agreement
         </a>
       </div>
 
-      <div id="agreementsList">
-        <!-- List of agreements will populate here -->
-      </div>
-    </div>
+      <!-- Loading State -->
+      <div
+        class="card shadow-sm"
+        id="loadingState"
+      >
+        <div class="card-body text-center py-5">
+          <div
+            class="spinner-border text-danger"
+            role="status"
+          >
+            <span class="visually-hidden">
+              Loading rental agreements
+            </span>
+          </div>
 
-    <footer class="bg-dark text-white py-4 mt-5">
+          <p class="text-secondary mt-3 mb-0">
+            Loading rental agreements...
+          </p>
+        </div>
+      </div>
+
+      <!-- Agreement List -->
+      <div id="agreementsList"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-auto">
       <div class="container text-center">
-        <p>&copy; 2024 HawkerHub. All rights reserved.</p>
+        <p class="mb-0 small">
+          © 2026 HawkerHub. All rights reserved.
+        </p>
       </div>
     </footer>
 
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-      import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+      import {
+        initializeApp
+      } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        query,
+        where
+      } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
 
       const firebaseConfig = {
         apiKey: "AIzaSyBazksxHfRgOJcraIVqslvCWqZT4qjTWZE",
@@ -64,56 +129,244 @@
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
 
-      window.onload = async function() {
-        // Check vendor login
-        const user = JSON.parse(localStorage.getItem("hawkerhub_user"));
-        if (!user || user.role !== "vendor") {
-          window.location.href = "login.html";
+      function escapeHtml(value) {
+        const element =
+          document.createElement("div");
+
+        element.textContent =
+          String(value ?? "");
+
+        return element.innerHTML;
+      }
+
+      function formatStatus(status) {
+        if (status === "ended") {
+          return {
+            text: "Ended",
+            badgeClass: "bg-secondary"
+          };
         }
 
-        const agreementsRef = collection(db, "rentalAgreements");
-        const q = query(agreementsRef, where("vendorId", "==", user.vendorId));
-        const snapshot = await getDocs(q);
+        return {
+          text: "Active",
+          badgeClass: "bg-success"
+        };
+      }
 
-        const container = document.getElementById("agreementsList");
-        if (snapshot.empty) {
-          container.innerHTML = '<p>No rental agreements found.</p>';
+      async function loadRentalAgreements() {
+        const user = JSON.parse(
+          localStorage.getItem("hawkerhub_user")
+        );
+
+        if (!user || user.role !== "vendor") {
+          alert("You must be logged in as a vendor.");
+          window.location.href = "login.html";
           return;
         }
 
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          const html = `
-            <div class="card mb-4">
-              <div class="card-header bg-danger text-white">
-                <h5 class="mb-0">${data.hawkerCenter} - Stall ${data.stallNumber}</h5>
+        const loadingState =
+          document.getElementById("loadingState");
+
+        const container =
+          document.getElementById("agreementsList");
+
+        try {
+          const agreementsRef =
+            collection(db, "rentalAgreements");
+
+          const agreementsQuery = query(
+            agreementsRef,
+            where("vendorId", "==", user.vendorId)
+          );
+
+          const snapshot =
+            await getDocs(agreementsQuery);
+
+          loadingState.classList.add("d-none");
+          container.innerHTML = "";
+
+          if (snapshot.empty) {
+            container.innerHTML = `
+              <div class="card shadow-sm">
+                <div class="card-body text-center py-5">
+                  <i class="bi bi-file-earmark-text display-4 text-danger"></i>
+
+                  <h2 class="h5 fw-bold mt-3">
+                    No rental agreements found
+                  </h2>
+
+                  <p class="text-secondary mb-4">
+                    Create your first rental agreement to begin tracking it.
+                  </p>
+
+                  <a
+                    href="create-rental-agreement.html"
+                    class="btn btn-danger"
+                  >
+                    <i class="bi bi-plus-lg me-1"></i>
+                    Create Agreement
+                  </a>
+                </div>
               </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <p><strong>Monthly Rent:</strong> $${data.monthlyRent.toFixed(2)}</p>
-                    <p><strong>Stall Size:</strong> ${data.stallSize || "N/A"} sq ft</p>
+            `;
+
+            return;
+          }
+
+          snapshot.forEach((agreementDocument) => {
+            const data =
+              agreementDocument.data();
+
+            const status =
+              formatStatus(data.status);
+
+            const safeHawkerCentre =
+              escapeHtml(
+                data.hawkerCenter ||
+                "Unknown Hawker Centre"
+              );
+
+            const safeStallName =
+              escapeHtml(
+                data.stallName ||
+                "Unnamed Stall"
+              );
+
+            const safeStallId =
+              escapeHtml(
+                data.stallId ||
+                "N/A"
+              );
+
+            const monthlyRent =
+              Number(data.monthlyRent || 0)
+                .toFixed(2);
+
+            const stallSize =
+              data.stallSize
+                ? `${escapeHtml(data.stallSize)} sq ft`
+                : "N/A";
+
+            const startDate =
+              escapeHtml(
+                data.startDate || "N/A"
+              );
+
+            const endDate =
+              escapeHtml(
+                data.endDate || "N/A"
+              );
+
+            const agreementHtml = `
+              <article class="card shadow-sm mb-4">
+                <div
+                  class="card-header bg-danger text-white d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2"
+                >
+                  <div class="fw-bold">
+                    <i class="bi bi-file-earmark-text me-2"></i>
+                    ${safeStallName}
                   </div>
-                  <div class="col-md-6">
-                    <p><strong>Agreement Start:</strong> ${data.startDate}</p>
-                    <p><strong>Agreement End:</strong> ${data.endDate}</p>
-                    <p><strong>Status:</strong> <span class="badge bg-success">${data.status}</span></p>
+
+                  <span class="badge ${status.badgeClass}">
+                    ${status.text}
+                  </span>
+                </div>
+
+                <div class="card-body">
+                  <div class="row g-3">
+                    <div class="col-12 col-md-6">
+                      <div class="border rounded p-3 bg-light h-100">
+                        <p class="mb-2">
+                          <strong>Hawker Centre:</strong>
+                          ${safeHawkerCentre}
+                        </p>
+
+                        <p class="mb-2">
+                          <strong>Stall ID:</strong>
+                          ${safeStallId}
+                        </p>
+
+                        <p class="mb-0">
+                          <strong>Stall Size:</strong>
+                          ${stallSize}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                      <div class="border rounded p-3 bg-light h-100">
+                        <p class="mb-2">
+                          <strong>Monthly Rent:</strong>
+                          $${monthlyRent}
+                        </p>
+
+                        <p class="mb-2">
+                          <strong>Agreement Start:</strong>
+                          ${startDate}
+                        </p>
+
+                        <p class="mb-0">
+                          <strong>Agreement End:</strong>
+                          ${endDate}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-wrap gap-2 mt-4">
+                    <a
+                      href="stall-management.html?stallId=${encodeURIComponent(
+                        data.stallId || ""
+                      )}"
+                      class="btn btn-outline-danger"
+                    >
+                      <i class="bi bi-eye me-1"></i>
+                      View Stall
+                    </a>
+
+                    <a
+                      href="edit-rental-agreement.html?agreementId=${agreementDocument.id}"
+                      class="btn btn-danger"
+                    >
+                      <i class="bi bi-pencil me-1"></i>
+                      Edit Agreement
+                    </a>
                   </div>
                 </div>
-                <div class="mt-3">
-                  <a href="stall-management.html?stallId=${data.stallId}" class="btn btn-outline-danger me-2">
-                    <i class="bi bi-eye me-2"></i>View Stall
-                  </a>
-                  <a href="edit-rental-agreement.html?agreementId=${doc.id}" class="btn btn-outline-warning me-2">
-                    <i class="bi bi-pencil me-2"></i>Edit Agreement
-                  </a>
-                </div>
-              </div>
+              </article>
+            `;
+
+            container.insertAdjacentHTML(
+              "beforeend",
+              agreementHtml
+            );
+          });
+        } catch (error) {
+          console.error(
+            "Error loading rental agreements:",
+            error
+          );
+
+          loadingState.classList.add("d-none");
+
+          container.innerHTML = `
+            <div class="alert alert-danger">
+              <i class="bi bi-exclamation-circle me-1"></i>
+              Failed to load rental agreements. Please try again later.
             </div>
           `;
-          container.innerHTML += html;
-        });
+        }
       }
+
+      window.addEventListener(
+        "DOMContentLoaded",
+        loadRentalAgreements
+      );
     </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    ></script>
   </body>
 </html>
+```
