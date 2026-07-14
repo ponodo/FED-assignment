@@ -6,34 +6,35 @@ const emptyEl = document.getElementById("orders-empty");
 const listEl = document.getElementById("orders-list");
 const containerEl = document.getElementById("orders-container");
 
-// -------- helpers --------
-function money(n) {
-  return `$${(Number(n) || 0).toFixed(2)}`;
+function money(value) {
+  return `$${(Number(value) || 0).toFixed(2)}`;
 }
 
 function calcSubtotal(items) {
-  return (items || []).reduce((sum, it) => sum + (Number(it.unitPrice) || 0) * (Number(it.qty) || 0), 0);
+  return (items || []).reduce(
+    (sum, item) =>
+      sum + (Number(item.unitPrice) || 0) * (Number(item.qty) || 0),
+    0,
+  );
 }
 
 function calcDeliveryFee(order) {
-  // Mirror your checkout rules:
-  // - pickup => $0
-  // - delivery => free if subtotal >= 20 else $5
   const subtotal = calcSubtotal(order.items);
-  if (order.deliveryType !== "delivery" || subtotal <= 0) return 0;
+
+  if (order.deliveryType !== "delivery" || subtotal <= 0) {
+    return 0;
+  }
+
   return subtotal >= 20 ? 0 : 5;
 }
 
 function calcTotal(order) {
-  const subtotal = calcSubtotal(order.items);
-  const delivery = calcDeliveryFee(order);
-  return subtotal + delivery;
+  return calcSubtotal(order.items) + calcDeliveryFee(order);
 }
 
 function formatDate(iso) {
   try {
-    const d = new Date(iso);
-    return d.toLocaleString();
+    return new Date(iso).toLocaleString();
   } catch {
     return iso || "";
   }
@@ -41,32 +42,49 @@ function formatDate(iso) {
 
 function groupItemsByStall(items) {
   const map = new Map();
-  (items || []).forEach((it) => {
-    const stall = it.stallName || "Unknown Stall";
-    if (!map.has(stall)) map.set(stall, []);
-    map.get(stall).push(it);
+
+  (items || []).forEach((item) => {
+    const stallId = Number(item.stallId);
+    const stallName = item.stallName || "Unknown Stall";
+
+    const key = `${stallId}-${stallName}`;
+
+    if (!map.has(key)) {
+      map.set(key, {
+        stallId,
+        stallName,
+        items: [],
+      });
+    }
+
+    map.get(key).items.push(item);
   });
-  return [...map.entries()].sort((a, b) => a[0].localeCompare(b[0]));
+
+  return [...map.values()];
 }
 
-// Simple status generator (since your checkout doesn't store status yet)
-// Newest order = ongoing, older = completed
 function enrichStatuses(orders) {
-  const sorted = [...orders].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
-  return sorted.map((o, idx) => ({
-    ...o,
-    status: o.status || (idx === 0 ? "ongoing" : "completed")
+  const sorted = [...orders].sort((a, b) =>
+    (b.createdAt || "").localeCompare(a.createdAt || ""),
+  );
+
+  return sorted.map((order, index) => ({
+    ...order,
+    status: order.status || (index === 0 ? "ongoing" : "completed"),
   }));
 }
 
-// -------- render --------
 function render() {
-  const raw = load(ORDERS_KEY, []);
-  const orders = enrichStatuses(Array.isArray(raw) ? raw : []);
+  const rawOrders = load(ORDERS_KEY, []);
 
-  const filter = filterEl.value; // all / completed / ongoing / cancelled
+  const orders = enrichStatuses(Array.isArray(rawOrders) ? rawOrders : []);
+
+  const filter = filterEl.value;
+
   const shown =
-    filter === "all" ? orders : orders.filter((o) => (o.status || "ongoing") === filter);
+    filter === "all"
+      ? orders
+      : orders.filter((order) => (order.status || "ongoing") === filter);
 
   if (shown.length === 0) {
     emptyEl.classList.remove("d-none");
@@ -88,28 +106,55 @@ function render() {
         order.status === "completed"
           ? "bg-success"
           : order.status === "cancelled"
-          ? "bg-secondary"
-          : "bg-warning text-dark";
+            ? "bg-secondary"
+            : "bg-warning text-dark";
 
-      const grouped = groupItemsByStall(order.items);
+      const groupedStalls = groupItemsByStall(order.items);
 
-      const itemsHtml = grouped
-        .map(([stall, items]) => {
-          const lines = items
+      const itemsHtml = groupedStalls
+        .map((group) => {
+          const lines = group.items
             .map(
-              (it) => `
+              (item) => `
                 <div class="d-flex justify-content-between">
-                  <span class="text-muted">${it.name || "Item"} × ${it.qty || 1}</span>
-                  <span class="text-muted">${money((Number(it.unitPrice) || 0) * (Number(it.qty) || 0))}</span>
+                  <span class="text-muted">
+                    ${item.name || "Item"} × ${item.qty || 1}
+                  </span>
+
+                  <span class="text-muted">
+                    ${money(
+                      (Number(item.unitPrice) || 0) * (Number(item.qty) || 0),
+                    )}
+                  </span>
                 </div>
-              `
+              `,
             )
             .join("");
 
+          const feedbackButton =
+            order.status === "completed"
+              ? `
+                <a
+                  href="feedback.html?orderId=${order.orderId}&customerId=${order.customerId}&stallId=${group.stallId}&stallName=${encodeURIComponent(group.stallName)}"
+                  class="btn btn-danger btn-sm mt-3"
+                >
+                  <i class="bi bi-star me-1"></i>
+                  Leave Feedback
+                </a>
+              `
+              : "";
+
           return `
             <div class="mt-3">
-              <div class="fw-semibold text-danger">${stall}</div>
-              <div class="mt-2">${lines}</div>
+              <div class="fw-semibold text-danger">
+                ${group.stallName}
+              </div>
+
+              <div class="mt-2">
+                ${lines}
+              </div>
+
+              ${feedbackButton}
             </div>
           `;
         })
@@ -121,14 +166,25 @@ function render() {
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-start">
                 <div>
-                  <div class="fw-bold">Order #${order.orderId}</div>
-                  <div class="text-muted small">${formatDate(order.createdAt)}</div>
+                  <div class="fw-bold">
+                    Order #${order.orderId}
+                  </div>
+
                   <div class="text-muted small">
-                    ${order.deliveryType === "delivery" ? "Delivery" : "Pickup"} • ${order.customerName || "Customer"}
+                    ${formatDate(order.createdAt)}
+                  </div>
+
+                  <div class="text-muted small">
+                    ${order.deliveryType === "delivery" ? "Delivery" : "Pickup"}
+                    • ${order.customerName || "Customer"}
                   </div>
                 </div>
 
-                <span class="badge ${badgeClass} text-uppercase">${order.status || "ongoing"}</span>
+                <span
+                  class="badge ${badgeClass} text-uppercase"
+                >
+                  ${order.status || "ongoing"}
+                </span>
               </div>
 
               <hr />
@@ -138,16 +194,33 @@ function render() {
               <hr />
 
               <div class="d-flex justify-content-between">
-                <span class="text-muted">Subtotal</span>
-                <span class="fw-semibold">${money(subtotal)}</span>
+                <span class="text-muted">
+                  Subtotal
+                </span>
+
+                <span class="fw-semibold">
+                  ${money(subtotal)}
+                </span>
               </div>
+
               <div class="d-flex justify-content-between">
-                <span class="text-muted">Delivery</span>
-                <span class="fw-semibold">${money(deliveryFee)}</span>
+                <span class="text-muted">
+                  Delivery
+                </span>
+
+                <span class="fw-semibold">
+                  ${money(deliveryFee)}
+                </span>
               </div>
+
               <div class="d-flex justify-content-between mt-2">
-                <span class="fw-bold">Total</span>
-                <span class="fw-bold text-danger">${money(total)}</span>
+                <span class="fw-bold">
+                  Total
+                </span>
+
+                <span class="fw-bold text-danger">
+                  ${money(total)}
+                </span>
               </div>
             </div>
           </div>
@@ -157,6 +230,6 @@ function render() {
     .join("");
 }
 
-// -------- events --------
 filterEl.addEventListener("change", render);
+
 render();

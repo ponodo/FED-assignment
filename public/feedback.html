@@ -1,13 +1,9 @@
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>HawkerHub - Feedback</title>
 
@@ -28,18 +24,12 @@
     <!-- Navbar -->
     <nav class="navbar bg-white border-bottom py-3">
       <div class="container">
-        <a
-          class="navbar-brand text-danger fw-bold"
-          href="index.html"
-        >
+        <a class="navbar-brand text-danger fw-bold" href="index.html">
           <i class="bi bi-shop-window me-2"></i>
           HawkerHub
         </a>
 
-        <a
-          href="hawker-directory.html"
-          class="btn btn-outline-danger"
-        >
+        <a href="hawker-directory.html" class="btn btn-outline-danger">
           <i class="bi bi-map me-1"></i>
           Browse Hawkers
         </a>
@@ -49,9 +39,7 @@
     <!-- Main Content -->
     <main class="container py-5">
       <div class="mb-4">
-        <h1 class="fw-bold text-danger mb-2">
-          Customer Feedback
-        </h1>
+        <h1 class="fw-bold text-danger mb-2">Customer Feedback</h1>
 
         <p class="text-secondary mb-0">
           Share your experience and help other customers discover good food.
@@ -68,42 +56,27 @@
         <div class="card-body">
           <form id="feedbackForm">
             <!-- Customer Name -->
-            <div class="mb-3">
-              <label
-                for="userName"
-                class="form-label fw-semibold"
-              >
-                Your Name
-                <span class="text-danger">*</span>
-              </label>
+            <label for="userName" class="form-label fw-semibold">
+    Role
+</label>
 
-              <input
-                type="text"
-                class="form-control"
-                id="userName"
-                placeholder="Enter your name"
-                required
-              />
-            </div>
+<input
+    type="text"
+    id="userName"
+    class="form-control"
+    value="Customer"
+    readonly
+/>
 
             <!-- Hawker Stall -->
             <div class="mb-3">
-              <label
-                for="hawkerSelect"
-                class="form-label fw-semibold"
-              >
+              <label for="hawkerSelect" class="form-label fw-semibold">
                 Select Hawker
                 <span class="text-danger">*</span>
               </label>
 
-              <select
-                class="form-select"
-                id="hawkerSelect"
-                required
-              >
-                <option value="">
-                  Choose a hawker stall
-                </option>
+              <select class="form-select" id="hawkerSelect" required>
+                <option value="">Choose a hawker stall</option>
 
                 <option value="Tian Tian Chicken Rice">
                   Tian Tian Chicken Rice
@@ -113,17 +86,11 @@
                   Hill Street Fried Kway Teow
                 </option>
 
-                <option value="Sungei Road Laksa">
-                  Sungei Road Laksa
-                </option>
+                <option value="Sungei Road Laksa">Sungei Road Laksa</option>
 
-                <option value="Roti Prata House">
-                  Roti Prata House
-                </option>
+                <option value="Roti Prata House">Roti Prata House</option>
 
-                <option value="ABC Noodles">
-                  ABC Noodles
-                </option>
+                <option value="ABC Noodles">ABC Noodles</option>
               </select>
             </div>
 
@@ -184,11 +151,7 @@
                   ☆
                 </button>
 
-                <input
-                  type="hidden"
-                  id="ratingValue"
-                  value="0"
-                />
+                <input type="hidden" id="ratingValue" value="0" />
               </div>
 
               <small class="text-secondary">
@@ -198,10 +161,7 @@
 
             <!-- Feedback -->
             <div class="mb-4">
-              <label
-                for="feedbackText"
-                class="form-label fw-semibold"
-              >
+              <label for="feedbackText" class="form-label fw-semibold">
                 Your Feedback
                 <span class="text-danger">*</span>
               </label>
@@ -229,93 +189,79 @@
         </div>
       </div>
 
-      <!-- Recent Feedback -->
-      <div class="card shadow-sm">
-        <div
-          class="card-header bg-danger text-white d-flex justify-content-between align-items-center"
-        >
-          <div class="fw-bold">
-            <i class="bi bi-clock-history me-2"></i>
-            Recent Feedback
-          </div>
+<!-- Recent Feedback -->
+<div class="card shadow-sm">
+  <div
+    class="card-header bg-danger text-white d-flex justify-content-between align-items-center"
+  >
+    <div class="fw-bold">
+      <i class="bi bi-clock-history me-2"></i>
+      Recent Feedback
+    </div>
+  </div>
 
-          <div
-            class="spinner-border spinner-border-sm text-white d-none"
-            id="loadingSpinner"
-            role="status"
-          >
-            <span class="visually-hidden">
-              Loading feedback
-            </span>
-          </div>
-        </div>
-
-        <div
-          class="card-body"
-          id="feedbackContainer"
-        >
-          <div class="text-center text-secondary py-4">
-            <div
-              class="spinner-border text-danger"
-              role="status"
-            >
-              <span class="visually-hidden">
-                Loading feedback
-              </span>
-            </div>
-
-            <p class="mt-3 mb-0">
-              Loading feedback...
-            </p>
-          </div>
-        </div>
-      </div>
-    </main>
+  <div class="card-body" id="feedbackContainer">
+    <p class="text-secondary mb-0">
+      Submit your feedback above.
+    </p>
+  </div>
+</div>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-5">
       <div class="container text-center">
-        <p class="mb-0 small">
-          © 2026 HawkerHub. All rights reserved.
-        </p>
+        <p class="mb-0 small">© 2026 HawkerHub. All rights reserved.</p>
       </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Firebase SDK -->
-    <script type="module">
-      import {
-        initializeApp
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    <!--feedback backend script -->
+    <script>
+      const params = new URLSearchParams(window.location.search);
 
-      import {
-        getFirestore,
-        collection,
-        addDoc,
-        query,
-        orderBy,
-        limit,
-        getDocs,
-        serverTimestamp
-      } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+      const orderId = Number(params.get("orderId"));
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyAjnXDGgSpL5fpzyRVfRXNj04RWS-rPdw4",
-        authDomain: "feedback-8b979.firebaseapp.com",
-        projectId: "feedback-8b979",
-        storageBucket: "feedback-8b979.firebasestorage.app",
-        messagingSenderId: "167033275651",
-        appId: "1:167033275651:web:4d75cca9519fb649e15536",
-        measurementId: "G-S51VRLWXDD"
-      };
+      const customerId = Number(params.get("customerId"));
 
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
+      const stallId = Number(params.get("stallId"));
+
+      const stallName = params.get("stallName") || "Selected Stall";
+
+      const feedbackForm = document.getElementById("feedbackForm");
+
+      const userNameInput = document.getElementById("userName");
+
+      const hawkerSelect = document.getElementById("hawkerSelect");
+
+      const ratingValue = document.getElementById("ratingValue");
+
+      const feedbackText = document.getElementById("feedbackText");
+
+      const submitButton = document.getElementById("submitBtn");
 
       const stars = document.querySelectorAll(".star");
-      const ratingValue =
-        document.getElementById("ratingValue");
+
+      if (
+        !Number.isInteger(orderId) ||
+        !Number.isInteger(customerId) ||
+        !Number.isInteger(stallId)
+      ) {
+        alert("Invalid order information. Please return to My Orders.");
+
+        window.location.href = "my-orders.html";
+      }
+
+      userNameInput.value = "Customer";
+      userNameInput.disabled = true;
+
+      hawkerSelect.innerHTML = `
+    <option value="${stallId}" selected>
+      ${stallName}
+    </option>
+  `;
+
+      hawkerSelect.disabled = true;
 
       function updateStarDisplay(rating) {
         stars.forEach((star, index) => {
@@ -331,26 +277,17 @@
 
       stars.forEach((star) => {
         star.addEventListener("click", function () {
-          const value = Number.parseInt(
-            this.dataset.value,
-            10
-          );
+          const value = Number(this.dataset.value);
 
           ratingValue.value = value;
           updateStarDisplay(value);
         });
 
         star.addEventListener("mouseover", function () {
-          const value = Number.parseInt(
-            this.dataset.value,
-            10
-          );
+          const value = Number(this.dataset.value);
 
           stars.forEach((currentStar, index) => {
-            currentStar.classList.toggle(
-              "hovered",
-              index < value
-            );
+            currentStar.classList.toggle("hovered", index < value);
           });
         });
 
@@ -361,301 +298,77 @@
         });
       });
 
-      function renderStars(rating) {
-        let starsHtml = "";
+      feedbackForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-        for (let index = 1; index <= 5; index++) {
-          if (index <= rating) {
-            starsHtml +=
-              '<i class="bi bi-star-fill"></i>';
-          } else {
-            starsHtml +=
-              '<i class="bi bi-star"></i>';
-          }
+        const rating = Number(ratingValue.value);
+
+        const comments = feedbackText.value.trim();
+
+        if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
+          alert("Please provide a rating from 1 to 5.");
+
+          return;
         }
 
-        return starsHtml;
-      }
+        if (!comments) {
+          alert("Please write your feedback.");
 
-      function formatTimestamp(timestamp) {
-        if (!timestamp) {
-          return "Just now";
+          return;
         }
 
-        const currentDate = new Date();
-        const feedbackDate = timestamp.toDate();
+        const originalButtonHtml = submitButton.innerHTML;
 
-        const differenceMilliseconds =
-          currentDate - feedbackDate;
+        submitButton.disabled = true;
 
-        const differenceMinutes = Math.floor(
-          differenceMilliseconds / 60000
-        );
-
-        const differenceHours = Math.floor(
-          differenceMilliseconds / 3600000
-        );
-
-        const differenceDays = Math.floor(
-          differenceMilliseconds / 86400000
-        );
-
-        if (differenceMinutes < 1) {
-          return "Just now";
-        }
-
-        if (differenceMinutes < 60) {
-          return `${differenceMinutes} minute${
-            differenceMinutes === 1 ? "" : "s"
-          } ago`;
-        }
-
-        if (differenceHours < 24) {
-          return `${differenceHours} hour${
-            differenceHours === 1 ? "" : "s"
-          } ago`;
-        }
-
-        if (differenceDays < 7) {
-          return `${differenceDays} day${
-            differenceDays === 1 ? "" : "s"
-          } ago`;
-        }
-
-        return feedbackDate.toLocaleDateString(
-          "en-SG",
-          {
-            day: "numeric",
-            month: "short",
-            year: "numeric"
-          }
-        );
-      }
-
-      function escapeHtml(value) {
-        const temporaryElement =
-          document.createElement("div");
-
-        temporaryElement.textContent =
-          String(value ?? "");
-
-        return temporaryElement.innerHTML;
-      }
-
-      async function loadFeedback() {
-        const feedbackContainer =
-          document.getElementById(
-            "feedbackContainer"
-          );
+        submitButton.innerHTML = `
+        <span
+          class="spinner-border spinner-border-sm me-2"
+        ></span>
+        Submitting...
+      `;
 
         try {
-          const feedbackQuery = query(
-            collection(db, "feedbacks"),
-            orderBy("timestamp", "desc"),
-            limit(10)
-          );
+          const response = await fetch("/api/feedback", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              orderId,
+              customerId,
+              stallId,
+              rating,
+              comments,
+            }),
+          });
 
-          const querySnapshot =
-            await getDocs(feedbackQuery);
+          let result = {};
 
-          if (querySnapshot.empty) {
-            feedbackContainer.innerHTML = `
-              <div class="text-center text-secondary py-5">
-                <i class="bi bi-chat-square-text display-5 text-danger"></i>
-
-                <p class="mt-3 mb-0">
-                  No feedback yet. Be the first to share your experience!
-                </p>
-              </div>
-            `;
-
-            return;
+          try {
+            result = await response.json();
+          } catch (e) {
+            result = {};
           }
 
-          let feedbackHtml = "";
+          if (!response.ok) {
+            throw new Error(
+              result.details || result.error || "Unable to submit feedback",
+            );
+          }
 
-          querySnapshot.forEach(
-            (feedbackDocument) => {
-              const data =
-                feedbackDocument.data();
+          alert("Feedback submitted successfully!");
 
-              const safeHawkerName =
-                escapeHtml(data.hawkerName);
-
-              const safeUserName =
-                escapeHtml(
-                  data.userName || "Anonymous"
-                );
-
-              const safeFeedbackText =
-                escapeHtml(data.feedbackText);
-
-              feedbackHtml += `
-                <article class="feedback-item mb-3 p-3 border rounded">
-                  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-2 mb-2">
-                    <div>
-                      <h2 class="h6 fw-bold mb-1">
-                        ${safeHawkerName}
-                      </h2>
-
-                      <small class="text-secondary">
-                        By ${safeUserName}
-                        · ${formatTimestamp(data.timestamp)}
-                      </small>
-                    </div>
-
-                    <div
-                      class="text-warning"
-                      aria-label="${data.rating} out of 5 stars"
-                    >
-                      ${renderStars(data.rating)}
-                    </div>
-                  </div>
-
-                  <p class="mb-0">
-                    ${safeFeedbackText}
-                  </p>
-                </article>
-              `;
-            }
-          );
-
-          feedbackContainer.innerHTML =
-            feedbackHtml;
+          window.location.href = "my-orders.html";
         } catch (error) {
-          console.error(
-            "Error loading feedback:",
-            error
-          );
+          console.error("Feedback submission error:", error);
 
-          feedbackContainer.innerHTML = `
-            <div class="alert alert-danger mb-0">
-              <i class="bi bi-exclamation-circle me-1"></i>
-              Error loading feedback. Please try again later.
-            </div>
-          `;
+          alert(error.message);
+        } finally {
+          submitButton.disabled = false;
+          submitButton.innerHTML = originalButtonHtml;
         }
-      }
-
-      document
-        .getElementById("feedbackForm")
-        .addEventListener(
-          "submit",
-          async function (event) {
-            event.preventDefault();
-
-            const userName =
-              document
-                .getElementById("userName")
-                .value
-                .trim();
-
-            const hawker =
-              document.getElementById(
-                "hawkerSelect"
-              ).value;
-
-            const rating =
-              Number.parseInt(
-                ratingValue.value,
-                10
-              );
-
-            const feedback =
-              document
-                .getElementById("feedbackText")
-                .value
-                .trim();
-
-            if (!userName) {
-              alert("Please enter your name.");
-              return;
-            }
-
-            if (!hawker) {
-              alert("Please select a hawker stall.");
-              return;
-            }
-
-            if (
-              Number.isNaN(rating) ||
-              rating < 1 ||
-              rating > 5
-            ) {
-              alert(
-                "Please provide a rating by clicking the stars."
-              );
-
-              return;
-            }
-
-            if (!feedback) {
-              alert("Please write your feedback.");
-              return;
-            }
-
-            const submitButton =
-              document.getElementById(
-                "submitBtn"
-              );
-
-            const originalButtonHtml =
-              submitButton.innerHTML;
-
-            submitButton.disabled = true;
-
-            submitButton.innerHTML = `
-              <span
-                class="spinner-border spinner-border-sm me-2"
-                aria-hidden="true"
-              ></span>
-              Submitting...
-            `;
-
-            try {
-              await addDoc(
-                collection(db, "feedbacks"),
-                {
-                  hawkerName: hawker,
-                  rating,
-                  feedbackText: feedback,
-                  userName,
-                  timestamp: serverTimestamp(),
-                  createdAt:
-                    new Date().toISOString()
-                }
-              );
-
-              alert(
-                `Thank you for your feedback, ${userName}!`
-              );
-
-              document
-                .getElementById("feedbackForm")
-                .reset();
-
-              ratingValue.value = "0";
-              updateStarDisplay(0);
-
-              await loadFeedback();
-            } catch (error) {
-              console.error(
-                "Error submitting feedback:",
-                error
-              );
-
-              alert(
-                "Error submitting feedback. Please try again."
-              );
-            } finally {
-              submitButton.disabled = false;
-              submitButton.innerHTML =
-                originalButtonHtml;
-            }
-          }
-        );
-
-      loadFeedback();
+      });
     </script>
 
     <style>
@@ -697,12 +410,10 @@
       }
 
       .feedback-item:hover {
-        box-shadow:
-          0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
         transform: translateY(-1px);
       }
     </style>
   </body>
 </html>
-
