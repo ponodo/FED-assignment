@@ -79,18 +79,24 @@ async function register(req, res) {
     });
 
     if (role === "customer") {
-      await authModel.linkCustomerRecord(
+      const customerRecord = await authModel.linkCustomerRecord(
         newUser.userId,
         `${firstName} ${lastName}`,
         normalizedEmail,
       );
+
+      newUser.customerId = customerRecord.customerId;
+      newUser.stallId = null;
     } else {
-      await authModel.linkStallRecord(
+      const stallRecord = await authModel.linkStallRecord(
         newUser.userId,
         stallName,
         cuisine,
         hawkerCenter,
       );
+
+      newUser.stallId = stallRecord.stallId;
+      newUser.customerId = null;
     }
 
     const token = generateToken(newUser);

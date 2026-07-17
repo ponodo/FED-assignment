@@ -7,16 +7,22 @@ async function findUserByEmail(email) {
     .request()
     .input("email", sql.VarChar(100), email).query(`
       SELECT
-        userId,
-        firstName,
-        lastName,
-        email,
-        phone,
-        passwordHash,
-        role,
-        createdAt
-      FROM Users
-      WHERE email = @email
+        u.userId,
+        u.firstName,
+        u.lastName,
+        u.email,
+        u.phone,
+        u.passwordHash,
+        u.role,
+        u.createdAt,
+        c.customerId,
+        s.stallId
+      FROM Users u
+      LEFT JOIN Customers c
+        ON u.userId = c.userId
+      LEFT JOIN Stalls s
+        ON u.userId = s.ownerId
+      WHERE u.email = @email
     `);
 
   return result.recordset[0];
@@ -28,15 +34,21 @@ async function findUserById(userId) {
   const result = await connection.request().input("userId", sql.Int, userId)
     .query(`
       SELECT
-        userId,
-        firstName,
-        lastName,
-        email,
-        phone,
-        role,
-        createdAt
-      FROM Users
-      WHERE userId = @userId
+        u.userId,
+        u.firstName,
+        u.lastName,
+        u.email,
+        u.phone,
+        u.role,
+        u.createdAt,
+        c.customerId,
+        s.stallId
+      FROM Users u
+      LEFT JOIN Customers c
+        ON u.userId = c.userId
+      LEFT JOIN Stalls s
+        ON u.userId = s.ownerId
+      WHERE u.userId = @userId
     `);
 
   return result.recordset[0];

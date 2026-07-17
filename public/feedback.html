@@ -222,7 +222,17 @@
 
       const orderId = Number(params.get("orderId"));
 
-      const customerId = Number(params.get("customerId"));
+      const loggedInUser = JSON.parse(
+  localStorage.getItem("hawkerhub_user")
+);
+
+if (!loggedInUser || !loggedInUser.customerId) {
+  alert("Please log in as a customer first.");
+  window.location.href = "login.html";
+  throw new Error("Customer is not logged in");
+}
+
+const customerId = loggedInUser.customerId;
 
       const stallId = Number(params.get("stallId"));
 

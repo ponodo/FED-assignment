@@ -135,7 +135,7 @@ function render() {
             order.status === "completed"
               ? `
                 <a
-                  href="feedback.html?orderId=${order.orderId}&customerId=${order.customerId}&stallId=${group.stallId}&stallName=${encodeURIComponent(group.stallName)}"
+                  href="feedback.html?orderId=${order.orderId}&stallId=${group.stallId}&stallName=${encodeURIComponent(group.stallName)}"
                   class="btn btn-danger btn-sm mt-3"
                 >
                   <i class="bi bi-star me-1"></i>
