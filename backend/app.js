@@ -6,6 +6,7 @@ const path = require("path");
 
 const { sql, dbConfig } = require("./dbConfig");
 
+const authRoutes = require("./routes/authRoutes"); // NEW
 const feedbackRoutes = require("./routes/feedbackRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const stallRoutes = require("./routes/stallRoutes"); // NEW
@@ -54,6 +55,9 @@ app.get("/api/database-test", async (req, res) => {
 // =======================
 // API ROUTES
 // =======================
+
+// Auth routes (register / login / profile)
+app.use("/api/auth", authRoutes);
 
 // Feedback routes
 app.use("/api/feedback", feedbackRoutes);
