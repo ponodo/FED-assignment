@@ -28,9 +28,10 @@ CREATE TABLE Customers (
 -- Stalls
 CREATE TABLE Stalls (
     stallId INT IDENTITY(1,1) PRIMARY KEY,
+    ownerId INT NULL,
     stallName VARCHAR(100) NOT NULL,
     cuisine VARCHAR(50),
-    location VARCHAR(100)
+    location VARCHAR(100),
 
     FOREIGN KEY (ownerId) REFERENCES Users(userId)
 );
