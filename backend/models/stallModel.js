@@ -8,9 +8,26 @@ async function getAllStalls() {
       stallId,
       stallName,
       cuisine,
-      location
+      hawkerCentre,
+      address,
+      ownerName,
+      phone,
+      email,
+      description,
+      established,
+      hygieneGrade,
+      rating,
+      totalReviews,
+      deliveryAvailable,
+      pickupAvailable,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday,
+      sunday
     FROM Stalls
-    WHERE stallId IN (2, 3, 4, 5)
     ORDER BY stallName
   `);
 
@@ -20,12 +37,14 @@ async function getAllStalls() {
 async function getMenuByStallId(stallId) {
   const connection = await sql.connect(dbConfig);
 
-  const result = await connection.request().input("stallId", sql.Int, stallId)
+  const result = await connection.request()
+    .input("stallId", sql.Int, stallId)
     .query(`
       SELECT
         menuItemId,
         stallId,
-        itemName,
+        stallName,
+        name,
         description,
         price,
         category,

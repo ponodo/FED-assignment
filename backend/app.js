@@ -6,10 +6,11 @@ const path = require("path");
 
 const { sql, dbConfig } = require("./dbConfig");
 
-const authRoutes = require("./routes/authRoutes"); // NEW
+const authRoutes = require("./routes/authRoutes"); 
 const feedbackRoutes = require("./routes/feedbackRoutes");
 const orderRoutes = require("./routes/orderRoutes");
-const stallRoutes = require("./routes/stallRoutes"); // NEW
+const stallRoutes = require("./routes/stallRoutes"); 
+const menuItemRoutes = require("./routes/menuItemRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -65,8 +66,11 @@ app.use("/api/feedback", feedbackRoutes);
 // Order routes
 app.use("/api/orders", orderRoutes);
 
-// Stall & Menu routes (NEW)
+// Stall & Menu routes 
 app.use("/api/stalls", stallRoutes);
+
+// Menu item routes
+app.use("/api/menuitems", menuItemRoutes);
 
 // Handle unknown API routes
 app.use("/api", (req, res) => {

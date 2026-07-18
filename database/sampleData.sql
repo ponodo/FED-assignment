@@ -1,262 +1,84 @@
-/* =========================================================
-   HawkerHub Sample Data
-   File: sampleData.sql
-
-   Run createDatabase.sql before running this file.
-   ========================================================= */
-
 USE HawkerDB;
 GO
 
-/* =========================================================
-   Sample customers
-
-   userId is NULL because real user accounts should be
-   created through POST /api/auth/register so passwords
-   are securely hashed using bcrypt.
-   ========================================================= */
-
-INSERT INTO Customers (
-    userId,
-    customerName,
-    email
-)
+-- =========================
+-- Users
+-- Password for both accounts below is: password123
+-- =========================
+INSERT INTO Users (firstName, lastName, email, phone, passwordHash, role)
 VALUES
-(
-    NULL,
-    'Sample Customer One',
-    'customer1@example.com'
-),
-(
-    NULL,
-    'Sample Customer Two',
-    'customer2@example.com'
-),
-(
-    NULL,
-    'Sample Customer Three',
-    'customer3@example.com'
-);
-GO
+('Elix', 'Ng', 'elix@gmail.com', '91234567', '$2b$10$iNkOaKgaV9GHGDoSa96ohuZMKad6hmbha7Eopb5twyO989tGNBX1O', 'customer'),
+('Keith', 'Tan', 'keith@gmail.com', '98765432', '$2b$10$iNkOaKgaV9GHGDoSa96ohuZMKad6hmbha7Eopb5twyO989tGNBX1O', 'vendor');
 
-/* =========================================================
-   Sample stalls
-   ========================================================= */
+-- =========================
+-- Customers
+-- =========================
+INSERT INTO Customers (userId, customerName, email)
+VALUES
+(1, 'Elix Ng', 'elix@gmail.com'),
+(NULL, 'Walk-in Guest', 'guest@example.com');
 
+-- =========================
+-- Stalls
+-- =========================
 INSERT INTO Stalls (
-    ownerId,
-    stallName,
-    cuisine,
-    location
+    stallId, stallName, cuisine, hawkerCentre, address, ownerName, phone, email,
+    description, established, hygieneGrade, rating, totalReviews,
+    deliveryAvailable, pickupAvailable,
+    monday, tuesday, wednesday, thursday, friday, saturday, sunday
 )
 VALUES
-(
-    NULL,
-    'Tian Tian Chicken Rice',
-    'Chinese',
-    'Maxwell Food Centre'
-),
-(
-    NULL,
-    'Hill Street Fried Kway Teow',
-    'Chinese',
-    'Chinatown Complex'
-),
-(
-    NULL,
-    'Sungei Road Laksa',
-    'Local',
-    'Jalan Berseh'
-),
-(
-    NULL,
-    'Roti Prata House',
-    'Indian',
-    'Upper Thomson Road'
-),
-(
-    NULL,
-    'ABC Noodles',
-    'Chinese',
-    'Old Airport Road Food Centre'
-);
-GO
+(1, 'Tian Tian Chicken Rice', 'Chinese', 'Maxwell Food Centre', '1 Kadayanallur Street, #01-10, Singapore 069184', 'Ah Tan', '+65 6225 5635', 'tiantian@example.com', '', 1980, 'A', 4.8, 1245, 1, 1, '10:00-20:00', '10:00-20:00', '10:00-20:00', '10:00-20:00', '10:00-20:00', '10:00-20:00', '10:00-18:00'),
+(2, 'Hill Street Fried Kway Teow', 'Chinese', 'Bedok Food Centre', '348 Bedok Road, #01-23, Singapore 469560', 'Mr. Wong', '+65 6243 9876', 'hillstreet@example.com', 'Traditional fried kway teow with excellent wok hei flavor.', 1975, 'A', 4.5, 892, 1, 1, '08:00-18:00', '08:00-18:00', '08:00-18:00', '08:00-18:00', '08:00-18:00', '08:00-18:00', 'Closed'),
+(3, 'Sungei Road Laksa', 'Chinese', 'Jalan Besar', '27 Jalan Berseh, #01-100, Singapore 200027', 'Madam Goh', '+65 6294 0321', 'sungeiroad@example.com', 'Original Katong laksa with rich coconut broth. Family recipe since 1956.', 1956, 'A', 4.7, 1543, 1, 1, '09:00-17:00', '09:00-17:00', '09:00-17:00', '09:00-17:00', '09:00-17:00', '09:00-17:00', '09:00-15:00'),
+(4, 'Roti Prata House', 'Indian', 'Little India', '246 Race Course Road, Singapore 218701', 'Mr. Singh', '+65 6299 0022', 'pratahouse@example.com', '24-hour prata shop serving crispy pratas with various curries', 1990, 'B', 4.3, 765, 1, 1, '06:00-22:00', '06:00-22:00', '06:00-22:00', '06:00-22:00', '06:00-22:00', '06:00-22:00', '06:00-22:00');
 
-/* =========================================================
-   Sample menu items
-   Ensure these image filenames exist inside public/Images.
-   ========================================================= */
-
+-- =========================
+-- Menu Items
+-- =========================
 INSERT INTO MenuItems (
-    stallId,
-    itemName,
-    description,
-    price,
-    image
+    stallId, stallName, name, category, description, price, prepTime, availability, image
 )
 VALUES
-(
-    1,
-    'Chicken Rice',
-    'Steamed chicken served with fragrant rice.',
-    5.50,
-    'chicken-rice.jpg'
-),
-(
-    1,
-    'Roasted Chicken Rice',
-    'Roasted chicken served with fragrant rice.',
-    6.00,
-    'roasted-chicken-rice.jpg'
-),
-(
-    2,
-    'Fried Kway Teow',
-    'Flat rice noodles fried with egg and bean sprouts.',
-    6.50,
-    'fried-kway-teow.jpg'
-),
-(
-    3,
-    'Laksa',
-    'Rice noodles served in spicy coconut gravy.',
-    5.00,
-    'laksa.jpg'
-),
-(
-    4,
-    'Plain Prata',
-    'Crispy prata served with curry.',
-    1.50,
-    'plain-prata.jpg'
-),
-(
-    4,
-    'Egg Prata',
-    'Crispy prata filled with egg and served with curry.',
-    2.50,
-    'egg-prata.jpg'
-),
-(
-    5,
-    'Minced Meat Noodles',
-    'Noodles served with minced meat and vegetables.',
-    5.50,
-    'minced-meat-noodles.jpg'
-);
-GO
+(2, 'Hill Street Fried Kway Teow', 'Fried Hokkien Mee', 'Main Course', 'Stir-fried noodles with prawns, egg, and sambal chilli', 5.50, 10, 'Y', 'hokkien-mee.jpg'),
+(2, 'Hill Street Fried Kway Teow', 'Add egg', 'Add-on', 'Extra fried egg topping', 1.00, 2, 'Y', 'egg.jpg'),
+(4, 'Roti Prata House', 'Cheese prata', 'Main Course', 'Crispy prata with cheese inside', 4.00, 6, 'Y', 'cheese-prata.jpg'),
+(4, 'Roti Prata House', 'Egg prata', 'Main Course', 'Crispy prata with egg inside', 3.00, 5, 'Y', 'egg-prata.jpg'),
+(2, 'Hill Street Fried Kway Teow', 'Char Kway Teow', 'Main Course', 'Fried flat rice noodles with prawns, Chinese sausage, cockles, and bean sprouts', 5.00, 10, 'Y', 'char-kway-teow.jpg'),
+(2, 'Hill Street Fried Kway Teow', 'Iced Lemon Tea', 'Beverage', 'Refreshing lemon tea served cold', 2.50, 3, 'Y', 'ice-lemon-tea.jpg'),
+(2, 'Hill Street Fried Kway Teow', 'Sugar Cane Juice', 'Beverage', 'Freshly pressed sugar cane juice', 3.00, 2, 'Y', 'sugarcane.jpg'),
+(3, 'Sungei Road Laksa', 'Otah (2pcs)', 'Side', 'Bigger portion with extra prawns and tofu puffs', 2.00, 5, 'Y', 'otah.jpg'),
+(4, 'Roti Prata House', 'Teh Tarik (Hot)', 'Beverage', 'Traditional pulled milk tea', 1.80, 3, 'Y', 'teh-tarik.jpg'),
+(1, 'Tian Tian Chicken Rice', 'Roasted Chicken Rice', 'Main Course', 'Crispy roasted chicken with aromatic rice', 6.00, 20, 'Y', 'roasted-chicken-rice.jpg'),
+(1, 'Tian Tian Chicken Rice', 'Chicken Rice', 'Main Course', 'Signature Hainanese chicken rice with fragrant rice and tender steamed chicken', 5.50, 15, 'Y', 'chicken-rice.jpg'),
+(1, 'Tian Tian Chicken Rice', 'Iced Teh Tarik', 'Beverage', 'Traditional pulled tea with ice', 2.50, 3, 'Y', 'iced-teh-tarik.jpg'),
+(4, 'Roti Prata House', 'Prata with curry', 'Main Course', 'Crispy Indian flatbread served with curry', 2.50, 5, 'Y', 'curry-prata.jpg'),
+(3, 'Sungei Road Laksa', 'Laksa (large)', 'Main Course', 'Bigger portion with extra prawns and tofu puffs', 7.50, 12, 'Y', 'laksa.jpg');
 
-/* =========================================================
-   Sample completed orders
-
-   These orders allow feedback to be submitted and tested.
-   ========================================================= */
-
+-- =========================
+-- Orders
+-- =========================
 INSERT INTO Orders (
     customerId,
     stallId,
     totalAmount,
     paymentStatus,
-    createdAt
+    orderStatus
 )
 VALUES
-(
-    1,
-    1,
-    5.50,
-    'Paid',
-    DATEADD(DAY, -5, GETDATE())
-),
-(
-    2,
-    1,
-    6.00,
-    'Paid',
-    DATEADD(DAY, -4, GETDATE())
-),
-(
-    3,
-    2,
-    6.50,
-    'Paid',
-    DATEADD(DAY, -3, GETDATE())
-),
-(
-    1,
-    3,
-    5.00,
-    'Paid',
-    DATEADD(DAY, -2, GETDATE())
-),
-(
-    2,
-    4,
-    4.00,
-    'Paid',
-    DATEADD(DAY, -1, GETDATE())
-);
-GO
+(1, 1, 7.50, 'Paid', 'Completed'),
+(2, 2, 5.80, 'Paid', 'Completed');
 
-/* =========================================================
-   Sample feedback
-
-   One feedback record per order.
-   ========================================================= */
-
+-- =========================
+-- Feedback
+-- =========================
 INSERT INTO Feedback (
     orderId,
     customerId,
     stallId,
     rating,
-    comments,
-    createdAt
+    comments
 )
 VALUES
-(
-    1,
-    1,
-    1,
-    5,
-    'The chicken was tender and the rice was very fragrant.',
-    DATEADD(DAY, -4, GETDATE())
-),
-(
-    2,
-    2,
-    1,
-    4,
-    'Good chicken rice, but the waiting time was slightly long.',
-    DATEADD(DAY, -3, GETDATE())
-),
-(
-    3,
-    3,
-    2,
-    5,
-    'Very flavourful fried kway teow with a good smoky taste.',
-    DATEADD(DAY, -2, GETDATE())
-),
-(
-    4,
-    1,
-    3,
-    4,
-    'The laksa gravy was rich and spicy.',
-    DATEADD(DAY, -1, GETDATE())
-);
-GO
-
-/* =========================================================
-   Display inserted data
-   ========================================================= */
-
-SELECT * FROM Users;
-SELECT * FROM Customers;
-SELECT * FROM Stalls;
-SELECT * FROM MenuItems;
-SELECT * FROM Orders;
-SELECT * FROM Feedback;
-GO
-
-PRINT 'HawkerHub sample data inserted successfully.';
-GO
+(1, 1, 1, 5, 'Great chicken rice, very tasty.'),
+(2, 2, 2, 4, 'Good food and fast service.');
