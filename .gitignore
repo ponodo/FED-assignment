@@ -1,0 +1,10 @@
+# Environment files
+.env
+backend/.env
+
+# Node modules
+node_modules/
+backend/node_modules/
+
+# Optional zip files
+*.zip
