@@ -37,23 +37,21 @@ async function getAllStalls() {
 async function getMenuByStallId(stallId) {
   const connection = await sql.connect(dbConfig);
 
-  const result = await connection.request()
-    .input("stallId", sql.Int, stallId)
+  const result = await connection.request().input("stallId", sql.Int, stallId)
     .query(`
       SELECT
-        menuItemId,
-        stallId,
-        stallName,
-        name,
-        description,
-        price,
-        category,
-        availability,
-        prepTime,
-        image
-      FROM MenuItems
-      WHERE stallId = @stallId
-      ORDER BY menuItemId
+    menuItemId,
+    stallId,
+    itemName AS name,
+    description,
+    price,
+    category,
+    availability,
+    prepTime,
+    image
+FROM MenuItems
+WHERE stallId = @stallId
+ORDER BY menuItemId
     `);
 
   return result.recordset;

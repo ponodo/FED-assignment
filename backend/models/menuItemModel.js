@@ -1,13 +1,13 @@
 const { sql, dbConfig } = require("../dbConfig");
 
 //GET all stalls
-async function getAllStalls(){
-    let connection;
+async function getAllStalls() {
+  let connection;
 
-    try{
-        connection = await sql.connect(dbConfig);
+  try {
+    connection = await sql.connect(dbConfig);
 
-        const query = `
+    const query = `
         SELECT 
         stallId,
         stallName,
@@ -23,25 +23,23 @@ async function getAllStalls(){
     `;
     const result = await connection.request().query(query);
     return result.recordset;
+  } catch (error) {
+    console.error("Database error in getAllStalls:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
     }
-    catch (error){
-        console.error("Database error in getAllStalls:",error);
-        throw error;
-    }
-    finally{
-        if (connection){
-            await connection.close()
-        }
-    }
+  }
 }
 // GET menu items by StallID
-async function getMenuItemsByStallId(stallId){
-    let connection; 
-    
-    try{
-        connection = await sql.connect(dbConfig);
+async function getMenuItemsByStallId(stallId) {
+  let connection;
 
-        const query = `
+  try {
+    connection = await sql.connect(dbConfig);
+
+    const query = `
         SELECT 
         menuItemId,
         stallId,
@@ -58,31 +56,28 @@ async function getMenuItemsByStallId(stallId){
     `;
 
     const request = connection.request();
-    request.input("stallId",sql.Int,stallId);
+    request.input("stallId", sql.Int, stallId);
 
     const result = await request.query(query);
     return result.recordset;
+  } catch (error) {
+    console.error("Database error in getMenuItemsByStallId:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
     }
-    catch (error){
-        console.error("Database error in getMenuItemsByStallId:",error);
-        throw error;
-
-    }
-    finally {
-        if (connection){
-            await connection.close()
-        }
-    }
+  }
 }
 
-// PUT update menu item 
-async function createMenuItem(menuItemData){
-    let connection;
-    
-    try{
-        connection = await sql.connect(dbConfig);
-        
-        const query = `
+// PUT update menu item
+async function createMenuItem(menuItemData) {
+  let connection;
+
+  try {
+    connection = await sql.connect(dbConfig);
+
+    const query = `
         INSERT INTO MenuItems 
         (stallId, stallName, name, category, description, price, prepTime, availability, image)
         VALUES 
@@ -90,7 +85,6 @@ async function createMenuItem(menuItemData){
 
         SELECT SCOPE_IDENTITY() AS menuItemId;
         `;
-    
 
     const request = connection.request();
     request.input("stallId", sql.Int, menuItemData.stallId);
@@ -107,66 +101,59 @@ async function createMenuItem(menuItemData){
     const newMenuItemId = result.recordset[0].menuItemId;
 
     return await getMenuItemById(newMenuItemId);
+  } catch (error) {
+    console.error("Database error in createMenuItem:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
     }
-    catch (error){
-        console.error("Database error in createMenuItem:", error);
-        throw error;
-    }
-    finally{
-        if (connection){
-            await connection.close();
-        }
-    }
+  }
 }
-// GET one menu item by ID 
-async function getMenuItemById(menuItemId){
-    let connection;
+// GET one menu item by ID
+async function getMenuItemById(menuItemId) {
+  let connection;
 
-    try{
-        connection = await sql.connect(dbConfig);
+  try {
+    connection = await sql.connect(dbConfig);
 
-        const query = `
-        SELECT 
+    const query = `
+    SELECT
         menuItemId,
         stallId,
-        stallName,
-        name,
+        itemName AS name,
         category,
         description,
         price,
         prepTime,
         availability,
         image
-        FROM MenuItems
-        WHERE menuItemId = @menuItemId
-        `;
-        
-        const request = connection.request();
-        request.input("menuItemId", sql.Int, menuItemId);
+    FROM MenuItems
+    WHERE stallId = @stallId
+`;
 
-        const result = await request.query(query);
-        return result.recordset[0];
-    
-    }
-    catch (error){
-        console.error("Database error in getMenuItemById:", error);
+    const request = connection.request();
+    request.input("menuItemId", sql.Int, menuItemId);
 
+    const result = await request.query(query);
+    return result.recordset[0];
+  } catch (error) {
+    console.error("Database error in getMenuItemById:", error);
+  } finally {
+    if (connection) {
+      await connection.close();
     }
-    finally{
-        if (connection){
-            await connection.close()
-        }
-    }
+  }
 }
 
-//PUT update menu item 
-async function updateMenuItem(menuItemId, menuItemData){
-    let connection;
+//PUT update menu item
+async function updateMenuItem(menuItemId, menuItemData) {
+  let connection;
 
-    try{
-        connection = await sql.connect(dbConfig);
+  try {
+    connection = await sql.connect(dbConfig);
 
-        const query = `
+    const query = `
         UPDATE MenuItems
         SET 
         name = @name,
@@ -179,45 +166,36 @@ async function updateMenuItem(menuItemId, menuItemData){
         WHERE menuItemId = @menuItemId
         `;
 
-        const request = connection.request();
+    const request = connection.request();
 
-        request.input("menuItemId", sql.Int, menuItemId);
-        request.input("name", sql.VarChar(100), menuItemData.name);
-        request.input("category", sql.VarChar(50), menuItemData.category);
-        request.input("description", sql.VarChar(500), menuItemData.description);
-        request.input("price", sql.Decimal(6, 2), menuItemData.price);
-        request.input("prepTime", sql.Int, menuItemData.prepTime);
-        request.input("availability", sql.Char(1), menuItemData.availability);
-        request.input("image", sql.VarChar(255), menuItemData.image);
+    request.input("menuItemId", sql.Int, menuItemId);
+    request.input("name", sql.VarChar(100), menuItemData.name);
+    request.input("category", sql.VarChar(50), menuItemData.category);
+    request.input("description", sql.VarChar(500), menuItemData.description);
+    request.input("price", sql.Decimal(6, 2), menuItemData.price);
+    request.input("prepTime", sql.Int, menuItemData.prepTime);
+    request.input("availability", sql.Char(1), menuItemData.availability);
+    request.input("image", sql.VarChar(255), menuItemData.image);
 
-        const result = await request.query(query);
+    const result = await request.query(query);
 
-        if (result.rowsAffected[0] === 0){
-            return null;
-        }
-        return await getMenuItemById(menuItemId);
+    if (result.rowsAffected[0] === 0) {
+      return null;
     }
-    catch (error){
-        console.error("Database error in updateMenuItem:", error);
-        throw error;
+    return await getMenuItemById(menuItemId);
+  } catch (error) {
+    console.error("Database error in updateMenuItem:", error);
+    throw error;
+  } finally {
+    if (connection) {
+      await connection.close();
     }
-    finally{
-        if (connection){
-            await connection.close();
-        }
-    }
-
+  }
 }
 module.exports = {
-    getAllStalls,
-    getMenuItemsByStallId,
-    createMenuItem,
-    getMenuItemById,
-    updateMenuItem,
-}
-    
-    
-    
-   
-
-    
+  getAllStalls,
+  getMenuItemsByStallId,
+  createMenuItem,
+  getMenuItemById,
+  updateMenuItem,
+};

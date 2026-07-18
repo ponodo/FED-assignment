@@ -257,7 +257,7 @@ function renderMenu(items) {
 
   menuGridEl.innerHTML = items
     .map((item) => {
-      const safeName = escapeHtml(item.itemName || "(missing name)");
+      const safeName = escapeHtml(item.name || "(missing name)");
 
       const safeDescription = escapeHtml(item.description || "");
 
