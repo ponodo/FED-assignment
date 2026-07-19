@@ -153,18 +153,27 @@ async function linkCustomerRecord(userId, customerName, email) {
   return result.recordset[0];
 }
 
-async function linkStallRecord(userId, stallName, cuisine, location) {
+async function linkStallRecord(userId, stallName, cuisine, hawkerCentre) {
   const connection = await sql.connect(dbConfig);
+
+  // stallId is no longer auto-generated (Stalls.stallId is a plain
+  // PRIMARY KEY, not IDENTITY), so we work out the next id ourselves.
+  const nextIdResult = await connection.request().query(`
+    SELECT ISNULL(MAX(stallId), 0) + 1 AS nextStallId FROM Stalls
+  `);
+
+  const nextStallId = nextIdResult.recordset[0].nextStallId;
 
   const result = await connection
     .request()
+    .input("stallId", sql.Int, nextStallId)
     .input("userId", sql.Int, userId)
     .input("stallName", sql.VarChar(100), stallName)
     .input("cuisine", sql.VarChar(50), cuisine || null)
-    .input("location", sql.VarChar(100), location || null).query(`
-      INSERT INTO Stalls (ownerId, stallName, cuisine, location)
+    .input("hawkerCentre", sql.VarChar(100), hawkerCentre || null).query(`
+      INSERT INTO Stalls (stallId, ownerId, stallName, cuisine, hawkerCentre)
       OUTPUT INSERTED.stallId
-      VALUES (@userId, @stallName, @cuisine, @location)
+      VALUES (@stallId, @userId, @stallName, @cuisine, @hawkerCentre)
     `);
 
   return result.recordset[0];
