@@ -125,6 +125,16 @@ async function updateUser(userId, userData) {
 async function deleteUser(userId) {
   const connection = await sql.connect(dbConfig);
 
+  // Customers/Stalls reference Users via a foreign key, so those linked
+  // rows must go first or the delete below will be rejected by SQL Server.
+  await connection.request().input("userId", sql.Int, userId).query(`
+    DELETE FROM Customers WHERE userId = @userId
+  `);
+
+  await connection.request().input("userId", sql.Int, userId).query(`
+    DELETE FROM Stalls WHERE ownerId = @userId
+  `);
+
   const result = await connection.request().input("userId", sql.Int, userId)
     .query(`
       DELETE FROM Users
