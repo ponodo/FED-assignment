@@ -1,74 +1,58 @@
 const { sql, dbConfig } = require("../dbConfig");
 
 async function createFeedback(feedbackData) {
-  let connection;
+  const connection = await sql.connect(dbConfig);
 
-  try {
-    connection = await sql.connect(dbConfig);
+  const result = await connection
+    .request()
+    .input("orderId", sql.Int, feedbackData.orderId)
+    .input("customerId", sql.Int, feedbackData.customerId)
+    .input("stallId", sql.Int, feedbackData.stallId)
+    .input("rating", sql.Int, feedbackData.rating)
+    .input("comments", sql.VarChar(1000), feedbackData.comments).query(`
+      INSERT INTO Feedback (
+        orderId,
+        customerId,
+        stallId,
+        rating,
+        comments
+      )
+      OUTPUT INSERTED.*
+      VALUES (
+        @orderId,
+        @customerId,
+        @stallId,
+        @rating,
+        @comments
+      )
+    `);
 
-    const result = await connection
-      .request()
-      .input("orderId", sql.Int, feedbackData.orderId)
-      .input("customerId", sql.Int, feedbackData.customerId)
-      .input("stallId", sql.Int, feedbackData.stallId)
-      .input("rating", sql.Int, feedbackData.rating)
-      .input("comments", sql.VarChar(1000), feedbackData.comments).query(`
-        INSERT INTO Feedback (
-          orderId,
-          customerId,
-          stallId,
-          rating,
-          comments
-        )
-        OUTPUT INSERTED.*
-        VALUES (
-          @orderId,
-          @customerId,
-          @stallId,
-          @rating,
-          @comments
-        )
-      `);
-
-    return result.recordset[0];
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
+  return result.recordset[0];
 }
 
 async function getFeedbackByStallId(stallId) {
-  let connection;
+  const connection = await sql.connect(dbConfig);
 
-  try {
-    connection = await sql.connect(dbConfig);
+  const result = await connection.request().input("stallId", sql.Int, stallId)
+    .query(`
+      SELECT
+        f.feedbackId,
+        f.orderId,
+        f.customerId,
+        f.stallId,
+        f.rating,
+        f.comments,
+        f.createdAt,
+        f.updatedAt,
+        c.customerName
+      FROM Feedback f
+      INNER JOIN Customers c
+        ON f.customerId = c.customerId
+      WHERE f.stallId = @stallId
+      ORDER BY f.createdAt DESC
+    `);
 
-    const result = await connection.request().input("stallId", sql.Int, stallId)
-      .query(`
-        SELECT
-          f.feedbackId,
-          f.orderId,
-          f.customerId,
-          f.stallId,
-          f.rating,
-          f.comments,
-          f.createdAt,
-          f.updatedAt,
-          c.customerName
-        FROM Feedback f
-        INNER JOIN Customers c
-          ON f.customerId = c.customerId
-        WHERE f.stallId = @stallId
-        ORDER BY f.createdAt DESC
-      `);
-
-    return result.recordset;
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
+  return result.recordset;
 }
 
 async function getRatingSummary(stallId) {
@@ -119,53 +103,37 @@ async function getRatingSummary(stallId) {
 }
 
 async function updateFeedback(feedbackId, rating, comments) {
-  let connection;
+  const connection = await sql.connect(dbConfig);
 
-  try {
-    connection = await sql.connect(dbConfig);
+  const result = await connection
+    .request()
+    .input("feedbackId", sql.Int, feedbackId)
+    .input("rating", sql.Int, rating)
+    .input("comments", sql.VarChar(1000), comments).query(`
+      UPDATE Feedback
+      SET
+        rating = @rating,
+        comments = @comments,
+        updatedAt = GETDATE()
+      OUTPUT INSERTED.*
+      WHERE feedbackId = @feedbackId
+    `);
 
-    const result = await connection
-      .request()
-      .input("feedbackId", sql.Int, feedbackId)
-      .input("rating", sql.Int, rating)
-      .input("comments", sql.VarChar(1000), comments).query(`
-        UPDATE Feedback
-        SET
-          rating = @rating,
-          comments = @comments,
-          updatedAt = GETDATE()
-        OUTPUT INSERTED.*
-        WHERE feedbackId = @feedbackId
-      `);
-
-    return result.recordset[0] || null;
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
+  return result.recordset[0] || null;
 }
 
 async function deleteFeedback(feedbackId) {
-  let connection;
+  const connection = await sql.connect(dbConfig);
 
-  try {
-    connection = await sql.connect(dbConfig);
+  const result = await connection
+    .request()
+    .input("feedbackId", sql.Int, feedbackId).query(`
+      DELETE FROM Feedback
+      OUTPUT DELETED.*
+      WHERE feedbackId = @feedbackId
+    `);
 
-    const result = await connection
-      .request()
-      .input("feedbackId", sql.Int, feedbackId).query(`
-        DELETE FROM Feedback
-        OUTPUT DELETED.*
-        WHERE feedbackId = @feedbackId
-      `);
-
-    return result.recordset[0] || null;
-  } finally {
-    if (connection) {
-      await connection.close();
-    }
-  }
+  return result.recordset[0] || null;
 }
 
 module.exports = {
