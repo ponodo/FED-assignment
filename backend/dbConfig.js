@@ -14,7 +14,18 @@ const dbConfig = {
   },
 };
 
+let pool;
+
+async function getPool() {
+    if (!pool) {
+        pool = await sql.connect(dbConfig);
+    }
+
+    return pool;
+}
+
 module.exports = {
   sql,
   dbConfig,
+  getPool
 };

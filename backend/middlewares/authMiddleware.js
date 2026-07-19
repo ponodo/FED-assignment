@@ -1,12 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 function verifyToken(req, res, next) {
-  const authHeader = req.headers["authorization"];
+  const authHeader = req.headers.authorization;
 
-  const token =
-    authHeader && authHeader.startsWith("Bearer ")
-      ? authHeader.split(" ")[1]
-      : null;
+  const token = authHeader?.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : null;
 
   if (!token) {
     return res.status(401).json({
@@ -15,12 +14,8 @@ function verifyToken(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // decoded.userId is the unique ID issued at login/register
-    req.user = decoded;
-
-    next();
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    return next();
   } catch (error) {
     return res.status(401).json({
       error: "Invalid or expired token. Please log in again.",
@@ -28,17 +23,18 @@ function verifyToken(req, res, next) {
   }
 }
 
-// Use after verifyToken to restrict a route to specific roles, e.g.
+// Use after verifyToken to restrict routes to specific roles
+// Example:
 // router.delete("/:id", verifyToken, requireRole("vendor"), controller.remove)
 function requireRole(...allowedRoles) {
   return (req, res, next) => {
     if (!req.user || !allowedRoles.includes(req.user.role)) {
       return res.status(403).json({
-        error: "You do not have permission to perform this action",
+        error: "You do not have permission to perform this action.",
       });
     }
 
-    next();
+    return next();
   };
 }
 

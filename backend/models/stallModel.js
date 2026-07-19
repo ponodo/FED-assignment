@@ -1,57 +1,126 @@
-const { sql, dbConfig } = require("../dbConfig");
+const { sql, getPool } = require("../dbConfig");
 
 async function getAllStalls() {
-  const connection = await sql.connect(dbConfig);
+  const pool = await getPool();
 
-  const result = await connection.request().query(`
+  const result = await pool.request().query(`
     SELECT
-      stallId,
-      stallName,
-      cuisine,
-      hawkerCentre,
-      address,
-      ownerName,
-      phone,
-      email,
-      description,
-      established,
-      hygieneGrade,
-      rating,
-      totalReviews,
-      deliveryAvailable,
-      pickupAvailable,
-      monday,
-      tuesday,
-      wednesday,
-      thursday,
-      friday,
-      saturday,
-      sunday
-    FROM Stalls
-    ORDER BY stallName
+      s.stallId,
+      s.ownerId,
+      s.stallName,
+      s.cuisine,
+      s.hawkerCentre,
+      s.stallNumber,
+      s.address,
+      s.ownerName,
+      s.phone,
+      s.email,
+      s.description,
+      s.established,
+      s.rating,
+      s.totalReviews,
+      s.deliveryAvailable,
+      s.pickupAvailable,
+      s.monday,
+      s.tuesday,
+      s.wednesday,
+      s.thursday,
+      s.friday,
+      s.saturday,
+      s.sunday,
+      latestInspection.grade AS hygieneGrade,
+      latestInspection.score AS hygieneScore,
+      latestInspection.inspectionDate AS lastInspectionDate
+    FROM Stalls s
+    OUTER APPLY (
+      SELECT TOP 1
+        i.grade,
+        i.score,
+        i.inspectionDate
+      FROM InspectionRecords i
+      WHERE i.stallId = s.stallId
+      ORDER BY
+        i.inspectionDate DESC,
+        i.inspectionId DESC
+    ) AS latestInspection
+    ORDER BY s.stallName;
   `);
 
   return result.recordset;
 }
 
-async function getMenuByStallId(stallId) {
-  const connection = await sql.connect(dbConfig);
+async function getStallById(stallId) {
+  const pool = await getPool();
 
-  const result = await connection.request().input("stallId", sql.Int, stallId)
+  const result = await pool
+    .request()
+    .input("stallId", sql.Int, stallId)
     .query(`
       SELECT
-    menuItemId,
-    stallId,
-    itemName AS name,
-    description,
-    price,
-    category,
-    availability,
-    prepTime,
-    image
-FROM MenuItems
-WHERE stallId = @stallId
-ORDER BY menuItemId
+        s.stallId,
+        s.ownerId,
+        s.stallName,
+        s.cuisine,
+        s.hawkerCentre,
+        s.stallNumber,
+        s.address,
+        s.ownerName,
+        s.phone,
+        s.email,
+        s.description,
+        s.established,
+        s.rating,
+        s.totalReviews,
+        s.deliveryAvailable,
+        s.pickupAvailable,
+        s.monday,
+        s.tuesday,
+        s.wednesday,
+        s.thursday,
+        s.friday,
+        s.saturday,
+        s.sunday,
+        latestInspection.grade AS hygieneGrade,
+        latestInspection.score AS hygieneScore,
+        latestInspection.inspectionDate AS lastInspectionDate
+      FROM Stalls s
+      OUTER APPLY (
+        SELECT TOP 1
+          i.grade,
+          i.score,
+          i.inspectionDate
+        FROM InspectionRecords i
+        WHERE i.stallId = s.stallId
+        ORDER BY
+          i.inspectionDate DESC,
+          i.inspectionId DESC
+      ) AS latestInspection
+      WHERE s.stallId = @stallId;
+    `);
+
+  return result.recordset[0];
+}
+
+async function getMenuByStallId(stallId) {
+  const pool = await getPool();
+
+  const result = await pool
+    .request()
+    .input("stallId", sql.Int, stallId)
+    .query(`
+      SELECT
+        menuItemId,
+        stallId,
+        itemName AS name,
+        description,
+        price,
+        category,
+        availability,
+        prepTime,
+        image
+      FROM MenuItems
+      WHERE stallId = @stallId
+      ORDER BY menuItemId;
     `);
 
   return result.recordset;
@@ -59,5 +128,6 @@ ORDER BY menuItemId
 
 module.exports = {
   getAllStalls,
+  getStallById,
   getMenuByStallId,
 };

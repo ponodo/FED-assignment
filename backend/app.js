@@ -4,91 +4,90 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 
-const { sql, dbConfig } = require("./dbConfig");
-
-const authRoutes = require("./routes/authRoutes"); 
-const feedbackRoutes = require("./routes/feedbackRoutes");
-const orderRoutes = require("./routes/orderRoutes");
-const stallRoutes = require("./routes/stallRoutes"); 
-const menuItemRoutes = require("./routes/menuItemRoutes");
+const { getPool } = require("./dbConfig");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// =======================================
 // Middleware
+// =======================================
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Serve frontend files from the public folder
 app.use(express.static(path.join(__dirname, "../public")));
 
-// Test whether the backend is running
+// =======================================
+// Test Routes
+// =======================================
+
+// Test if API is running
 app.get("/api/test", (req, res) => {
-  res.status(200).json({
-    message: "Hawker backend is working",
-  });
+    res.json({
+        message: "HawkerHub API is working"
+    });
 });
 
-// Test SQL Server database connection
-app.get("/api/database-test", async (req, res) => {
-  try {
-    const connection = await sql.connect(dbConfig);
+// Test database connection
+app.get("/api/database-test", async (req, res, next) => {
+    try {
+        const pool = await getPool();
 
-    const result = await connection.request().query(`
-      SELECT DB_NAME() AS databaseName
-    `);
+        const result = await pool
+            .request()
+            .query("SELECT DB_NAME() AS databaseName");
 
-    res.status(200).json({
-      message: "Database connection successful",
-      database: result.recordset[0].databaseName,
-    });
-  } catch (error) {
-    console.error("Database connection error:", error);
+        res.json({
+            message: "Database connection successful",
+            database: result.recordset[0].databaseName
+        });
 
-    res.status(500).json({
-      error: "Database connection failed",
-      details: error.message,
-    });
-  }
+    } catch (error) {
+        next(error);
+    }
 });
 
-// =======================
-// API ROUTES
-// =======================
+// =======================================
+// API Routes
+// =======================================
 
-// Auth routes (register / login / profile)
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/feedback", require("./routes/feedbackRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
+app.use("/api/stalls", require("./routes/stallRoutes"));
+app.use("/api/menuitems", require("./routes/menuItemRoutes"));
 
-// Feedback routes
-app.use("/api/feedback", feedbackRoutes);
+app.use("/api/rental-agreements", require("./routes/rentalAgreementRoutes"));
+app.use("/api/payments", require("./routes/paymentRoutes"));
+app.use("/api/inspections", require("./routes/inspectionRoutes"));
+app.use("/api/dashboard", require("./routes/dashboardRoutes"));
 
-// Order routes
-app.use("/api/orders", orderRoutes);
+// =======================================
+// 404 Handler
+// =======================================
 
-// Stall & Menu routes 
-app.use("/api/stalls", stallRoutes);
-
-// Menu item routes
-app.use("/api/menuitems", menuItemRoutes);
-
-// Handle unknown API routes
 app.use("/api", (req, res) => {
-  res.status(404).json({
-    error: "API route not found",
-  });
+    res.status(404).json({
+        error: "API route not found."
+    });
 });
 
-// General error handler
+// =======================================
+// Global Error Handler
+// =======================================
+
 app.use((error, req, res, next) => {
-  console.error("Server error:", error);
+    console.error(error);
 
-  res.status(500).json({
-    error: "Internal server error",
-  });
+    res.status(error.status || 500).json({
+        error: error.message || "Internal server error."
+    });
 });
 
-// Start server
+// =======================================
+// Start Server
+// =======================================
+
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Server running at http://localhost:${PORT}`);
 });

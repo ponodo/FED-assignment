@@ -1,0 +1,11 @@
+const router = require("express").Router();
+const controller = require("../controllers/rentalAgreementController");
+const { verifyToken, requireRole } = require("../middlewares/authMiddleware");
+router.use(verifyToken, requireRole("vendor"));
+router.get("/stalls", controller.stalls);
+router.get("/", controller.list);
+router.get("/:id", controller.getOne);
+router.post("/", controller.create);
+router.put("/:id", controller.update);
+router.delete("/:id", controller.remove);
+module.exports = router;
