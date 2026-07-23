@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -38,9 +37,7 @@
 
     <!-- Page Content -->
     <main class="container py-5">
-      <h1 class="display-5 fw-bold text-danger mb-4">
-        Checkout
-      </h1>
+      <h1 class="display-5 fw-bold text-danger mb-4">Checkout</h1>
 
       <div class="row g-4 align-items-start">
         <!-- LEFT: Delivery Details -->
@@ -84,13 +81,13 @@
                 </div>
 
                 <div class="mb-3">
-                  <label for="address" class="form-label fw-semibold">
+                  <label for="deliveryAddress" class="form-label fw-semibold">
                     Delivery Address
                   </label>
 
                   <textarea
                     class="form-control"
-                    id="address"
+                    id="deliveryAddress"
                     rows="3"
                     placeholder="Enter your address for delivery orders"
                   ></textarea>
@@ -102,13 +99,9 @@
                   </label>
 
                   <select class="form-select" id="deliveryType">
-                    <option value="pickup" selected>
-                      Pickup
-                    </option>
+                    <option value="pickup" selected>Pickup</option>
 
-                    <option value="delivery">
-                      Delivery
-                    </option>
+                    <option value="delivery">Delivery</option>
                   </select>
                 </div>
               </form>
@@ -134,23 +127,15 @@
               </p>
 
               <div class="d-flex justify-content-between mb-2">
-                <span class="text-secondary">
-                  Subtotal:
-                </span>
+                <span class="text-secondary"> Subtotal: </span>
 
-                <span class="fw-semibold" id="summary-subtotal">
-                  $0.00
-                </span>
+                <span class="fw-semibold" id="summary-subtotal"> $0.00 </span>
               </div>
 
               <div class="d-flex justify-content-between mb-2">
-                <span class="text-secondary">
-                  Delivery:
-                </span>
+                <span class="text-secondary"> Delivery: </span>
 
-                <span class="fw-semibold" id="summary-delivery">
-                  $0.00
-                </span>
+                <span class="fw-semibold" id="summary-delivery"> $0.00 </span>
               </div>
 
               <p
@@ -161,14 +146,9 @@
               <hr />
 
               <div class="d-flex justify-content-between align-items-center">
-                <span class="fw-bold fs-5">
-                  Total:
-                </span>
+                <span class="fw-bold fs-5"> Total: </span>
 
-                <span
-                  class="fw-bold text-danger fs-4"
-                  id="summary-total"
-                >
+                <span class="fw-bold text-danger fs-4" id="summary-total">
                   $0.00
                 </span>
               </div>
@@ -189,26 +169,16 @@
                 </label>
 
                 <select class="form-select" id="paymentMethod">
-                  <option selected>
-                    PayNow
-                  </option>
+                  <option selected>PayNow</option>
 
-                  <option>
-                    NETS
-                  </option>
+                  <option>NETS</option>
 
-                  <option>
-                    Cash
-                  </option>
+                  <option>Cash</option>
                 </select>
               </div>
 
               <div class="form-check mb-4">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="tac"
-                />
+                <input class="form-check-input" type="checkbox" id="tac" />
 
                 <label class="form-check-label" for="tac">
                   I agree to the
@@ -237,15 +207,11 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-4 mt-5">
-      <small>
-        © 2026 HawkerHub. All rights reserved.
-      </small>
+      <small> © 2026 HawkerHub. All rights reserved. </small>
     </footer>
 
     <script type="module" src="js/checkoutPage.js"></script>
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

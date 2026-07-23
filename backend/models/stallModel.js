@@ -52,10 +52,7 @@ async function getAllStalls() {
 async function getStallById(stallId) {
   const pool = await getPool();
 
-  const result = await pool
-    .request()
-    .input("stallId", sql.Int, stallId)
-    .query(`
+  const result = await pool.request().input("stallId", sql.Int, stallId).query(`
       SELECT
         s.stallId,
         s.ownerId,
@@ -98,29 +95,29 @@ async function getStallById(stallId) {
       WHERE s.stallId = @stallId;
     `);
 
-  return result.recordset[0];
+  return result.recordset[0] || null;
 }
 
 async function getMenuByStallId(stallId) {
   const pool = await getPool();
 
-  const result = await pool
-    .request()
-    .input("stallId", sql.Int, stallId)
-    .query(`
+  const result = await pool.request().input("stallId", sql.Int, stallId).query(`
       SELECT
-        menuItemId,
-        stallId,
-        itemName AS name,
-        description,
-        price,
-        category,
-        availability,
-        prepTime,
-        image
-      FROM MenuItems
-      WHERE stallId = @stallId
-      ORDER BY menuItemId;
+        m.menuItemId,
+        m.stallId,
+        s.stallName,
+        m.name,
+        m.description,
+        m.price,
+        m.category,
+        m.availability,
+        m.prepTime,
+        m.image
+      FROM MenuItems m
+      INNER JOIN Stalls s
+        ON s.stallId = m.stallId
+      WHERE m.stallId = @stallId
+      ORDER BY m.menuItemId;
     `);
 
   return result.recordset;

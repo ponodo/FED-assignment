@@ -30,13 +30,20 @@ VALUES
     '98765432',
     '$2b$10$iNkOaKgaV9GHGDoSa96ohuZMKad6hmbha7Eopb5twyO989tGNBX1O',
     'vendor'
+),
+(
+    'Ryan',
+    'Lee',
+    'rider@gmail.com',
+    '91112222',
+    '$2b$10$iNkOaKgaV9GHGDoSa96ohuZMKad6hmbha7Eopb5twyO989tGNBX1O',
+    'rider'
 );
 GO
 
 
 -- =========================
 -- NEA Officer
--- Added for inspection routes.
 -- Password: password123
 -- =========================
 INSERT INTO Users (
@@ -83,7 +90,6 @@ GO
 
 -- =========================
 -- Stalls
--- Original GitHub data retained.
 -- =========================
 INSERT INTO Stalls (
     stallId,
@@ -212,7 +218,6 @@ GO
 -- =========================
 -- Stall Feature Additions
 -- Keith owns stall 1.
--- Dedicated stall numbers are added for rental records.
 -- =========================
 UPDATE Stalls
 SET
@@ -236,7 +241,6 @@ GO
 
 -- =========================
 -- Menu Items
--- Original GitHub data retained.
 -- =========================
 INSERT INTO MenuItems (
     stallId,
@@ -431,6 +435,123 @@ VALUES
     5.80,
     'Paid',
     'Completed'
+),
+(
+    1,
+    1,
+    12.00,
+    'Paid',
+    'Out for Delivery'
+);
+GO
+
+
+-- =========================
+-- Deliveries
+-- Sample delivery tracking data.
+-- =========================
+DECLARE @riderId INT;
+
+SELECT @riderId = userId
+FROM Users
+WHERE email = 'rider@gmail.com';
+
+IF @riderId IS NULL
+BEGIN
+    THROW 50002, 'Rider account was not found.', 1;
+END;
+
+INSERT INTO Deliveries (
+    orderId,
+    riderId,
+    riderName,
+    riderPhone,
+    deliveryAddress,
+    destinationLatitude,
+    destinationLongitude,
+    currentLatitude,
+    currentLongitude,
+    deliveryStatus,
+    estimatedArrivalMinutes,
+    remainingDistanceMetres,
+    assignedAt,
+    pickedUpAt
+)
+VALUES
+(
+    3,
+    @riderId,
+    'Ryan Lee',
+    '91112222',
+    '535 Clementi Road, Singapore 599489',
+    1.3321000,
+    103.7743000,
+    1.3298000,
+    103.7711000,
+    'Out for Delivery',
+    7,
+    2100,
+    DATEADD(MINUTE, -15, GETDATE()),
+    DATEADD(MINUTE, -5, GETDATE())
+);
+GO
+
+
+-- =========================
+-- Delivery Status History
+-- =========================
+DECLARE @deliveryId INT;
+DECLARE @riderUserId INT;
+
+SELECT @deliveryId = deliveryId
+FROM Deliveries
+WHERE orderId = 3;
+
+SELECT @riderUserId = userId
+FROM Users
+WHERE email = 'rider@gmail.com';
+
+IF @deliveryId IS NULL
+BEGIN
+    THROW 50003, 'Sample delivery record was not found.', 1;
+END;
+
+INSERT INTO DeliveryStatusHistory (
+    deliveryId,
+    deliveryStatus,
+    changedByUserId,
+    changedAt
+)
+VALUES
+(
+    @deliveryId,
+    'Order Confirmed',
+    NULL,
+    DATEADD(MINUTE, -35, GETDATE())
+),
+(
+    @deliveryId,
+    'Preparing',
+    2,
+    DATEADD(MINUTE, -30, GETDATE())
+),
+(
+    @deliveryId,
+    'Ready for Delivery',
+    2,
+    DATEADD(MINUTE, -20, GETDATE())
+),
+(
+    @deliveryId,
+    'Rider Assigned',
+    2,
+    DATEADD(MINUTE, -15, GETDATE())
+),
+(
+    @deliveryId,
+    'Out for Delivery',
+    @riderUserId,
+    DATEADD(MINUTE, -5, GETDATE())
 );
 GO
 
@@ -465,7 +586,6 @@ GO
 
 -- =========================
 -- Rental Agreements
--- New feature data.
 -- =========================
 INSERT INTO RentalAgreements (
     stallId,
@@ -518,7 +638,6 @@ GO
 
 -- =========================
 -- Rental Payments
--- New feature data.
 -- =========================
 INSERT INTO RentalPayments (
     agreementId,
@@ -590,7 +709,6 @@ GO
 
 -- =========================
 -- Inspection Records
--- New feature data.
 -- =========================
 DECLARE @neaOfficerId INT;
 
@@ -655,6 +773,8 @@ SELECT * FROM Customers;
 SELECT * FROM Stalls;
 SELECT * FROM MenuItems;
 SELECT * FROM Orders;
+SELECT * FROM Deliveries;
+SELECT * FROM DeliveryStatusHistory;
 SELECT * FROM Feedback;
 SELECT * FROM RentalAgreements;
 SELECT * FROM RentalPayments;

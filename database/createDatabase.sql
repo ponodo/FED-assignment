@@ -34,13 +34,14 @@ CREATE TABLE Users (
 
     -- Added nea_officer for the inspection feature.
     role VARCHAR(20) NOT NULL
-        CHECK (
-            role IN (
-                'customer',
-                'vendor',
-                'nea_officer'
-            )
-        ),
+    CHECK (
+        role IN (
+            'customer',
+            'vendor',
+            'nea_officer',
+            'rider'
+        )
+    ),
 
     createdAt DATETIME DEFAULT GETDATE()
 );
@@ -192,6 +193,143 @@ CREATE TABLE Orders (
 );
 GO
 
+-- =========================
+-- Deliveries
+-- Added for delivery status, rider location and ETA tracking.
+-- =========================
+CREATE TABLE Deliveries (
+    deliveryId INT IDENTITY(1,1) PRIMARY KEY,
+
+    -- One delivery record per order.
+    orderId INT NOT NULL UNIQUE,
+
+    -- Rider must be a user with the rider role.
+    riderId INT NULL,
+    riderName VARCHAR(100) NULL,
+    riderPhone VARCHAR(20) NULL,
+
+    deliveryAddress VARCHAR(255) NOT NULL,
+
+    destinationLatitude DECIMAL(10,7) NULL,
+    destinationLongitude DECIMAL(10,7) NULL,
+
+    currentLatitude DECIMAL(10,7) NULL,
+    currentLongitude DECIMAL(10,7) NULL,
+
+    deliveryStatus VARCHAR(30) NOT NULL
+        DEFAULT 'Order Confirmed',
+
+    estimatedArrivalMinutes INT NULL,
+    remainingDistanceMetres INT NULL,
+
+    assignedAt DATETIME NULL,
+    pickedUpAt DATETIME NULL,
+    deliveredAt DATETIME NULL,
+
+    createdAt DATETIME NOT NULL
+        DEFAULT GETDATE(),
+
+    updatedAt DATETIME NOT NULL
+        DEFAULT GETDATE(),
+
+    CONSTRAINT FK_Deliveries_Orders
+        FOREIGN KEY (orderId)
+        REFERENCES Orders(orderId),
+
+    CONSTRAINT FK_Deliveries_Riders
+        FOREIGN KEY (riderId)
+        REFERENCES Users(userId),
+
+    CONSTRAINT CK_Deliveries_Status
+        CHECK (
+            deliveryStatus IN (
+                'Order Confirmed',
+                'Preparing',
+                'Ready for Delivery',
+                'Rider Assigned',
+                'Out for Delivery',
+                'Delivered',
+                'Cancelled'
+            )
+        ),
+
+    CONSTRAINT CK_Deliveries_EstimatedArrival
+        CHECK (
+            estimatedArrivalMinutes IS NULL
+            OR estimatedArrivalMinutes >= 0
+        ),
+
+    CONSTRAINT CK_Deliveries_RemainingDistance
+        CHECK (
+            remainingDistanceMetres IS NULL
+            OR remainingDistanceMetres >= 0
+        ),
+
+    CONSTRAINT CK_Deliveries_DestinationLatitude
+        CHECK (
+            destinationLatitude IS NULL
+            OR destinationLatitude BETWEEN -90 AND 90
+        ),
+
+    CONSTRAINT CK_Deliveries_DestinationLongitude
+        CHECK (
+            destinationLongitude IS NULL
+            OR destinationLongitude BETWEEN -180 AND 180
+        ),
+
+    CONSTRAINT CK_Deliveries_CurrentLatitude
+        CHECK (
+            currentLatitude IS NULL
+            OR currentLatitude BETWEEN -90 AND 90
+        ),
+
+    CONSTRAINT CK_Deliveries_CurrentLongitude
+        CHECK (
+            currentLongitude IS NULL
+            OR currentLongitude BETWEEN -180 AND 180
+        )
+);
+GO
+
+
+-- =========================
+-- Delivery Status History
+-- Stores every delivery status change for the tracking timeline.
+-- =========================
+CREATE TABLE DeliveryStatusHistory (
+    deliveryStatusHistoryId INT IDENTITY(1,1) PRIMARY KEY,
+
+    deliveryId INT NOT NULL,
+
+    deliveryStatus VARCHAR(30) NOT NULL,
+
+    changedByUserId INT NULL,
+
+    changedAt DATETIME NOT NULL
+        DEFAULT GETDATE(),
+
+    CONSTRAINT FK_DeliveryStatusHistory_Deliveries
+        FOREIGN KEY (deliveryId)
+        REFERENCES Deliveries(deliveryId),
+
+    CONSTRAINT FK_DeliveryStatusHistory_Users
+        FOREIGN KEY (changedByUserId)
+        REFERENCES Users(userId),
+
+    CONSTRAINT CK_DeliveryStatusHistory_Status
+        CHECK (
+            deliveryStatus IN (
+                'Order Confirmed',
+                'Preparing',
+                'Ready for Delivery',
+                'Rider Assigned',
+                'Out for Delivery',
+                'Delivered',
+                'Cancelled'
+            )
+        )
+);
+GO
 
 -- =========================
 -- Feedback
@@ -401,6 +539,17 @@ CREATE INDEX IX_InspectionRecords_StallDate
 ON InspectionRecords(stallId, inspectionDate DESC);
 GO
 
+CREATE INDEX IX_Deliveries_RiderId
+ON Deliveries(riderId);
+GO
+
+CREATE INDEX IX_Deliveries_Status
+ON Deliveries(deliveryStatus);
+GO
+
+CREATE INDEX IX_DeliveryStatusHistory_DeliveryDate
+ON DeliveryStatusHistory(deliveryId, changedAt DESC);
+GO
 
 -- =========================
 -- SQL Login Used by the Node.js Backend

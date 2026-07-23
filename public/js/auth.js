@@ -1,25 +1,67 @@
-// js/auth.js - LOGIN & REGISTRATION
-document.addEventListener("DOMContentLoaded", function () {
-  // Setup login form
+// js/auth.js - LOGIN & REGISTRATION USING BACKEND API
+
+document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("loginForm");
+
   if (loginForm) {
     loginForm.addEventListener("submit", handleLoginSubmit);
     setupDemoButtons();
   }
 
-  // Setup registration form
   const registerForm = document.getElementById("registerForm");
+
   if (registerForm) {
     registerForm.addEventListener("submit", handleRegisterSubmit);
     setupRoleToggle();
   }
 });
 
-// Handle login form submission
-function handleLoginSubmit(event) {
+// ========================================
+// HELPERS
+// ========================================
+
+async function readJsonResponse(response) {
+  let result = null;
+
+  try {
+    result = await response.json();
+  } catch {
+    result = null;
+  }
+
+  if (!response.ok) {
+    throw new Error(result?.details || result?.error || "Something went wrong");
+  }
+
+  return result;
+}
+
+function saveLoginSession(result) {
+  localStorage.setItem("hawkerhub_user", JSON.stringify(result.user));
+
+  localStorage.setItem("hawkerhub_token", result.token);
+}
+
+function redirectUser(user) {
+  setTimeout(() => {
+    if (user.role === "vendor") {
+      window.location.href = "vendor-dashboard.html";
+      return;
+    }
+
+    window.location.href = "customer-dashboard.html";
+  }, 800);
+}
+
+// ========================================
+// LOGIN
+// ========================================
+
+async function handleLoginSubmit(event) {
   event.preventDefault();
 
-  const email = document.getElementById("email").value;
+  const email = document.getElementById("email").value.trim().toLowerCase();
+
   const password = document.getElementById("password").value;
 
   if (!email || !password) {
@@ -27,43 +69,78 @@ function handleLoginSubmit(event) {
     return;
   }
 
-  const users = JSON.parse(localStorage.getItem("hawkerhub_users")) || [];
-  const user = users.find((u) => u.email === email && u.password === password);
+  const submitButton = event.submitter;
 
-  if (user) {
-    // Create session user (remove password)
-    const sessionUser = { ...user };
-    delete sessionUser.password;
-    localStorage.setItem("hawkerhub_user", JSON.stringify(sessionUser));
+  const originalButtonHtml = submitButton?.innerHTML || "";
+
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+      <span
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      Logging in...
+    `;
+  }
+
+  try {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const result = await readJsonResponse(response);
+
+    saveLoginSession(result);
 
     showAlert("Login successful!", "success");
 
-    // Redirect based on role
-    setTimeout(() => {
-      if (user.role === "vendor") {
-        window.location.href = "vendor-dashboard.html";
-      } else {
-        window.location.href = "customer-dashboard.html";
-      }
-    }, 1000);
-  } else {
-    showAlert("Invalid email or password", "danger");
+    redirectUser(result.user);
+  } catch (error) {
+    console.error("Login error:", error);
+
+    showAlert(error.message, "danger");
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonHtml;
+    }
   }
 }
 
-// Handle registration form submission
-function handleRegisterSubmit(event) {
+// ========================================
+// REGISTRATION
+// ========================================
+
+async function handleRegisterSubmit(event) {
   event.preventDefault();
 
-  const firstName = document.getElementById("firstName").value;
-  const lastName = document.getElementById("lastName").value;
-  const email = document.getElementById("email").value;
+  const firstName = document.getElementById("firstName").value.trim();
+
+  const lastName = document.getElementById("lastName").value.trim();
+
+  const email = document.getElementById("email").value.trim().toLowerCase();
+
+  const phone = document.getElementById("phone")?.value.trim() || "";
+
   const password = document.getElementById("password").value;
+
   const confirmPassword = document.getElementById("confirmPassword").value;
+
   const role =
     document.querySelector('input[name="role"]:checked')?.value || "customer";
 
-  // Validation
+  if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    showAlert("Please complete all required fields", "danger");
+    return;
+  }
+
   if (password !== confirmPassword) {
     showAlert("Passwords do not match", "danger");
     return;
@@ -74,65 +151,86 @@ function handleRegisterSubmit(event) {
     return;
   }
 
-  // Check if user exists
-  const users = JSON.parse(localStorage.getItem("hawkerhub_users")) || [];
-  if (users.find((u) => u.email === email)) {
-    showAlert("User with this email already exists", "danger");
-    return;
-  }
-
-  // Create new user
-  const newUser = {
-    id: Date.now(),
+  const requestBody = {
     firstName,
     lastName,
     email,
+    phone,
     password,
     role,
-    createdAt: new Date().toISOString(),
   };
 
-  // Add vendor-specific fields
   if (role === "vendor") {
-    const stallName = document.getElementById("stallName").value;
-    const hawkerCenter = document.getElementById("hawkerCenter").value;
+    const stallName = document.getElementById("stallName").value.trim();
+
+    const hawkerCenter = document.getElementById("hawkerCenter").value.trim();
+
+    const cuisine = document.getElementById("cuisine")?.value.trim() || null;
 
     if (!stallName || !hawkerCenter) {
       showAlert("Please fill in vendor details", "danger");
       return;
     }
 
-    newUser.stallName = stallName;
-    newUser.hawkerCenter = hawkerCenter;
+    requestBody.stallName = stallName;
+    requestBody.hawkerCenter = hawkerCenter;
+    requestBody.cuisine = cuisine;
   }
 
-  // Save user
-  users.push(newUser);
-  localStorage.setItem("hawkerhub_users", JSON.stringify(users));
+  const submitButton = event.submitter;
 
-  // Auto login
-  const sessionUser = { ...newUser };
-  delete sessionUser.password;
-  localStorage.setItem("hawkerhub_user", JSON.stringify(sessionUser));
+  const originalButtonHtml = submitButton?.innerHTML || "";
 
-  showAlert("Registration successful!", "success");
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+      <span
+        class="spinner-border spinner-border-sm me-2"
+      ></span>
+      Creating account...
+    `;
+  }
 
-  // Redirect
-  setTimeout(() => {
-    if (role === "vendor") {
-      window.location.href = "vendor-dashboard.html";
-    } else {
-      window.location.href = "customer-dashboard.html";
+  try {
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    const result = await readJsonResponse(response);
+
+    saveLoginSession(result);
+
+    showAlert("Registration successful!", "success");
+
+    redirectUser(result.user);
+  } catch (error) {
+    console.error("Registration error:", error);
+
+    showAlert(error.message, "danger");
+  } finally {
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.innerHTML = originalButtonHtml;
     }
-  }, 1000);
+  }
 }
 
-// Setup role toggle for registration
+// ========================================
+// ROLE TOGGLE
+// ========================================
+
 function setupRoleToggle() {
   const roleRadios = document.querySelectorAll('input[name="role"]');
+
   const vendorFields = document.getElementById("vendorFields");
 
-  if (!vendorFields) return;
+  if (!vendorFields) {
+    return;
+  }
 
   roleRadios.forEach((radio) => {
     radio.addEventListener("change", function () {
@@ -145,41 +243,71 @@ function setupRoleToggle() {
   });
 }
 
-// Setup demo login buttons
-function setupDemoButtons() {
-  // Add demo buttons to login page
-  const demoSection = document.createElement("div");
-  demoSection.className = "mt-4 pt-3 border-top";
-  demoSection.innerHTML = `
-        <p class="text-center mb-3"><strong>Demo Accounts:</strong></p>
-        <div class="d-flex justify-content-center gap-2">
-            <button class="btn btn-outline-success btn-sm" onclick="demoLogin('customer')">
-                <i class="bi bi-person me-1"></i>Customer Demo
-            </button>
-            <button class="btn btn-outline-primary btn-sm" onclick="demoLogin('vendor')">
-                <i class="bi bi-shop me-1"></i>Vendor Demo
-            </button>
-        </div>
-        <p class="text-center mt-2 text-muted small">
-            Password: <code>password123</code>
-        </p>
-    `;
+// ========================================
+// DEMO LOGIN BUTTONS
+// ========================================
 
+function setupDemoButtons() {
   const form = document.getElementById("loginForm");
-  if (form) {
-    form.parentNode.appendChild(demoSection);
+
+  if (!form || document.getElementById("demo-login-section")) {
+    return;
   }
+
+  const demoSection = document.createElement("div");
+
+  demoSection.id = "demo-login-section";
+  demoSection.className = "mt-4 pt-3 border-top";
+
+  demoSection.innerHTML = `
+    <p class="text-center mb-3">
+      <strong>Demo Accounts:</strong>
+    </p>
+
+    <div class="d-flex justify-content-center gap-2">
+      <button
+        type="button"
+        class="btn btn-outline-success btn-sm"
+        data-demo-login="customer"
+      >
+        <i class="bi bi-person me-1"></i>
+        Customer Demo
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-outline-primary btn-sm"
+        data-demo-login="vendor"
+      >
+        <i class="bi bi-shop me-1"></i>
+        Vendor Demo
+      </button>
+    </div>
+
+    <p class="text-center mt-2 text-muted small">
+      Password:
+      <code>password123</code>
+    </p>
+  `;
+
+  form.parentNode.appendChild(demoSection);
+
+  demoSection.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-demo-login]");
+
+    if (!button) {
+      return;
+    }
+
+    demoLogin(button.dataset.demoLogin);
+  });
 }
 
-// Demo login function
 function demoLogin(role) {
-  const email =
-    role === "customer" ? "customer@example.com" : "vendor@example.com";
-  const password = "password123";
+  const email = role === "customer" ? "elix@gmail.com" : "keith@gmail.com";
 
   document.getElementById("email").value = email;
-  document.getElementById("password").value = password;
+  document.getElementById("password").value = "password123";
 
-  // Submit the form
-  document.getElementById("loginForm").dispatchEvent(new Event("submit"));
+  document.getElementById("loginForm").requestSubmit();
 }

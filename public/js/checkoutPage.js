@@ -23,6 +23,10 @@ const btnPlaceOrder = document.getElementById("btn-place-order");
 const DELIVERY_FEE = 5;
 const FREE_DELIVERY_THRESHOLD = 20;
 
+// ========================================
+// CALCULATIONS
+// ========================================
+
 function calcSubtotal(cart) {
   return cart.reduce(
     (sum, item) =>
@@ -39,8 +43,13 @@ function calculateDeliveryFee(subtotal) {
   return subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
 }
 
+// ========================================
+// ORDER SUMMARY
+// ========================================
+
 function updateSummary() {
   const cart = load(CART_KEY, []);
+
   const subtotal = calcSubtotal(cart);
   const deliveryFee = calculateDeliveryFee(subtotal);
 
@@ -67,8 +76,13 @@ function updateSummary() {
   totalEl.textContent = `$${total.toFixed(2)}`;
 
   deliveryMsgEl.textContent = message;
+
   btnPlaceOrder.disabled = cart.length === 0;
 }
+
+// ========================================
+// CART GROUPING
+// ========================================
 
 function groupCartByStall(cart) {
   const stallGroups = new Map();
@@ -90,6 +104,31 @@ function groupCartByStall(cart) {
   return [...stallGroups.values()];
 }
 
+// ========================================
+// API HELPERS
+// ========================================
+
+async function readJsonResponse(response) {
+  let result = null;
+
+  try {
+    result = await response.json();
+  } catch {
+    result = null;
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      result?.details ||
+        result?.error ||
+        result?.message ||
+        "Unable to complete request",
+    );
+  }
+
+  return result;
+}
+
 async function createDatabaseOrder(orderData) {
   const response = await fetch("/api/orders", {
     method: "POST",
@@ -99,14 +138,26 @@ async function createDatabaseOrder(orderData) {
     body: JSON.stringify(orderData),
   });
 
-  const result = await response.json();
-
-  if (!response.ok) {
-    throw new Error(result.error || "Unable to create order");
-  }
+  const result = await readJsonResponse(response);
 
   return result.order;
 }
+
+async function createDatabaseDelivery(deliveryData) {
+  const response = await fetch("/api/deliveries", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(deliveryData),
+  });
+
+  return readJsonResponse(response);
+}
+
+// ========================================
+// EVENTS
+// ========================================
 
 deliveryTypeEl.addEventListener("change", updateSummary);
 
@@ -114,6 +165,7 @@ btnPlaceOrder.addEventListener("click", async () => {
   const cart = load(CART_KEY, []);
 
   if (cart.length === 0) {
+    alert("Your cart is empty.");
     return;
   }
 
@@ -121,10 +173,19 @@ btnPlaceOrder.addEventListener("click", async () => {
 
   const phone = document.getElementById("phone").value.trim();
 
+  const deliveryAddress =
+    document.getElementById("deliveryAddress")?.value.trim() || "";
+
   const tac = document.getElementById("tac").checked;
 
   if (!fullName || !phone) {
     alert("Please fill in Full Name and Phone Number.");
+
+    return;
+  }
+
+  if (deliveryTypeEl.value === "delivery" && !deliveryAddress) {
+    alert("Please enter a delivery address.");
 
     return;
   }
@@ -137,30 +198,33 @@ btnPlaceOrder.addEventListener("click", async () => {
 
   const currentUser = loadCurrentUser();
 
-  /*
-      Temporary fallback:
-      Customer 1 already exists in the SQL sample data.
+  if (!currentUser) {
+    alert("Please log in before placing an order.");
 
-      When authentication is connected to SQL,
-      replace this fallback with the logged-in
-      customer's real database ID.
-    */
-  let customerId = Number(currentUser?.customerId);
+    window.location.href = "login.html";
 
-  if (
-    !Number.isInteger(customerId) ||
-    customerId < 1 ||
-    customerId > 2147483647
-  ) {
-    customerId = 1;
+    return;
+  }
+
+  const customerId = Number(currentUser.customerId);
+
+  if (!Number.isInteger(customerId) || customerId <= 0) {
+    alert(
+      "Your account is not linked to a customer profile. Please log out and log in again.",
+    );
+
+    return;
   }
 
   const originalButtonHtml = btnPlaceOrder.innerHTML;
 
   btnPlaceOrder.disabled = true;
+
   btnPlaceOrder.innerHTML = `
       <span
         class="spinner-border spinner-border-sm me-2"
+        role="status"
+        aria-hidden="true"
       ></span>
       Placing order...
     `;
@@ -177,25 +241,55 @@ btnPlaceOrder.addEventListener("click", async () => {
 
       const totalAmount = subtotal + deliveryFee;
 
+      const isDelivery = deliveryTypeEl.value === "delivery";
+
       const databaseOrder = await createDatabaseOrder({
         customerId,
         stallId: group.stallId,
         totalAmount,
         paymentStatus: "Paid",
-        orderStatus: "Completed",
+        orderStatus: isDelivery ? "Preparing" : "Completed",
       });
+
+      let deliveryResult = null;
+
+      if (isDelivery) {
+        deliveryResult = await createDatabaseDelivery({
+          orderId: databaseOrder.orderId,
+
+          deliveryAddress,
+
+          deliveryStatus: "Order Confirmed",
+
+          changedByUserId: currentUser.userId,
+        });
+      }
 
       savedOrders.push({
         orderId: databaseOrder.orderId,
+
         customerId,
+
         customerName: fullName,
+
         phone,
+
         stallId: group.stallId,
+
         stallName: group.stallName,
+
         deliveryType: deliveryTypeEl.value,
+
+        deliveryAddress: isDelivery ? deliveryAddress : null,
+
+        deliveryId: deliveryResult?.delivery?.deliveryId || null,
+
         items: group.items,
+
         totalAmount,
-        status: "completed",
+
+        status: isDelivery ? "ongoing" : "completed",
+
         createdAt: databaseOrder.orderDate || new Date().toISOString(),
       });
     }
@@ -213,6 +307,7 @@ btnPlaceOrder.addEventListener("click", async () => {
     alert(error.message);
   } finally {
     btnPlaceOrder.disabled = false;
+
     btnPlaceOrder.innerHTML = originalButtonHtml;
   }
 });
